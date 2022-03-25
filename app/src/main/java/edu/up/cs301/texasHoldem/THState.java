@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import edu.up.cs301.game.GameFramework.infoMessage.GameState;
+import edu.up.cs301.game.GameFramework.players.GameComputerPlayer;
+import edu.up.cs301.game.GameFramework.players.GameHumanPlayer;
+import edu.up.cs301.game.GameFramework.players.GamePlayer;
 
 /**
  * Game State for our game, contains a list of players and other info
@@ -76,11 +79,11 @@ public class THState extends GameState {
 
     // pass the player who is betting and the amount they want to bet
     // bet should be amount to add, not their total bet
-    public boolean bet(Player player, int amount) {
+    public boolean bet(int playerID, int amount) {
         Player currentPlayer = players.get(playerTurn);
 
         //separated fail conditions for better readability
-        if (currentPlayer.getName() != player.getName()) {
+        if (playerTurn != playerID) {
             return false;
         }
         //in theory this should never happen, since the minimum the game will let you bet is enough to stay in
@@ -97,11 +100,11 @@ public class THState extends GameState {
     }
 
     //only requirement to fold is it needs to be your turn
-    public boolean fold(Player player) {
+    public boolean fold(int playerID) {
         Player currentPlayer = players.get(playerTurn);
 
         //needs to be your turn
-        if (currentPlayer.getName() != player.getName()) {
+        if (playerTurn != playerID) {
             return false;
         }
 

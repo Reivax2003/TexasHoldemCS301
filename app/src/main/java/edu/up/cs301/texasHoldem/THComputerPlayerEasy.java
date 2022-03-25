@@ -20,6 +20,6 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
         //I made this check instead of fold so that the player doesn't immediately win
         int betNeeded = gameState.getCurrentBet()-self.getBet(); //check
 
-        gameState.bet(self, betNeeded); //submit action
+        gameState.bet(playerNum, betNeeded); //submit action
     }
 }

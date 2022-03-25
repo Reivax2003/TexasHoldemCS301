@@ -22,11 +22,7 @@ public class THMainActivity extends GameMainActivity {
 
 	/** a slapjack game for two players. The default is human vs. computer */
 	@Override
-
 	public GameConfig createDefaultConfig() {
-
-		//all this is useable code so i'm commenting it out instead of deleting
-
 		// Define the allowed player types
 		ArrayList<GamePlayerType> playerTypes = new ArrayList<GamePlayerType>();
 
@@ -56,14 +52,17 @@ public class THMainActivity extends GameMainActivity {
 
 	@Override
 	public LocalGame createLocalGame(GameState gameState) {
+		//if gamestate is null, i.e. we aren't loading a game, create a new one with the players
+		//TODO: other game initialization settings
+		//TODO: change player arraylist to GamePlayer arraylist
+		GameConfig config = getConfig();
 		if (gameState == null) {
 			ArrayList<Player> players = new ArrayList<Player>();
-			GameConfig config = getConfig();
 			for (int i = 0; i < config.getNumPlayers(); i++) {
 				Player player = new Player(config.getSelName(i), 1000);
 				players.add(player);
 			}
-			gameState = new THState();
+			gameState = new THState(players);
 		}
 
 		return new THLocalGame((THState) gameState);

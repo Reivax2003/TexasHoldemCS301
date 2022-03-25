@@ -41,11 +41,13 @@ public class THLocalGame extends LocalGame {
 	//TODO: All functions below
 
 	@Override
-	protected void sendUpdatedStateTo(GamePlayer p) { }
+	protected void sendUpdatedStateTo(GamePlayer p) {
+    	p.sendInfo(new THState(state));
+	}
 
 	@Override
 	protected boolean canMove(int playerIdx) {
-		return false;
+		return playerIdx == state.playerTurn;
 	}
 
 	@Override
@@ -55,6 +57,15 @@ public class THLocalGame extends LocalGame {
 
 	@Override
 	protected boolean makeMove(GameAction action) {
-		return false;
+		if (action instanceof Bet) {
+			Bet bet = (Bet) action;
+			state.bet(getPlayerIdx(bet.getPlayer()), bet.getAmount());
+			return true;
+		} else if (action instanceof Fold) {
+			state.fold(getPlayerIdx(action.getPlayer()));
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
