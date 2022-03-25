@@ -24,14 +24,14 @@ public class THLocalGame extends LocalGame {
      */
     public THLocalGame() {
     	super();
-        Log.i("SJLocalGame", "creating game");
+        Log.i("THLocalGame", "creating game");
         // create the state for the beginning of the game
         this.state = new THState();
         super.state = this.state;
     }
 
 	public THLocalGame(THState initState) {
-		Log.i("SJLocalGame", "creating game");
+		Log.i("THLocalGame", "creating game");
 		// create the state for the beginning of the game
 		this.state = initState;
 		super.state = initState;
@@ -41,9 +41,7 @@ public class THLocalGame extends LocalGame {
 	//TODO: All functions below
 
 	@Override
-	protected void sendUpdatedStateTo(GamePlayer p) {
-
-	}
+	protected void sendUpdatedStateTo(GamePlayer p) { }
 
 	@Override
 	protected boolean canMove(int playerIdx) {

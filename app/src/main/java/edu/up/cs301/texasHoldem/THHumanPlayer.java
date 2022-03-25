@@ -6,8 +6,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import edu.up.cs301.game.GameFramework.GameMainActivity;
+import edu.up.cs301.game.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.game.GameFramework.infoMessage.GameInfo;
 import edu.up.cs301.game.GameFramework.players.GameHumanPlayer;
+import edu.up.cs301.game.R;
 
 public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
@@ -36,43 +38,49 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
     //TEMPORARY BLANK CLASSES
     @Override
-    public void onClick(View view) { }
+    public View getTopView() {
+        return null;
+    }
     @Override
-    public void onProgressChanged(SeekBar seekBar, int i, boolean b) { }
+    public void receiveInfo(GameInfo info) { }
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) { }
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) { }
-
-    @Override
-    public View getTopView() {
-        return null;
-    }
-
-    @Override
-    public void receiveInfo(GameInfo info) {
-
-    }
+    //END TEMPORARY BLANK CLASSES
 
     @Override
     public void setAsGui(GameMainActivity activity) {
+        // remember the activity
+        myActivity = activity;
 
+        // Load the layout resource for our GUI
+        activity.setContentView(R.layout.th_human_player);
+
+        //Initialize the widget reference member variables
+        this.bet = activity.findViewById(R.id.buttonBet);
+        this.valueSB = activity.findViewById(R.id.currBetSB);
+        this.valueTV = activity.findViewById(R.id.currBetTV);
+
+        //I don't understand what these lines do and they're crashing the app
+        /** //Listen for button presses
+        bet.setOnClickListener(this);
+        fold.setOnClickListener(this);*/
     }
-    //END TEMPORARY BLANK CLASSES
 
     /**
      *
      * Note from Xavier:
      * Had to edit this out temporarily as it was throwing errors
-     *
+     */
     @Override
     public void onClick(View view) {
         //checks if id equals the bet action.
-        Bet betAction = new Bet(this); //TODO: implement methods in GameHumanPlayer to make these possible
+        Bet betAction = new Bet(this);
         Fold foldAction = new Fold(this);
 
         if (view.getId() == bet.getId()) {
-            game.sendAction(betAction);
+            game.sendAction((GameAction) (THGameAction) betAction);
 
         }
         if (view.getId() == fold.getId()) {
@@ -90,35 +98,4 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         //TODO: GameFramework & surfaceView to invalidate
         //.invalidate()
     }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
-    }
-
-    //TODO implement GameMainActivity
-    public void setAsGui(GameMainActivity activity) {
-
-        // remember the activity
-        myActivity = activity;
-
-        // Load the layout resource for our GUI
-        activity.setContentView(R.layout.activity_main);
-
-        //Initialize the widget reference member variables
-        this.bet = activity.findViewById(R.id.buttonBet);
-        this.valueSB = activity.findViewById(R.id.currBetSB);
-        this.valueTV = activity.findViewById(R.id.currBetTV);
-
-        //Listen for button presses
-        bet.setOnClickListener(this);
-        fold.setOnClickListener(this);
-
-    }
-    */
 }

@@ -1,21 +1,25 @@
 package edu.up.cs301.texasHoldem;
 
-public class THGameAction {
+import edu.up.cs301.game.GameFramework.actionMessage.GameAction;
+import edu.up.cs301.game.GameFramework.players.GamePlayer;
+
+public class THGameAction extends GameAction {
 
     // the player who generated the request
-    private Player player;
+    private GamePlayer player;
 
 
-    public THGameAction(Player p) {
+    public THGameAction(GamePlayer p) {
+        super(p);
         this.player = p;
     }
 
     //return player's action.
-    public Player getPlayer() {
+    public GamePlayer getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player p) {
+    public void setPlayer(GamePlayer p) {
         this.player = p;
     }
 

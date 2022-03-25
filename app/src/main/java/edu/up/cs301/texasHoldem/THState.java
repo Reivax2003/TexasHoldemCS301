@@ -31,6 +31,18 @@ public class THState extends GameState {
         round = 0;
         currentBet = 0;
     }
+
+    //constructor with just players
+    public THState(ArrayList<Player> players) {
+        this.players = players;
+        blindBet = 20; //arbitrary value
+        MAX_TIMER = 60; //arbitrary value
+        timer = MAX_TIMER;
+        playerTurn = 0;
+        round = 0;
+        currentBet = 0;
+    }
+
     public THState(ArrayList<Player> players, int maxTimer, int blindBet) {
         this.players = (ArrayList<Player>) players.clone();
         this.blindBet = blindBet;

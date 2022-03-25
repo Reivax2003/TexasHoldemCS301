@@ -35,48 +35,17 @@ public class THMainActivity extends GameMainActivity {
 				return new THHumanPlayer(name);
 			}});
 
-		playerTypes.add(new GamePlayerType("human player 2") {
+		playerTypes.add(new GamePlayerType("computer player (easy)") {
 			public GamePlayer createPlayer(String name) {
-				return new THHumanPlayer(name);
+				return new THComputerPlayerEasy(name);
 			}});
-		/**playerTypes.add(new GamePlayerType("human player (yellow)") {
-			public GamePlayer createPlayer(String name) {
-				return new SJHumanPlayer(name, Color.YELLOW);
-			}
-		});
-		playerTypes.add(new GamePlayerType("computer player (normal)") {
-			public GamePlayer createPlayer(String name) {
-				return new SJComputerPlayer(name);
-			}
-		});
-		playerTypes.add(new GamePlayerType("computer player (fast)") {
-			public GamePlayer createPlayer(String name) {
-				return new SJComputerPlayer(name, 0.3);
-			}
-		});
-		playerTypes.add(new GamePlayerType("computer player (slow)") {
-			public GamePlayer createPlayer(String name) {
-				return new SJComputerPlayer(name, 1.0);
-			}
-		});
-		playerTypes.add(new GamePlayerType("computer player (very fast)") {
-			public GamePlayer createPlayer(String name) {
-				return new SJComputerPlayer(name, 0.15);
-			}
-		});
-		playerTypes.add(new GamePlayerType("computer player (very slow)") {
-			public GamePlayer createPlayer(String name) {
-				return new SJComputerPlayer(name, 3.5);
-			}
-		});
-		 */
 
 		// Create a game configuration class for SlapJack
-		GameConfig defaultConfig = new GameConfig(playerTypes, 2, 6, "SlapJack", PORT_NUMBER);
+		GameConfig defaultConfig = new GameConfig(playerTypes, 2, 6, "Texas Holdem", PORT_NUMBER);
 
 		// Add the default players
 		defaultConfig.addPlayer("Human", 0);
-		defaultConfig.addPlayer("Human2", 1);
+		defaultConfig.addPlayer("Computer", 1);
 		
 		// Set the initial information for the remote player
 		defaultConfig.setRemoteData("Guest", "", 1);
@@ -87,7 +56,13 @@ public class THMainActivity extends GameMainActivity {
 
 	@Override
 	public LocalGame createLocalGame(GameState gameState) {
-		if(gameState == null) {
+		if (gameState == null) {
+			ArrayList<Player> players = new ArrayList<Player>();
+			GameConfig config = getConfig();
+			for (int i = 0; i < config.getNumPlayers(); i++) {
+				Player player = new Player(config.getSelName(i), 1000);
+				players.add(player);
+			}
 			gameState = new THState();
 		}
 
