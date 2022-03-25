@@ -1,0 +1,5 @@
+<resources>
+    <!--These are strings unique to Tic-Tac-Toe-->
+    <string name="app_name">Slapjack</string>
+    <string name="hello_world">Hello world!</string>
+</resources>
