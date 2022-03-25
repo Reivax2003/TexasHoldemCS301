@@ -46,6 +46,12 @@ public class Player {
     public void setHand(Card[] hand) {this.hand = hand;}
     public void giveCard(Card card, int index) { hand[index] = card;}
 
+    public int getBalance() { return this.balance; }
+    public void changeBalance(int betAmount) {
+        this.balance -= betAmount;
+    }
+    public void setBalance(int amount) {balance = amount;}
+
 
     @Override
     public String toString() {
