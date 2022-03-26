@@ -57,15 +57,14 @@ public class THLocalGame extends LocalGame {
 
 	@Override
 	protected boolean makeMove(GameAction action) {
+    	boolean succeeded = false;
 		if (action instanceof Bet) {
 			Bet bet = (Bet) action;
-			state.bet(getPlayerIdx(bet.getPlayer()), bet.getAmount());
-			return true;
+			succeeded = state.bet(getPlayerIdx(bet.getPlayer()), bet.getAmount());
 		} else if (action instanceof Fold) {
-			state.fold(getPlayerIdx(action.getPlayer()));
-			return true;
-		} else {
-			return false;
+			succeeded = state.fold(getPlayerIdx(action.getPlayer()));
 		}
+
+		return succeeded;
 	}
 }

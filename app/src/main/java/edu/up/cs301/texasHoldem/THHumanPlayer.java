@@ -58,9 +58,10 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
             return;
         }
         gameState = (THState) info;
-        if (me == null) {
-            me = gameState.getPlayers().get(playerNum);
-        }
+
+        //this actually needs to get updated every time we get new info
+        me = gameState.getPlayers().get(playerNum);
+
         updateUI();
     }
     @Override
@@ -120,8 +121,8 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         //checks if id equals the bet or fold action.
         if (view.getId() == bet.getId()) {
             //recalculate this here. feels flimsy to just use whatever text is on the screen
-            int betAmount = (gameState.getCurrentBet()-me.getBet())
-                    +(me.getBalance()*(valueSB.getProgress()/valueSB.getMax()));
+            int betAmount = (int) ((gameState.getCurrentBet()-me.getBet())
+                    +(me.getBalance()*((float) valueSB.getProgress()/valueSB.getMax())));
             Bet betAction = new Bet(this, betAmount);
             game.sendAction((GameAction) (THGameAction) betAction);
 

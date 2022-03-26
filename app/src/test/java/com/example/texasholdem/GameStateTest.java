@@ -11,6 +11,8 @@ import edu.up.cs301.texasHoldem.Player;
 import edu.up.cs301.texasHoldem.THState;
 
 public class GameStateTest {
+    //TODO: test that current bet is correct
+
     @Test
     public void testFold() {
         ArrayList<Player> players = new ArrayList<Player>();
@@ -26,11 +28,11 @@ public class GameStateTest {
         THState gState = new THState(players, 60, 100);
 
         //it is player 1's turn by default so they should be able to fold
-        assertTrue(gState.fold(p1)); //gamestate thinks action was successful
+        assertTrue(gState.fold(0)); //gamestate thinks action was successful
         assertTrue(p1.isFolded()); //check that action was successful
 
         //turn doesn't increase unless we tell it so it is still player 1s turn
-        assertFalse(gState.fold(p2)); //gamestate should not take the action
+        assertFalse(gState.fold(1)); //gamestate should not take the action
         assertFalse(p2.isFolded()); //player's state should n ot be updated
     }
     @Test
@@ -55,7 +57,7 @@ public class GameStateTest {
 
         assertEquals(900, gState.getPool()); //should return 900, sum of bets
 
-        gState.fold(p1);
+        gState.fold(0);
         assertEquals(900, gState.getPool()); //should still return 900 even though someone folded
     }
     @Test

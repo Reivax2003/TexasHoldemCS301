@@ -1,5 +1,7 @@
 package edu.up.cs301.texasHoldem;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -90,12 +92,20 @@ public class THState extends GameState {
         if (currentPlayer.getBet() + amount < currentBet) {
             return false;
         }
+        //prevents player from accidentally passing their turn at the beginning
+        if (currentPlayer.getBet() + amount == 0) {
+            return false;
+        }
 
        currentPlayer.addBet(amount);
 
-        if (currentPlayer.getBet() > currentBet) {
+        //amount was just added so we just compare with current bet
+        if (currentPlayer.getBet() > currentBet) { //should always happen
             currentBet = currentPlayer.getBet();
         }
+
+        nextTurn(); //taking any action ends your turn
+
         return true;
     }
 
@@ -109,6 +119,7 @@ public class THState extends GameState {
         }
 
         currentPlayer.setFold(true);
+        nextTurn(); //taking any action ends your turn
         return true;
     }
 
@@ -119,6 +130,18 @@ public class THState extends GameState {
             pool += each.getBet();
         }
         return pool;
+    }
+
+    /**
+     * Function to update turn to next player
+     * Should be called in THLocalGame any time an action is successful
+     */
+    public void nextTurn() {
+        playerTurn++;
+        //if same as length reset to 0
+        if (playerTurn >= players.size()) {
+            playerTurn = 0;
+        }
     }
 
     public int getTimer() {return timer;}
@@ -166,10 +189,10 @@ public class THState extends GameState {
         - 10 of Hearts
 
         Players:
-        Name: Jerry, balance: 2600, bet: 100, folded: false, hand: King of Hearts, 9 of Diamonds
-        Name: Paul, balance: 800, bet: 150, folded: false, hand: 4 of clubs, 2 of Diamonds
-        Name: Anna, balance: 1200, bet: 0, folded: true, hand: 7 of Hearts, 9 of Clubs
-        Name: Mary, balance: 4400, bet: 200, folded: false, hand: Jack of Clubs, Ace of Diamonds
+        - Name: Jerry, balance: 2600, bet: 100, folded: false, hand: King of Hearts, 9 of Diamonds
+        - Name: Paul, balance: 800, bet: 150, folded: false, hand: 4 of clubs, 2 of Diamonds
+        - Name: Anna, balance: 1200, bet: 0, folded: true, hand: 7 of Hearts, 9 of Clubs
+        - Name: Mary, balance: 4400, bet: 200, folded: false, hand: Jack of Clubs, Ace of Diamonds
          */
 
         String message = "Rules:" +
