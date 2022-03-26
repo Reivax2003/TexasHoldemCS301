@@ -96,7 +96,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
     /**
      * Method to update all the text in the UI and (not currently implemented) the cards shown
-     * We need to call this once we receive the gamestate for the first time
+     * We need to call this once whenever we receive info
      */
     public void updateUI() {
         //set up gui correctly

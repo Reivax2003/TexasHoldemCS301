@@ -56,12 +56,14 @@ public class THMainActivity extends GameMainActivity {
 		//TODO: other game initialization settings
 		//TODO: change player arraylist to GamePlayer arraylist
 		GameConfig config = getConfig();
-		if (gameState == null) {
+		if (gameState == null) { //if this is a new game
 			ArrayList<Player> players = new ArrayList<Player>();
+			//for each player create a Player object
 			for (int i = 0; i < config.getNumPlayers(); i++) {
 				Player player = new Player(config.getSelName(i), 1000);
 				players.add(player);
 			}
+			//use this to create a fresh game
 			gameState = new THState(players);
 		}
 

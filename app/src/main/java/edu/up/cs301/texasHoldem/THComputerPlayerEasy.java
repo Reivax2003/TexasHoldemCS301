@@ -1,8 +1,12 @@
 package edu.up.cs301.texasHoldem;
 
+import java.util.Random;
+
+import edu.up.cs301.game.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.game.GameFramework.infoMessage.GameInfo;
 import edu.up.cs301.game.GameFramework.players.GameComputerPlayer;
 import edu.up.cs301.game.GameFramework.players.GamePlayer;
+import edu.up.cs301.game.R;
 
 public class THComputerPlayerEasy extends GameComputerPlayer {
     /**
@@ -27,8 +31,17 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
         //I made this check instead of fold so that the player doesn't immediately win
         int betNeeded = gameState.getCurrentBet()-self.getBet(); //check
 
-        Bet betAction = new Bet(this, betNeeded);
+        Random r = new Random();
+        if (r.nextFloat() < .25) { // 1/4 chance to raise
+            betNeeded += r.nextInt(5)*10; //raise anywhere from 10 to 50 (in multiples of 10)
+        }
 
-        game.sendAction(betAction); //let's see if this works
+        if (r.nextFloat() < .02) { // 1/50 chance to fold (might be too low)
+            Fold action = new Fold(this);
+            game.sendAction(action);
+        } else {
+            Bet action = new Bet(this, betNeeded);
+            game.sendAction(action);
+        }
     }
 }

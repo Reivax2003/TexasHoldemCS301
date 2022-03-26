@@ -47,7 +47,8 @@ public class Player {
     public void giveCard(Card card, int index) { hand[index] = card;}
 
     public int getBalance() { return this.balance; }
-    public void changeBalance(int betAmount) {
+    //changed name to "removebalance" for clarity
+    public void removeBalance(int betAmount) {
         this.balance -= betAmount;
     }
     public void setBalance(int amount) {balance = amount;}

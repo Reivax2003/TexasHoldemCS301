@@ -93,11 +93,12 @@ public class THState extends GameState {
             return false;
         }
         //prevents player from accidentally passing their turn at the beginning
-        if (currentPlayer.getBet() + amount == 0) {
+        if (amount == 0) {
             return false;
         }
 
-       currentPlayer.addBet(amount);
+        currentPlayer.addBet(amount);
+        currentPlayer.removeBalance(amount);
 
         //amount was just added so we just compare with current bet
         if (currentPlayer.getBet() > currentBet) { //should always happen
