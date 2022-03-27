@@ -2,6 +2,8 @@ package edu.up.cs301.texasHoldem;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import edu.up.cs301.game.GameFramework.players.GamePlayer;
 import edu.up.cs301.game.GameFramework.LocalGame;
 import edu.up.cs301.game.GameFramework.actionMessage.*;
@@ -54,7 +56,28 @@ public class THLocalGame extends LocalGame {
     protected String checkIfGameOver() {
 		if (checkIfRoundOver()) {//check if the current round is over
 			if (state.getRound() == 3) { //if the current round is the last then the game is over
-				return "Game Finished"; //TODO: implement win conditions
+
+				//for now jsut evaluate highest card as win
+				int high = 0;
+				Player winner = null;
+				for (Player player : state.getPlayers()) {
+					ArrayList<Card> hand = state.getDealerHand(); //arraylist is just easier
+					hand.add(player.getHand()[0]);
+					hand.add(player.getHand()[1]);
+					Card best = state.bestHand(hand);
+					if (best.getValue() > high) {
+						high = best.getValue();
+						winner = player;
+					} else if (best.getValue() == high) {
+						winner = null;
+					}
+				}
+				if (winner == null) {
+					return "Game resulted in a tie";
+				} else {
+					// \n makes the message look nicer
+					return "Winner: "+winner.getName()+", Highest valued card: "+high+"\n";
+				}
 			} else {
 				state.nextRound(); //if it's not the last round, proceed to the next round
 			}

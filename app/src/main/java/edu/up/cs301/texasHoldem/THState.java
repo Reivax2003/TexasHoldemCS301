@@ -168,6 +168,11 @@ public class THState extends GameState {
      */
     public void nextRound() {
         playerTurn = 0; //always starts with the first player. technically between games this should rotate
+        /**
+         * Citation: looked up how switch/case works
+         * https://www.w3schools.com/java/java_switch.asp
+         * Xavier Santiago (3.26.2022)
+         */
         switch (round) {
             case 0: //if pre-flop, then deal the flop
                 dealerHand.add(deck.deal());
@@ -183,6 +188,80 @@ public class THState extends GameState {
         round++;
     }
 
+    /**
+     * calculate highest value set of 5 cards given a hand of arbitrary size (not implemented)
+     * TODO: a unit test for this might be a good idea
+     * @param hand: the hand do be evaluated
+     * @return highest card
+     */
+    public Card bestHand(ArrayList<Card> hand) {
+        int high = 0;
+        Card winCard = null;
+        for (Card card : hand) {
+            if (card.getValue() > high) {
+                high = card.getValue();
+                winCard = new Card(card);
+            }
+        }
+        return winCard;
+
+        /**
+         * this is a work in progress, for now this function jut returns the highest card
+         *
+         //arraylist is just nicer to work with for this
+
+        //for now, just check for each hand individually
+        int[] suits = new int[4]; //keep track of how many of each suit (Flushes) [H, D, S, C]
+        int[] values = new int[14]; //keep track of how many of each value
+        Card flushStart = null; //if we have a flush, this hold the start of the highest one
+        boolean isStraight = false; //true if we have a straight flush
+        //if we have a straight flush, flushStart instead tracks the highest straight flush
+        for (Card card : hand) {
+            String shortCard = card.getShortName();
+
+            //update lists
+            switch (shortCard.substring(1,2)){
+                case "H":
+                    suits[0]++;
+                    break;
+                case "D":
+                    suits[1]++;
+                    break;
+                case "S":
+                    suits[2]++;
+                    break;
+                case "C":
+                    suits[3]++;
+                    break;
+            }
+            values[card.getValue()]++;
+
+            //check for straight flush
+            Card lastCard = new Card(card);
+            boolean sFlush = true;
+            for (int i = 0; i < 5; i++) {
+                /**
+                 * Citation: Checked to see if .contains works on objects
+                 * https://stackoverflow.com/questions/2642589/how-does-a-arraylists-contains-method-evaluate-objects
+                 * Xavier Santiago (3.26.2022)
+                 */
+                /**Card nextCard = new Card(lastCard.nextCard());
+                if (hand.contains(nextCard)) {
+                    lastCard = nextCard; //shouldn't matter that we pass the reference
+                } else {
+                    sFlush = false;
+                    break;
+                }
+            }
+            if (sFlush) {
+                flushStart = new Card(card);
+                isStraight = true;
+            }
+        }
+
+
+        return new Card[5];*/
+    }
 
     public int getTimer() {return timer;}
     public int getRound() {return round;}

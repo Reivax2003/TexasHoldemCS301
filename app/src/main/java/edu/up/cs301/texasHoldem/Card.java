@@ -57,7 +57,7 @@ public class Card {
     }
 
     // this needs to be run when the card is created and any time something is changed
-    private String getLongName() {
+    public String getLongName() {
         String name = "";
 
         if (value <= 10) { //if it's a number card we can just use it's value as a string
@@ -76,5 +76,25 @@ public class Card {
         else {name += "Invalid Suit";}
 
         return name;
+    }
+    public String getShortName() {
+        return shortName;
+    }
+
+    /**
+     * gets the short name of next card in the same suit, useful for calculating a best hand
+     * @return card of same suit with 1 greater rank. returns 2 if ace
+     */
+    public String nextCard() {
+        //value%14 will return value for everything but ace, where it returns 1
+        String card = new Card((value%14)+1, suit).getShortName();
+        return card;
+    }
+
+    /**
+     * @return value fo card as an int, aces high
+     */
+    public int getValue() {
+        return value;
     }
 }
