@@ -65,6 +65,7 @@ public class THMainActivity extends GameMainActivity {
 			}
 			//use this to create a fresh game
 			gameState = new THState(players);
+			((THState) gameState).dealPlayers(); //this is the only place this should happen
 		}
 
 		return new THLocalGame((THState) gameState);

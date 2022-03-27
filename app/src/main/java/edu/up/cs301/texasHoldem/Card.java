@@ -17,6 +17,7 @@ public class Card {
     private String shortName;
     private String longName;
     //this array lets us quickly convert between integer value and string value
+    //assume aces are high (doesn't really matter)
     private ArrayList<String> values = new ArrayList<String>
             (Arrays.asList(null,null,"2","3","4","5","6","7","8","9","T","J","Q","K","A"));
 
@@ -62,7 +63,7 @@ public class Card {
         if (value <= 10) { //if it's a number card we can just use it's value as a string
             name += value;
         } else { //otherwise, we can check which face card it is based on value
-            name += Arrays.asList("King", "Queen", "King", "Ace").get(value-11);
+            name += Arrays.asList("Jack", "Queen", "King", "Ace").get(value-11);
         }
 
         name += " of ";

@@ -19,6 +19,7 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
 public class THState extends GameState {
     ArrayList<Player> players;
     ArrayList<Card> dealerHand = new ArrayList<Card>();
+    Deck deck;
     int timer;
     int round; //pre-flop, post-flop 1, post-flop 2, and final round
     int MAX_TIMER;
@@ -35,6 +36,7 @@ public class THState extends GameState {
         playerTurn = 0;
         round = 0;
         currentBet = 0;
+        deck = new Deck();
     }
 
     //constructor with just players
@@ -46,6 +48,7 @@ public class THState extends GameState {
         playerTurn = 0;
         round = 0;
         currentBet = 0;
+        deck = new Deck();
     }
 
     public THState(ArrayList<Player> players, int maxTimer, int blindBet) {
@@ -56,6 +59,7 @@ public class THState extends GameState {
         playerTurn = 0;
         round = 0;
         currentBet = 0;
+        deck = new Deck();
     }
 
     //deep copy constructor, need to iterate through lists to make copies of all objects
@@ -76,6 +80,19 @@ public class THState extends GameState {
         this.dealerHand = new ArrayList<Card>();
         for (Card each : orig.dealerHand) {
             dealerHand.add(new Card(each));
+        }
+
+        this.deck = new Deck(orig.deck); //so we know which cards are already in play
+    }
+
+    /**
+     * function to deal all players 2 new cards (overwrites old hand)
+     * should only be called once (in createLocalGame in MainActivity)
+     */
+    public void dealPlayers() {
+        for (Player player : players) {
+            Card[] hand = new Card[]{deck.deal(), deck.deal()}; //deal 2 cards
+            player.setHand(hand); //set their new hand
         }
     }
 
@@ -145,14 +162,28 @@ public class THState extends GameState {
         }
     }
 
+    /**
+     * Function to change round number
+     * called in local game while evaluating if the game is over
+     */
+    public void nextRound() {
+        playerTurn = 0; //always starts with the first player. technically between games this should rotate
+        switch (round) {
+            case 0:
+
+        }
+    }
+
+
     public int getTimer() {return timer;}
     public int getRound() {return round;}
     public int getMAX_TIMER() {return MAX_TIMER;}
     public int getPlayerTurn() {return playerTurn;}
     public int getBlindBet() {return blindBet;}
     public int getCurrentBet() {return currentBet;}
-    public ArrayList<Card> getDealerHand() {return dealerHand;}
-    public ArrayList<Player> getPlayers() {return players;}
+    //clone just to be safe
+    public ArrayList<Card> getDealerHand() {return (ArrayList<Card>) dealerHand.clone();}
+    public ArrayList<Player> getPlayers() { return (ArrayList<Player>) players.clone();}
 
     //set functions for use in unit tests
     public void setCurrentBet(int bet) {
@@ -161,8 +192,9 @@ public class THState extends GameState {
     public void setTimer(int time) {
         timer = time;
     }
+    //make sure we clone just to be safe
     public void setDealerHand(ArrayList<Card> hand) {
-        dealerHand = hand;
+        dealerHand = (ArrayList<Card>) hand.clone();
     }
     public void setRound(int round) {
         this.round = round;

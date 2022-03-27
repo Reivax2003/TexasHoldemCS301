@@ -52,8 +52,28 @@ public class THLocalGame extends LocalGame {
 
 	@Override
     protected String checkIfGameOver() {
-    	return null;
+		if (checkIfRoundOver()) {//check if the current round is over
+			if (state.getRound() == 3) { //if the current round is the last then the game is over
+				return "Game Finished"; //TODO: implement win conditions
+			} else {
+				state.nextRound(); //if it's not the last round, proceed to the next round
+			}
+		}
+		return null;
     }
+
+    public boolean checkIfRoundOver() {
+    	//iterate through all players
+		for (int i = 0; i < state.getPlayers().size(); i++) {
+			Player player = state.getPlayers().get(i);
+			//a round is over if all players have bet the same amount except those who folded
+			//this also works to check if all but one player folds
+			if (player.getBet() != state.getCurrentBet() && !(player.isFolded())) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	@Override
 	protected boolean makeMove(GameAction action) {
