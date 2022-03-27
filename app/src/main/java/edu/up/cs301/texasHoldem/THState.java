@@ -169,9 +169,18 @@ public class THState extends GameState {
     public void nextRound() {
         playerTurn = 0; //always starts with the first player. technically between games this should rotate
         switch (round) {
-            case 0:
-
+            case 0: //if pre-flop, then deal the flop
+                dealerHand.add(deck.deal());
+                dealerHand.add(deck.deal());
+                dealerHand.add(deck.deal());
+                break;
+            case 1: //other 2 rounds just deal 1
+            case 2:
+                dealerHand.add(deck.deal());
+                break;
+            //if round is 3 we don't need to do anything since the game's over
         }
+        round++;
     }
 
 
