@@ -7,8 +7,6 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import edu.up.cs301.texasHoldem.Card;
-import edu.up.cs301.texasHoldem.Deck;
-import edu.up.cs301.texasHoldem.EvaluateHand;
 import edu.up.cs301.texasHoldem.Player;
 import edu.up.cs301.texasHoldem.THState;
 
@@ -181,7 +179,7 @@ public class GameStateTest {
         boolean flush = true;
         for (int i = 0; i < 4; i++) {
             //ISSUE: getter is getting suit, but for some reason it is returning longName
-            if (cards[i].getSuitChar() != cards[i+1].getSuitChar());
+            if (cards[i].getSuit() != cards[i+1].getSuit());
             {
                 flush = false;
             }

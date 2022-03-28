@@ -193,8 +193,8 @@ public class THState extends GameState {
         int high = 0;
         Card winCard = null;
         for (Card card : hand) {
-            if (card.getSuit() > high) {
-                high = card.getSuit();
+            if (card.getValue() > high) {
+                high = card.getValue();
                 winCard = new Card(card);
             }
         }

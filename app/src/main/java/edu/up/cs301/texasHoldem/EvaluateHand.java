@@ -16,7 +16,7 @@ public class EvaluateHand {
     public boolean checkFlush(){
         flush = true;
         for (int i = 0; i < 4; i++) {
-            if (cards[i].getSuit() != cards[i+1].getSuit());
+            if (cards[i].getValue() != cards[i+1].getValue());
             {
                 flush = false;
             }
@@ -33,9 +33,9 @@ public class EvaluateHand {
         boolean straight = false;
         for (int i = 2; i < 9; i++) {
 
-            if (cards[i].getSuit() == cards[i].getSuit() && cards[i+1].getSuit() == cards[i].getSuit()+1 &&
-            cards[i+2].getSuit() == cards[i].getSuit()+2 && cards[i+3].getSuit() == cards[i].getSuit()+3 && cards[i+4].getSuit() ==
-            cards[i].getSuit()+4) {
+            if (cards[i].getValue() == cards[i].getValue() && cards[i+1].getValue() == cards[i].getValue()+1 &&
+            cards[i+2].getValue() == cards[i].getValue()+2 && cards[i+3].getValue() == cards[i].getValue()+3 && cards[i+4].getValue() ==
+            cards[i].getValue()+4) {
                 straight = true;
             }
         }

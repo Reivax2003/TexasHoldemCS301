@@ -65,10 +65,10 @@ public class THLocalGame extends LocalGame {
 					hand.add(player.getHand()[0]);
 					hand.add(player.getHand()[1]);
 					Card best = state.bestHand(hand);
-					if (best.getSuit() > high) {
-						high = best.getSuit();
+					if (best.getValue() > high) {
+						high = best.getValue();
 						winner = player;
-					} else if (best.getSuit() == high) {
+					} else if (best.getValue() == high) {
 						winner = null;
 					}
 				}
