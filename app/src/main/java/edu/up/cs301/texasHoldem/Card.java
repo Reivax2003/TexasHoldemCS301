@@ -92,9 +92,14 @@ public class Card {
     }
 
     /**
-     * @return value fo card as an int, aces high
+     * @return value of card as an int, aces high
      */
-    public int getValue() {
+    public int getSuit() {
         return value;
     }
+
+    public char getSuitChar() {
+        return suit;
+    }
+
 }

@@ -7,6 +7,8 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import edu.up.cs301.texasHoldem.Card;
+import edu.up.cs301.texasHoldem.Deck;
+import edu.up.cs301.texasHoldem.EvaluateHand;
 import edu.up.cs301.texasHoldem.Player;
 import edu.up.cs301.texasHoldem.THState;
 
@@ -146,6 +148,48 @@ public class GameStateTest {
 
         //should return 1900 given that the first user made a bet of 100.
         assertEquals(1900,p2.getBalance());
+
+    }
+
+    @Test
+    public void evaluationTest() {
+        Card[] cards = new Card[5];
+        /*
+        cards[0] = (new Card("2H"));
+        cards[1] = (new Card("3H"));
+        cards[2] = (new Card("4H"));
+        cards[3] = (new Card("5H"));
+        cards[4] = (new Card("6H"));
+
+         */
+
+        cards[0] = (new Card(2, 'h'));
+        cards[1] = (new Card(3, 'h'));
+        cards[2] = (new Card(4, 'h'));
+        cards[3] = (new Card(5, 'h'));
+        cards[4] = (new Card(6, 'h'));
+
+        //EvaluateHand test = new EvaluateHand(cards);
+
+
+        //assertEquals(true, test.checkFlush());
+
+        for (int i = 0; i < cards.length; i++) {
+            System.out.println(cards[i].toString());
+        }
+
+        boolean flush = true;
+        for (int i = 0; i < 4; i++) {
+            //ISSUE: getter is getting suit, but for some reason it is returning longName
+            if (cards[i].getSuitChar() != cards[i+1].getSuitChar());
+            {
+                flush = false;
+            }
+        }
+        //tests whether the card array is true/false
+        System.out.println(flush);
+
+
 
     }
 }

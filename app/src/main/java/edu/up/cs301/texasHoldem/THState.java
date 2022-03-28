@@ -1,14 +1,9 @@
 package edu.up.cs301.texasHoldem;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import edu.up.cs301.game.GameFramework.infoMessage.GameState;
-import edu.up.cs301.game.GameFramework.players.GameComputerPlayer;
-import edu.up.cs301.game.GameFramework.players.GameHumanPlayer;
-import edu.up.cs301.game.GameFramework.players.GamePlayer;
 
 /**
  * Game State for our game, contains a list of players and other info
@@ -198,8 +193,8 @@ public class THState extends GameState {
         int high = 0;
         Card winCard = null;
         for (Card card : hand) {
-            if (card.getValue() > high) {
-                high = card.getValue();
+            if (card.getSuit() > high) {
+                high = card.getSuit();
                 winCard = new Card(card);
             }
         }

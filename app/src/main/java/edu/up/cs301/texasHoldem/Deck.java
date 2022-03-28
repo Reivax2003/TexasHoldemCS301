@@ -29,4 +29,8 @@ public class Deck {
         //shouldn't matter if we make a copy or not so do it just to be safe
         return new Card(card);
     }
+
+    public int getDeck() {
+        return cards.size();
+    }
 }
