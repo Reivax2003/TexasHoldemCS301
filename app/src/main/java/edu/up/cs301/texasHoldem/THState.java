@@ -225,6 +225,8 @@ public class THState extends GameState {
         }
         return winCard;
 
+        //may return number instead...
+
         /**
          * this is a work in progress, for now this function jut returns the highest card
          *
