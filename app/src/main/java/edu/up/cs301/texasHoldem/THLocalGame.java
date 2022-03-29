@@ -57,7 +57,7 @@ public class THLocalGame extends LocalGame {
 		if (checkIfRoundOver()) {//check if the current round is over
 			if (state.getRound() == 3) { //if the current round is the last then the game is over
 
-				//for now jsut evaluate highest card as win
+				//for now just evaluate highest card as win
 				int high = 0;
 				Player winner = null;
 				for (Player player : state.getPlayers()) {

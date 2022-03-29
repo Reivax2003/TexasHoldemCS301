@@ -19,6 +19,13 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
 
     @Override
     protected void receiveInfo(GameInfo info) {
+        try {
+            int sleepTime = (int) (Math.random()*3000)+2000; //sleep somewhere between 2-5 secs
+            Thread.sleep(sleepTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         if (! (info instanceof THState)) {
             return;
         }
@@ -28,12 +35,17 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
         }
         Player self = gameState.getPlayers().get(playerNum); //the Player object associated with us
 
+        //for some reason we need this line to double check that a round isn't over
+        if (gameState.getCurrentBet() == self.getBet()) {
+            return;
+        }
+
         //I made this check instead of fold so that the player doesn't immediately win
         int betNeeded = gameState.getCurrentBet()-self.getBet(); //check
 
         Random r = new Random();
-        if (r.nextFloat() < .25) { // 1/4 chance to raise
-            betNeeded += r.nextInt(5)*10; //raise anywhere from 10 to 50 (in multiples of 10)
+        if (r.nextFloat() < 0.25) { // 1/4 chance to raise
+            betNeeded += (r.nextInt(4)+1)*10; //raise anywhere from 10 to 50 (in multiples of 10)
         }
 
         if (r.nextFloat() < .02) { // 1/50 chance to fold (might be too low)

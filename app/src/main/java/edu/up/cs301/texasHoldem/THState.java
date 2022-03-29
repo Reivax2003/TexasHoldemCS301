@@ -1,5 +1,7 @@
 package edu.up.cs301.texasHoldem;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -12,15 +14,15 @@ import edu.up.cs301.game.GameFramework.infoMessage.GameState;
  * @version 2.22.2022
  */
 public class THState extends GameState {
-    ArrayList<Player> players;
-    ArrayList<Card> dealerHand = new ArrayList<Card>();
-    Deck deck;
-    int timer;
-    int round; //pre-flop, post-flop 1, post-flop 2, and final round
-    int MAX_TIMER;
+    private ArrayList<Player> players;
+    private ArrayList<Card> dealerHand = new ArrayList<Card>();
+    private Deck deck;
+    private int timer;
+    private int round; //pre-flop, post-flop 1, post-flop 2, and final round
+    private int MAX_TIMER;
     int playerTurn;
-    int blindBet;
-    int currentBet; //easier to keep track of this than iterate through players every time we need it
+    private int blindBet;
+    private int currentBet; //easier to keep track of this than iterate through players every time we need it
 
     //just an empty constructor, this'll never be used but it's useful for now
     public THState() {
@@ -104,7 +106,7 @@ public class THState extends GameState {
         if (currentPlayer.getBet() + amount < currentBet) {
             return false;
         }
-        //prevents player from accidentally passing their turn at the beginning
+        //prevents player from skipping their turn
         if (amount == 0) {
             return false;
         }
@@ -181,6 +183,7 @@ public class THState extends GameState {
             //if round is 3 we don't need to do anything since the game's over
         }
         round++;
+        Log.i("round",""+round);
     }
 
     /**
@@ -266,6 +269,10 @@ public class THState extends GameState {
     public int getCurrentBet() {return currentBet;}
     //clone just to be safe
     public ArrayList<Card> getDealerHand() {return (ArrayList<Card>) dealerHand.clone();}
+    public Card[] getDealerHandAsArray() {
+        Card[] dealerHand = getDealerHand().toArray(new Card[getDealerHand().size()]);
+        return dealerHand;
+    }
     public ArrayList<Player> getPlayers() { return (ArrayList<Player>) players.clone();}
 
     //set functions for use in unit tests

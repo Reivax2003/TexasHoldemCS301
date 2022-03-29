@@ -172,22 +172,19 @@ public class GameStateTest {
 
         //assertEquals(true, test.checkFlush());
 
-        for (int i = 0; i < cards.length; i++) {
+        /**for (int i = 0; i < cards.length; i++) {
             System.out.println(cards[i].toString());
-        }
+        }*/
 
         boolean flush = true;
         for (int i = 0; i < 4; i++) {
             //ISSUE: getter is getting suit, but for some reason it is returning longName
-            if (cards[i].getSuit() != cards[i+1].getSuit());
+            if (cards[i].getSuit() != cards[i+1].getSuit())
             {
+                System.out.println("something went wrong");
+
                 flush = false;
             }
         }
-        //tests whether the card array is true/false
-        System.out.println(flush);
-
-
-
     }
 }

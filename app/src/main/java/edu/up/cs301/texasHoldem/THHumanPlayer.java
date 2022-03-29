@@ -1,7 +1,11 @@
 package edu.up.cs301.texasHoldem;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -10,6 +14,7 @@ import android.widget.TextView;
 import edu.up.cs301.game.GameFramework.GameMainActivity;
 import edu.up.cs301.game.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.game.GameFramework.animation.AnimationSurface;
+import edu.up.cs301.game.GameFramework.animation.Animator;
 import edu.up.cs301.game.GameFramework.infoMessage.GameInfo;
 import edu.up.cs301.game.GameFramework.players.GameHumanPlayer;
 import edu.up.cs301.game.R;
@@ -34,8 +39,12 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private AnimationSurface handAS;
     private int valueInt;
     private Player me; //this will make things much easier
+    private CardAnimator handAnimator;
+    private CardAnimator dealerAnimator;
 
     private THState gameState;
+
+    private int backgroundColor = 0;
 
     /**
      * constructor
@@ -62,6 +71,16 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         //this actually needs to get updated every time we get new info
         me = gameState.getPlayers().get(playerNum);
 
+        if (handAnimator == null || dealerAnimator == null) {
+            handAnimator = new CardAnimator(me.getHand(), "player", 0xFFFFFFFF, handAS);
+            dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(), "dealer",
+                    0xFF35654D, dealerAS);
+            handAS.setAnimator(handAnimator);
+            dealerAS.setAnimator(dealerAnimator);
+        }
+        handAnimator.setCards(me.getHand()); //make sure we're rendering the current game state
+        dealerAnimator.setCards(gameState.getDealerHandAsArray());
+
         updateUI();
     }
     @Override
@@ -76,6 +95,9 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
         // Load the layout resource for our GUI
         activity.setContentView(R.layout.th_human_player_2);
+
+        //read in the card images
+        Card.initImages(activity);
 
         //Initialize the widget reference member variables
         this.bet = activity.findViewById(R.id.buttonBet);
