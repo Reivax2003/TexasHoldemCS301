@@ -54,17 +54,19 @@ public class THLocalGame extends LocalGame {
 
 	@Override
     protected String checkIfGameOver() {
-		if (checkIfRoundOver()) {//check if the current round is over
-			if (state.getRound() == 3) { //if the current round is the last then the game is over
+    	//make a copy state that won't change while we evaluate
+    	THState staticState = new THState(state);
+		if (checkIfRoundOver(staticState)) {//check if the current round is over
+			if (staticState.getRound() == 3) { //if the current round is the last then the game is over
 
 				//for now just evaluate highest card as win
 				int high = 0;
 				Player winner = null;
-				for (Player player : state.getPlayers()) {
-					ArrayList<Card> hand = state.getDealerHand(); //arraylist is just easier
+				for (Player player : staticState.getPlayers()) {
+					ArrayList<Card> hand = staticState.getDealerHand(); //arraylist is just easier
 					hand.add(player.getHand()[0]);
 					hand.add(player.getHand()[1]);
-					Card best = state.bestHand(hand);
+					Card best = staticState.bestHand(hand);
 					if (best.getValue() > high) {
 						high = best.getValue();
 						winner = player;
@@ -79,13 +81,15 @@ public class THLocalGame extends LocalGame {
 					return "Winner: "+winner.getName()+", Highest valued card: "+high+"\n";
 				}
 			} else {
+				//this one is the real state because we're making changes we want to apply
 				state.nextRound(); //if it's not the last round, proceed to the next round
+				sendAllUpdatedState();
 			}
 		}
 		return null;
     }
 
-    public boolean checkIfRoundOver() {
+    public boolean checkIfRoundOver(THState state) {
     	//iterate through all players
 		for (int i = 0; i < state.getPlayers().size(); i++) {
 			Player player = state.getPlayers().get(i);
