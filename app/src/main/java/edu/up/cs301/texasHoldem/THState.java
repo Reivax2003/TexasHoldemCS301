@@ -96,6 +96,7 @@ public class THState extends GameState {
     // pass the player who is betting and the amount they want to bet
     // bet should be amount to add, not their total bet
     public boolean bet(int playerID, int amount) {
+        //get a reference to the current player
         Player currentPlayer = players.get(playerTurn);
 
         //separated fail conditions for better readability
@@ -117,6 +118,11 @@ public class THState extends GameState {
         //amount was just added so we just compare with current bet
         if (currentPlayer.getBet() > currentBet) { //should always happen
             currentBet = currentPlayer.getBet();
+        }
+
+        //if the player has no money left they are all in
+        if (currentPlayer.getBalance() == 0) {
+            currentPlayer.goAllIn();
         }
 
         nextTurn(); //taking any action ends your turn
@@ -153,22 +159,22 @@ public class THState extends GameState {
      */
     public void nextTurn() {
         playerTurn++;
+        int backupTurn = playerTurn;
         if (playerTurn >= players.size()) {
             playerTurn = 0;
         }
         Player player = players.get(playerTurn);
 
-        while (player.isAllIn() || player.isFolded() || player.getBalance() == 0) {
+        while (player.isAllIn() || player.isFolded()) {
             //if same as length reset to 0
             if (playerTurn >= players.size()) {
                 playerTurn = 0;
             }
             player = players.get(playerTurn);
-
-            if (player.getBalance() == 0) { //make sure everyone who is all in is flagged as such
-                player.goAllIn();
-            }
             playerTurn++;
+            if (playerTurn == backupTurn) {
+                break; //in case everyone goes all in, game should proceed to end immediately
+            }
         }
     }
 
@@ -179,13 +185,13 @@ public class THState extends GameState {
     public void nextRound() {
         playerTurn = 0; //always starts with the first player. technically between games this should rotate
         Player player = players.get(playerTurn);
-        while (player.isAllIn() || player.isFolded() || player.getBalance() == 0) {
+        while (player.isAllIn() || player.isFolded()) {
             player = players.get(playerTurn);
-
-            if (player.getBalance() == 0) { //make sure everyone who is all in is flagged as such
-                player.goAllIn();
-            }
             playerTurn++;
+            if (playerTurn == players.size()) { //if everyone is all in or folded
+                playerTurn = 0;
+                break;
+            }
         }
         /**
          * Citation: looked up how switch/case works

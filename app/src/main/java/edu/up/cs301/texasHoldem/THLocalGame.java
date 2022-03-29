@@ -61,9 +61,17 @@ public class THLocalGame extends LocalGame {
     		Player winner = staticState.getActivePlayersList().get(0);
     		return "Winner: "+winner.getName()+", everyone else folded\n";
 		}
+    	boolean allIn = false;
+    	if (checkIfAllIn(staticState)) {
+    		allIn = true;
+    		while (state.getRound() < 3) {
+				state.nextRound(); //if it's not the last round, proceed to the next round
+				sendAllUpdatedState(); //update all players
+			}
+		}
 
-		if (checkIfRoundOver(staticState)) {//check if the current round is over
-			if (staticState.getRound() == 3) { //if the current round is the last then the game is over
+		if (checkIfRoundOver(staticState) || allIn) {//check if the current round is over
+			if (staticState.getRound() == 3 || allIn) { //if the current round is the last then the game is over
 
 				//for now just evaluate highest card as win
 				int high = 0;
@@ -102,6 +110,16 @@ public class THLocalGame extends LocalGame {
 			//a round is over if all players have bet the same amount except those who folded
 			//this also works to check if all but one player folds
 			if (player.getBet() != state.getCurrentBet() && !(player.isFolded()) && !(player.isAllIn())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean checkIfAllIn(THState state) {
+		for (int i = 0; i < state.getPlayers().size(); i++) {
+			Player player = state.getPlayers().get(i);
+			if (!(player.isFolded()) && !(player.isAllIn())) { //if player is not folded and not all in
 				return false;
 			}
 		}

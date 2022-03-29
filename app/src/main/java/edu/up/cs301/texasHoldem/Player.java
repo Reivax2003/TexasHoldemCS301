@@ -30,6 +30,7 @@ public class Player {
         picture = orig.picture;
         bet = orig.bet;
         folded = orig.folded;
+        allIn = orig.allIn;
 
         //the array is the only thing we really need to do a deep copy of
         hand = orig.hand.clone();
