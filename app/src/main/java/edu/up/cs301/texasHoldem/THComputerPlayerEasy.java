@@ -46,7 +46,7 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
         Random r = new Random();
         // 1/50 chance to fold (might be too low)
         //also fold if you don't have enough to bet
-        if (r.nextFloat() < .02 || betNeeded > self.getBalance()) {
+        if (r.nextFloat() < 1.02 || betNeeded > self.getBalance()) {
             Fold action = new Fold(this);
             game.sendAction(action);
         } else {

@@ -153,9 +153,22 @@ public class THState extends GameState {
      */
     public void nextTurn() {
         playerTurn++;
-        //if same as length reset to 0
         if (playerTurn >= players.size()) {
             playerTurn = 0;
+        }
+        Player player = players.get(playerTurn);
+
+        while (player.isAllIn() || player.isFolded() || player.getBalance() == 0) {
+            //if same as length reset to 0
+            if (playerTurn >= players.size()) {
+                playerTurn = 0;
+            }
+            player = players.get(playerTurn);
+
+            if (player.getBalance() == 0) { //make sure everyone who is all in is flagged as such
+                player.goAllIn();
+            }
+            playerTurn++;
         }
     }
 
@@ -165,6 +178,15 @@ public class THState extends GameState {
      */
     public void nextRound() {
         playerTurn = 0; //always starts with the first player. technically between games this should rotate
+        Player player = players.get(playerTurn);
+        while (player.isAllIn() || player.isFolded() || player.getBalance() == 0) {
+            player = players.get(playerTurn);
+
+            if (player.getBalance() == 0) { //make sure everyone who is all in is flagged as such
+                player.goAllIn();
+            }
+            playerTurn++;
+        }
         /**
          * Citation: looked up how switch/case works
          * https://www.w3schools.com/java/java_switch.asp
@@ -289,6 +311,29 @@ public class THState extends GameState {
     public void setRound(int round) {
         this.round = round;
     }
+
+    /**
+     * @return number of players who aren't folded
+     */
+    public int getActivePlayers() {
+        int count = 0;
+        for (int i = 0; i < players.size(); i++) {
+            if (!players.get(i).isFolded()) {
+                count++;
+            }
+        }
+        return count;
+    }
+    public ArrayList<Player> getActivePlayersList() {
+        ArrayList<Player> active = new ArrayList<Player>();
+        for (int i = 0; i < players.size(); i++) {
+            if (!players.get(i).isFolded()) {
+                active.add(new Player(players.get(i))); //make sure to create new player instances
+            }
+        }
+        return active;
+    }
+
 
     @Override
     public String toString() {

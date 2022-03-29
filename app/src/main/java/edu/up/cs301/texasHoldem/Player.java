@@ -14,6 +14,7 @@ public class Player {
     private Bitmap picture;
     private Card[] hand = new Card[2];
     private boolean folded = false;
+    private boolean allIn = false;
 
     // simple constructor
     public Player(String name, int balance) {//, Bitmap picture) {
@@ -53,6 +54,15 @@ public class Player {
     }
     public void setBalance(int amount) {balance = amount;}
 
+    public void goAllIn() {
+        if (balance > 0) {
+            return;
+        }
+        allIn = true;
+    }
+    public boolean isAllIn() {
+        return allIn;
+    }
 
     @Override
     public String toString() {

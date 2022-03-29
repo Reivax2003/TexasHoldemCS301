@@ -56,6 +56,12 @@ public class THLocalGame extends LocalGame {
     protected String checkIfGameOver() {
     	//make a copy state that won't change while we evaluate
     	THState staticState = new THState(state);
+
+    	if (staticState.getActivePlayers() == 1) { //if only one player is left
+    		Player winner = staticState.getActivePlayersList().get(0);
+    		return "Winner: "+winner.getName()+", everyone else folded\n";
+		}
+
 		if (checkIfRoundOver(staticState)) {//check if the current round is over
 			if (staticState.getRound() == 3) { //if the current round is the last then the game is over
 
@@ -95,7 +101,7 @@ public class THLocalGame extends LocalGame {
 			Player player = state.getPlayers().get(i);
 			//a round is over if all players have bet the same amount except those who folded
 			//this also works to check if all but one player folds
-			if (player.getBet() != state.getCurrentBet() && !(player.isFolded())) {
+			if (player.getBet() != state.getCurrentBet() && !(player.isFolded()) && !(player.isAllIn())) {
 				return false;
 			}
 		}
