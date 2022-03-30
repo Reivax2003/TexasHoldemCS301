@@ -29,13 +29,13 @@ public class GameStateTest {
 
         THState gState = new THState(players, 60, 100);
 
+        //player 2 shouldn't be able to fold while it's not their turn
+        assertFalse(gState.fold(1)); //gamestate should not take the action
+        assertFalse(p2.isFolded()); //player's state should n ot be updated
+
         //it is player 1's turn by default so they should be able to fold
         assertTrue(gState.fold(0)); //gamestate thinks action was successful
         assertTrue(p1.isFolded()); //check that action was successful
-
-        //turn doesn't increase unless we tell it so it is still player 1s turn
-        assertFalse(gState.fold(1)); //gamestate should not take the action
-        assertFalse(p2.isFolded()); //player's state should n ot be updated
     }
 
     @Test
@@ -142,15 +142,15 @@ public class GameStateTest {
 
         THState gState = new THState(players, 60, 0);
 
-        //make players create action
-        p1.addBet(400);
-        p2.addBet(100);
+        //make players take action
+        assertTrue(gState.bet(0, 100));
+        assertTrue(gState.bet(1, 400)); //this one has to be bigger
 
         //should return 600 given that the first user made a bet of 400.
-        assertEquals(600, p1.getBalance());
+        assertEquals(900, p1.getBalance());
 
         //should return 1900 given that the first user made a bet of 100.
-        assertEquals(1900, p2.getBalance());
+        assertEquals(1600, p2.getBalance());
 
     }
 
