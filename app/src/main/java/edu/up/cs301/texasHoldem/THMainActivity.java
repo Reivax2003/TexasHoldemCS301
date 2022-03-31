@@ -13,8 +13,13 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
 /**
  * this is the primary activity for Slapjack game
  * 
- * @author Steven R. Vegdahl
- * @version July 2013
+ * Credit to Steven R. Vegdahl for his Slapjack code
+ *
+ * @author Xavier Santiago
+ * @author Milton Nguy
+ * @author Thomas Kone
+ * @author Kevin Nguyen
+ * @version 3.30.22
  */
 public class THMainActivity extends GameMainActivity {
 	

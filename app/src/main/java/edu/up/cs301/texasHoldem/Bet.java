@@ -2,6 +2,10 @@ package edu.up.cs301.texasHoldem;
 
 import edu.up.cs301.game.GameFramework.players.GamePlayer;
 
+/**
+ * Bet action
+ * @Author
+ */
 public class Bet extends THGameAction {
     private int amount;
 

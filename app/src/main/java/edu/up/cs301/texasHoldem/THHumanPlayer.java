@@ -19,6 +19,15 @@ import edu.up.cs301.game.GameFramework.infoMessage.GameInfo;
 import edu.up.cs301.game.GameFramework.players.GameHumanPlayer;
 import edu.up.cs301.game.R;
 
+/**
+ * Human player for Texas Holdem, manages the GUI the player sees
+ *
+ * @author Xavier Santiago
+ * @author Milton Nguy
+ * @author Thomas Kone
+ * @author Kevin Nguyen
+ * @version 3.30.22
+ */
 public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
     //TODO: move View.OnClickListener to GameMainActivity
@@ -44,7 +53,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
     private THState gameState;
 
-    private int backgroundColor = 0;
+    private int backgroundColor = 0xFF35654D;
 
     /**
      * constructor
@@ -74,7 +83,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         if (handAnimator == null || dealerAnimator == null) {
             handAnimator = new CardAnimator(me.getHand(), "player", 0xFFFFFFFF, handAS);
             dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(), "dealer",
-                    0xFF35654D, dealerAS);
+                    backgroundColor, dealerAS);
             handAS.setAnimator(handAnimator);
             dealerAS.setAnimator(dealerAnimator);
         }

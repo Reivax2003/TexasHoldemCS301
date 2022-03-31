@@ -9,8 +9,11 @@ import edu.up.cs301.game.GameFramework.infoMessage.GameState;
 
 /**
  * Game State for our game, contains a list of players and other info
+ *
  * @author Xavier Santiago
  * @author Milton Nguy
+ * @author Thomas Kone
+ * @author Kevin Nguyen
  * @version 2.22.2022
  */
 public class THState extends GameState {

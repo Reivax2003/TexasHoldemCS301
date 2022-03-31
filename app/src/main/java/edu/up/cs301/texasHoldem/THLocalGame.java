@@ -9,11 +9,15 @@ import edu.up.cs301.game.GameFramework.LocalGame;
 import edu.up.cs301.game.GameFramework.actionMessage.*;
 
 /**
- * The LocalGame class for a slapjack game.  Defines and enforces
- * the game rules; handles interactions between players.
+ * LocalGame for Texas Holdem, defines rules and holds the master state
  * 
- * @author Steven R. Vegdahl 
- * @version July 2013
+ * Credit to Steven R. Vegdahl for his Slapjack code
+ *
+ * @author Xavier Santiago
+ * @author Milton Nguy
+ * @author Thomas Kone
+ * @author Kevin Nguyen
+ * @version 3.30.22
  */
 
 public class THLocalGame extends LocalGame {

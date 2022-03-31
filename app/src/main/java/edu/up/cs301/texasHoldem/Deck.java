@@ -5,6 +5,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * 
+ */
 public class Deck {
     //use an arraylist so we can vary the size
     private ArrayList<Card> cards;

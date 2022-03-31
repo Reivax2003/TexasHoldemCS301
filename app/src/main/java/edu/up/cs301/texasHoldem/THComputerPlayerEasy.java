@@ -8,6 +8,15 @@ import edu.up.cs301.game.GameFramework.players.GameComputerPlayer;
 import edu.up.cs301.game.GameFramework.players.GamePlayer;
 import edu.up.cs301.game.R;
 
+/**
+ * Simple computer player, folds 2% of the time, raises 25% of the time, and checks otherwise
+ *
+ * @author Xavier Santiago
+ * @author Milton Nguy
+ * @author Thomas Kone
+ * @author Kevin Nguyen
+ * @version 3.30.22
+ */
 public class THComputerPlayerEasy extends GameComputerPlayer {
     /**
      * constructor

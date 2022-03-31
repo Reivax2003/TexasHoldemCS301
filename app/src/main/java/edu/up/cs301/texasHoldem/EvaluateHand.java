@@ -2,6 +2,15 @@ package edu.up.cs301.texasHoldem;
 
 import java.util.Collections;
 
+/**
+ * Class to evaluate a given set of cards for the best poker hand
+ *
+ * @author Xavier Santiago
+ * @author Milton Nguy
+ * @author Thomas Kone
+ * @author Kevin Nguyen
+ * @version 3.30.22
+ */
 public class EvaluateHand {
 
     private Card[] cards;

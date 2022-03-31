@@ -10,6 +10,9 @@ import android.view.MotionEvent;
 import edu.up.cs301.game.GameFramework.animation.AnimationSurface;
 import edu.up.cs301.game.GameFramework.animation.Animator;
 
+/**
+ *
+ */
 public class CardAnimator implements Animator {
     private int backgroundColor;
     private Card[] cards;

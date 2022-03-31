@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 /**
  * Player class containing all variables we need
  * @author Xavier Santiago
- * @version 2.22.2022
+ * @version 3.29.22
  */
 public class Player {
     private String name;
