@@ -156,7 +156,7 @@ public class GameStateTest {
 
     @Test
     public void evaluationTest() {
-        Card[] cards = new Card[5];
+        Card[] cards = new Card[7];
         /*
         cards[0] = (new Card("2H"));
         cards[1] = (new Card("3H"));
@@ -166,11 +166,30 @@ public class GameStateTest {
 
          */
 
-        cards[0] = (new Card(2, 'h'));
-        cards[1] = (new Card(3, 's'));
-        cards[2] = (new Card(4, 'c'));
-        cards[3] = (new Card(5, 'h'));
-        cards[4] = (new Card(2, 's'));
+        /*
+        cards[0] = (new Card(10, 'h'));
+        cards[1] = (new Card(4, 'c'));
+        cards[2] = (new Card(4, 'h'));
+        cards[3] = (new Card(3, 'c'));
+        cards[4] = (new Card(2, 'd'));
+        cards[5] = (new Card(3, 'd'));
+        cards[6] = (new Card("TS"));
+
+
+         */
+
+
+
+
+        cards[0] = (new Card("AH"));
+        cards[1] = (new Card("TH"));
+        cards[2] = (new Card("JH"));
+        cards[3] = (new Card("QH"));
+        cards[4] = (new Card("KH"));
+        cards[5] = (new Card(3, 'h'));
+        cards[6] = (new Card(4, 's'));
+
+
 
         //EvaluateHand test = new EvaluateHand(cards);
 
@@ -199,7 +218,6 @@ public class GameStateTest {
         System.out.println(cards[0].getSuit());
 
         for (int i = 0; i < 4; i++) {
-            //ISSUE: getter is getting suit, but for some reason it is returning longName
             if (cards[i].getSuit() != cards[i+1].getSuit())
             {
                 flush = false;
@@ -257,8 +275,16 @@ public class GameStateTest {
 
         EvaluateHand test = new EvaluateHand(cards);
 
+        //System.out.println(cards[cards.length-1].getValue());
+       // System.out.println(test.checkPair());
+       // System.out.println(test.checkXKinds());
+       // System.out.println(test.checkFullHouse());
+       // System.out.println(test.highHand());
+       // System.out.println(test.checkFullHouse());
 
-        System.out.println(test.toString());
+        System.out.println(test.checkStraight());
+        System.out.println(test.highHand());
+
 
 
 

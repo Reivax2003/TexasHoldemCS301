@@ -1,5 +1,6 @@
 package edu.up.cs301.texasHoldem;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 /**
@@ -14,7 +15,6 @@ import java.util.Collections;
 public class EvaluateHand {
 
     private Card[] cards;
-    private boolean flush;
 
     public EvaluateHand(Card[] game) {
          cards = new Card[game.length];
@@ -26,9 +26,9 @@ public class EvaluateHand {
 
     public boolean checkFlush()
     {
+        this.sortSuit();
         boolean flush = true;
-        for (int i = 0; i < 4; i++) {
-            //ISSUE: getter is getting suit, but for some reason it is returning longName
+        for (int i = 0; i < cards.length-1; i++) {
             if (cards[i].getSuit() != cards[i+1].getSuit())
             {
                 flush = false;
@@ -41,8 +41,9 @@ public class EvaluateHand {
     }
 
     public boolean checkStraight() {
+        this.sortValue();
         boolean straight = false;
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < cards.length-4; i++) { //MAY VARY BY HAND COUNT
 
             if (cards[i].getValue() == cards[i].getValue() && cards[i+1].getValue() == cards[i].getValue()+1 &&
                     cards[i+2].getValue() == cards[i].getValue()+2 && cards[i+3].getValue() == cards[i].getValue()+3 && cards[i+4].getValue() ==
@@ -55,6 +56,7 @@ public class EvaluateHand {
 
     //^ if statement checkStraight() and checkFlush() at the same time for straight flush
 
+    /*
     public boolean checkStraightFlush() {
         boolean straightFlush = false;
         for (int i = 0; i < 1; i++) {
@@ -69,11 +71,12 @@ public class EvaluateHand {
 
 
     }
+     */
 
 
     //3, 2, 5, 10, 3
     public void sortValue() {
-        for (int x = 0; x < 5; x++) { //INTERATIONS MAY VARY, CHECK WITH DECK
+        for (int x = 0; x < 7; x++) { //INTERATIONS MAY VARY, CHECK WITH DECK
             for (int i = 0; i < cards.length-1; i++) {
                 Card[] temp = new Card[cards.length];
                 if (cards[i].getValue() > cards[i+1].getValue()) {
@@ -90,7 +93,7 @@ public class EvaluateHand {
     // H, H, S, C, H
     // 2, 2, 3, 0, 2
     public void sortSuit() {
-       for (int x = 0; x < 5; x++) {
+       for (int x = 0; x < 7; x++) {
            for (int i = 0; i < cards.length-1; i++) {
                Card[] temp = new Card[cards.length];
                if (cards[i].getSuitAsInt() > cards[i+1].getSuitAsInt()) {
@@ -105,37 +108,94 @@ public class EvaluateHand {
 
     //2, 2, 5, 5, 9
     public int checkPair() {
-        Card[] temp = new Card[cards.length];
+        ArrayList<Card> temp = new ArrayList<>();
         int count = 0;
-        for (int i = 0; i < cards.length; i++) {
+        this.sortValue();
+        for (int i = 0; i < cards.length-1; i++) {
 
             if (cards[i].getValue() == cards[i+1].getValue()) {
-                temp[i] = cards[i];
-                temp[i+1] = cards[i+1];
+                temp.add(cards[i]);
                 cards[i] = null;
-                cards[i+1] = null;
-                count++;
             }
         }
+
+       /* if (temp.size() > 5) {
+            temp.remove(0);
+        }
+        */
+
+        for (int i = 0; i < temp.size()-1; i++) {
+            if (temp.get(i).getValue() == temp.get(i+1).getValue()) {
+                temp.remove(i);
+            }
+        }
+
+        if (temp.size() > 2) {
+            temp.remove(0);
+        }
+        for (Card cards : temp) {
+            System.out.println(cards);
+            count++;
+        }
+
 
         /**
          * scans through array and checks if there is multiple pairs. in the game, it's impossible to have "three pairs" as the system
          * checks which pair is greater than the other.
          */
         if (count == 1) {
-            return 0;
-        }
-        else if (count == 2) {
             return 1;
         }
-        else {
-            return -1;
+        else if (count == 2) {
+            return 2;
         }
-        //TODO: Check which pair is greater
+        else {
+            return 0;
+        }
+
     }
-    public void checkFullHouse(Card[] cards) {
-        boolean fullHouse = true;
-        //for (int i )
+    public boolean checkFullHouse() {
+        boolean fullHouse = false;
+        if (this.checkXKinds() == 3 && this.checkPair() >= 0) {
+            fullHouse = true;
+        }
+        return fullHouse;
+    }
+
+    public int checkXKinds() {
+        boolean FourOfAKind = false;
+        boolean ThreeOfAKind = false;
+        this.sortValue();
+        for (int i = 0; i < cards.length-3; i++) {
+            if (cards[i].getValue() == cards[i+1].getValue() && cards[i].getValue() == cards[i+2].getValue() &&
+                    cards[i].getValue() == cards[i+3].getValue()) {
+                FourOfAKind = true;
+            }
+        }
+
+        for (int i = 0; i < cards.length-2; i++) {
+            if (cards[i].getValue() == cards[i+1].getValue() && cards[i].getValue() == cards[i+2].getValue()) {
+                ThreeOfAKind = true;
+            }
+        }
+
+        if (FourOfAKind == true) {
+            return 4;
+        }
+
+        if (ThreeOfAKind == true) {
+            return 3;
+        }
+
+        else {
+            return 0;
+        }
+    }
+
+    public Card highHand() {
+        this.sortValue();
+        Card winCard = cards[cards.length-1];
+        return winCard;
     }
 
     public String toString() {

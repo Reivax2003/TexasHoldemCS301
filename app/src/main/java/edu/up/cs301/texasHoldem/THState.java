@@ -224,6 +224,7 @@ public class THState extends GameState {
      * @return highest card
      */
     public Card bestHand(ArrayList<Card> hand) {
+
         int high = 0;
         Card winCard = null;
         for (Card card : hand) {
@@ -233,6 +234,9 @@ public class THState extends GameState {
             }
         }
         return winCard;
+
+
+        //if ()
 
         //may return number instead...
 
