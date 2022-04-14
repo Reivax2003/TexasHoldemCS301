@@ -150,6 +150,8 @@ public class THState extends GameState {
 
         nextTurn(); //taking any action ends your turn
 
+        Log.i("GameState", "player "+playerID+" bets "+amount);
+
         return true;
     }
 
@@ -161,6 +163,8 @@ public class THState extends GameState {
         if (playerTurn != playerID) {
             return false;
         }
+
+        Log.i("GameState", "player "+playerID+" folds");
 
         currentPlayer.setFold(true);
         nextTurn(); //taking any action ends your turn

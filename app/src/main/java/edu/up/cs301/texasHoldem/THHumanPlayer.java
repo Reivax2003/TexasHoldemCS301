@@ -130,9 +130,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
      * We need to call this once whenever we receive info
      */
     public void updateUI() {
-        //set up gui correctly
-        THState gameState = (THState) game.getGameState();
-
         //set our balance and the pool (probably just 0)
         balanceTV.setText(me.getBalance()+"$");
         potTV.setText("Pot: "+gameState.getPool()+"$\nBet: "+me.getBet());
