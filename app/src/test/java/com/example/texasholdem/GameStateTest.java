@@ -283,7 +283,7 @@ public class GameStateTest {
        // System.out.println(test.checkFullHouse());
 
         System.out.println(test.checkStraight());
-        System.out.println(test.highHand());
+        System.out.println(test.highHand().getValue());
 
 
 

@@ -223,8 +223,9 @@ public class THState extends GameState {
      * @param hand: the hand do be evaluated
      * @return highest card
      */
-    public Card bestHand(ArrayList<Card> hand) {
+    public String bestHand(ArrayList<Card> hand) {
 
+        /*
         int high = 0;
         Card winCard = null;
         for (Card card : hand) {
@@ -236,6 +237,37 @@ public class THState extends GameState {
         return winCard;
 
 
+         */
+        
+
+        String str = " ";
+
+
+
+        EvaluateHand eh = new EvaluateHand(hand);
+
+        if (eh.checkFlush() == true && eh.checkStraight() == true && eh.highHand().getValue() == 14) {
+            str = "royal flush";
+        } else if (eh.checkFlush() == true && eh.checkStraight() == true) {
+            str = "straight flush";
+        } else if (eh.checkXKinds() == 4) {
+            str = "four of a kind";
+        } else if (eh.checkFullHouse() == true) {
+            str = "full house";
+        } else if (eh.checkFlush() == true) {
+            str = "flush";
+        } else if (eh.checkStraight() == true) {
+            str = "straight";
+        } else if (eh.checkXKinds() == 3) {
+            str = "three of a kind";
+        } else if (eh.checkPair() == 2) {
+            str = "two pairs";
+        } else if (eh.checkPair() == 1) {
+            str = "one pair";
+        } else {
+            str = "high hand";
+        }
+        return str;
         //if ()
 
         //may return number instead...
@@ -296,6 +328,20 @@ public class THState extends GameState {
 
 
         return new Card[5];*/
+    }
+
+    public Card highHand(ArrayList<Card> hand) {
+
+
+        int high = 0;
+        Card winCard = null;
+        for (Card card : hand) {
+            if (card.getValue() > high) {
+                high = card.getValue();
+                winCard = new Card(card);
+            }
+        }
+        return winCard;
     }
 
     public int getTimer() {return timer;}
