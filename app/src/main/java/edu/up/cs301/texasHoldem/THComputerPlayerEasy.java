@@ -29,7 +29,7 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
     @Override
     protected void receiveInfo(GameInfo info) {
         try {
-            int sleepTime = (int) (Math.random()*3000)+2000; //sleep somewhere between 2-5 secs
+            int sleepTime = (int) (Math.random()*1500)+500; //sleep somewhere between 0.5-2 secs
             Thread.sleep(sleepTime);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -59,7 +59,7 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
             Fold action = new Fold(this);
             game.sendAction(action);
         } else {
-            if (r.nextFloat() < 1.25) { // 1/4 chance to raise
+            if (r.nextFloat() < .25) { // 1/4 chance to raise
                 betNeeded += (r.nextInt(4)+1)*10; //raise anywhere from 10 to 50 (in multiples of 10)
             }
             //make sure we don't bet above the amount we have
