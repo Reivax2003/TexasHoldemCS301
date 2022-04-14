@@ -15,12 +15,21 @@ import java.util.Collections;
 public class EvaluateHand {
 
     private Card[] cards;
+    private ArrayList<Card> cardsAL;
 
     public EvaluateHand(Card[] game) {
          cards = new Card[game.length];
          for (int i = 0; i < game.length; i++) {
              cards[i] = game[i];
          }
+
+    }
+
+    public EvaluateHand(ArrayList<Card> game) {
+        cards = new Card[game.size()];
+        for (int i = 0; i < game.size(); i++) {
+            cards[i] = game.get(i);
+        }
 
     }
 
@@ -196,6 +205,10 @@ public class EvaluateHand {
         this.sortValue();
         Card winCard = cards[cards.length-1];
         return winCard;
+    }
+
+    public int highHandInt() {
+        return highHand().getValue();
     }
 
     public String toString() {
