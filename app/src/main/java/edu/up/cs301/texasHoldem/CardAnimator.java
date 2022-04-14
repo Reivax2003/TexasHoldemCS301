@@ -11,7 +11,11 @@ import edu.up.cs301.game.GameFramework.animation.AnimationSurface;
 import edu.up.cs301.game.GameFramework.animation.Animator;
 
 /**
+ * Animator to display cards on screen. Takes cards of a given size ratio and displays them evenly
+ * in the center of whatever bounds the animator is given
  *
+ * @author Xavier Santiago
+ * @version 3.30.22
  */
 public class CardAnimator implements Animator {
     private int backgroundColor;
@@ -20,7 +24,6 @@ public class CardAnimator implements Animator {
     private float top;
     private float bottom;
     private float right;
-    private String type; //dealer or player
 
     private float sizeRatio = 0.71f; // width/height, standard playing cards are ~0.7143
     private float cardWidth = 100;
@@ -31,17 +34,15 @@ public class CardAnimator implements Animator {
     /**
      * constructor for cardAnimator
      * @param cards cards to render
-     * @param type which set of cards to animate
      * @param bgColor color of the background
      * @param left left border of animation bounds
      * @param top top border of animation bounds
      * @param bottom bottom border of animation bounds
      * @param right right border of animation bounds
      */
-    public CardAnimator(Card[] cards, String type, int bgColor, float left, float top, float bottom, float right) {
+    public CardAnimator(Card[] cards, int bgColor, float left, float top, float bottom, float right) {
         this.cards = cards;
         backgroundColor = bgColor;
-        this.type = type;
         this.left = left;
         this.top = top;
         this.bottom = bottom;
@@ -53,14 +54,12 @@ public class CardAnimator implements Animator {
     /**
      * constructor for cardAnimator
      * @param cards cards to render
-     * @param type which set of cards to animate
      * @param bgColor color of the background
      * @param AS animation surface to get bounds from
      */
-    public CardAnimator(Card[] cards, String type, int bgColor, AnimationSurface AS) {
+    public CardAnimator(Card[] cards, int bgColor, AnimationSurface AS) {
         this.cards = cards;
         backgroundColor = bgColor;
-        this.type = type;
         this.left = AS.getLeft();
         this.top = AS.getTop();
         this.bottom = AS.getBottom();
@@ -78,10 +77,19 @@ public class CardAnimator implements Animator {
         calcCardSize();
     }
 
+    /**
+     * Setter method for size ratio if cards width and height
+     * @param ratio value to set ratio to
+     */
     public void setSizeRatio(float ratio) {
         sizeRatio = ratio;
     }
 
+    /**
+     * given the size ratio for cards and the size of the region to display them on, calculate
+     * how large the cards should be and where they should be (assuming they're displayed in one
+     * row left to right)
+     */
     public void calcCardSize() {
         float width = right-left;
         float height = bottom-top;
@@ -159,7 +167,7 @@ public class CardAnimator implements Animator {
 
     @Override
     public void onTouch(MotionEvent event) {
-        //no need to do anything here
+        //no need to do anything here since we don't move around cards in texas holdem
     }
 
     /**

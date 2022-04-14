@@ -81,8 +81,8 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         me = gameState.getPlayers().get(playerNum);
 
         if (handAnimator == null || dealerAnimator == null) {
-            handAnimator = new CardAnimator(me.getHand(), "player", 0xFFFFFFFF, handAS);
-            dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(), "dealer",
+            handAnimator = new CardAnimator(me.getHand(), 0xFFFFFFFF, handAS);
+            dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(),
                     backgroundColor, dealerAS);
             handAS.setAnimator(handAnimator);
             dealerAS.setAnimator(dealerAnimator);

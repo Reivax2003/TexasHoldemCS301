@@ -72,6 +72,7 @@ public class THLocalGame extends LocalGame {
 				state.nextRound(); //if it's not the last round, proceed to the next round
 				sendAllUpdatedState(); //update all players
 			}
+			staticState = new THState(state); //make sure we have the actual version of the game
 		}
 
 		if (checkIfRoundOver(staticState) || allIn) {//check if the current round is over

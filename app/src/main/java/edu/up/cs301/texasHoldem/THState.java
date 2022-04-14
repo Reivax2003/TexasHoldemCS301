@@ -83,7 +83,7 @@ public class THState extends GameState {
 
         this.dealerHand = new ArrayList<Card>();
         for (Card each : orig.dealerHand) {
-            dealerHand.add(new Card(each));
+            this.dealerHand.add(new Card(each));
         }
 
         this.deck = new Deck(orig.deck); //so we know which cards are already in play
