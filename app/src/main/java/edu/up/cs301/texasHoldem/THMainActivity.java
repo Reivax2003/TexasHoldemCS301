@@ -71,6 +71,7 @@ public class THMainActivity extends GameMainActivity {
 			//use this to create a fresh game
 			gameState = new THState(players);
 			((THState) gameState).dealPlayers(); //this is the only place this should happen
+			((THState) gameState).placeBlindBets(); //we treat the first player as the dealer
 		}
 
 		return new THLocalGame((THState) gameState);

@@ -105,6 +105,11 @@ public class THState extends GameState {
         }
     }
 
+    public void placeBlindBets() {
+        bet(0, blindBet/2);
+        bet(1, blindBet);
+    }
+
     // pass the player who is betting and the amount they want to bet
     // bet should be amount to add, not their total bet
     public boolean bet(int playerID, int amount) {
@@ -289,63 +294,6 @@ public class THState extends GameState {
         //if ()
 
         //may return number instead...
-
-        /**
-         * this is a work in progress, for now this function jut returns the highest card
-         *
-         //arraylist is just nicer to work with for this
-
-        //for now, just check for each hand individually
-        int[] suits = new int[4]; //keep track of how many of each suit (Flushes) [H, D, S, C]
-        int[] values = new int[14]; //keep track of how many of each value
-        Card flushStart = null; //if we have a flush, this hold the start of the highest one
-        boolean isStraight = false; //true if we have a straight flush
-        //if we have a straight flush, flushStart instead tracks the highest straight flush
-        for (Card card : hand) {
-            String shortCard = card.getShortName();
-
-            //update lists
-            switch (shortCard.substring(1,2)){
-                case "H":
-                    suits[0]++;
-                    break;
-                case "D":
-                    suits[1]++;
-                    break;
-                case "S":
-                    suits[2]++;
-                    break;
-                case "C":
-                    suits[3]++;
-                    break;
-            }
-            values[card.getValue()]++;
-
-            //check for straight flush
-            Card lastCard = new Card(card);
-            boolean sFlush = true;
-            for (int i = 0; i < 5; i++) {
-                /**
-                 * Citation: Checked to see if .contains works on objects
-                 * https://stackoverflow.com/questions/2642589/how-does-a-arraylists-contains-method-evaluate-objects
-                 * Xavier Santiago (3.26.2022)
-                 */
-                /**Card nextCard = new Card(lastCard.nextCard());
-                if (hand.contains(nextCard)) {
-                    lastCard = nextCard; //shouldn't matter that we pass the reference
-                } else {
-                    sFlush = false;
-                    break;
-                }
-            }
-            if (sFlush) {
-                flushStart = new Card(card);
-                isStraight = true;
-            }
-        }
-
-
-        return new Card[5];*/
     }
 
     public Card highHand(ArrayList<Card> hand) {
