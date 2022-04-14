@@ -1,6 +1,7 @@
 package edu.up.cs301.texasHoldem;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -57,22 +58,8 @@ public class THMainActivity extends GameMainActivity {
 
 	@Override
 	public LocalGame createLocalGame(GameState gameState) {
-		//if gamestate is null, i.e. we aren't loading a game, create a new one with the players
-		//TODO: other game initialization settings
-		//TODO: change player arraylist to GamePlayer arraylist
-		GameConfig config = getConfig();
-		if (gameState == null) { //if this is a new game
-			ArrayList<Player> players = new ArrayList<Player>();
-			//for each player create a Player object
-			for (int i = 0; i < config.getNumPlayers(); i++) {
-				Player player = new Player(config.getSelName(i), 1000);
-				players.add(player);
-			}
-			//use this to create a fresh game
-			gameState = new THState(players);
-			((THState) gameState).dealPlayers(); //this is the only place this should happen
-		}
-
+		//just a blank game for now, this'll be handled in the start() function in THLocalGame
+		if (gameState == null) { gameState = new THState(); }
 		return new THLocalGame((THState) gameState);
 	}
 

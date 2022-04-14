@@ -85,7 +85,7 @@ public class EvaluateHand {
 
     //3, 2, 5, 10, 3
     public void sortValue() {
-        for (int x = 0; x < 7; x++) { //INTERATIONS MAY VARY, CHECK WITH DECK
+        for (int x = 0; x < 7; x++) { //ITERATIONS MAY VARY, CHECK WITH DECK
             for (int i = 0; i < cards.length-1; i++) {
                 Card[] temp = new Card[cards.length];
                 if (cards[i].getValue() > cards[i+1].getValue()) {

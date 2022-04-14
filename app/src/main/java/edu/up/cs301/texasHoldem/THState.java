@@ -22,19 +22,23 @@ public class THState extends GameState {
     private Deck deck;
     private int timer;
     private int round; //pre-flop, post-flop 1, post-flop 2, and final round
+    private int roundTurns;
     private int MAX_TIMER;
     int playerTurn;
     private int blindBet;
     private int currentBet; //easier to keep track of this than iterate through players every time we need it
+    private int minBet; //what is the minimum amount of money you are required to bet
 
     //just an empty constructor, this'll never be used but it's useful for now
     public THState() {
         players = new ArrayList<Player>();
         blindBet = 20; //arbitrary value
+        minBet = 1;
         MAX_TIMER = 60; //arbitrary value
         timer = MAX_TIMER;
         playerTurn = 0;
         round = 0;
+        roundTurns = 0;
         currentBet = 0;
         deck = new Deck();
     }
@@ -43,6 +47,7 @@ public class THState extends GameState {
     public THState(ArrayList<Player> players) {
         this.players = players;
         blindBet = 20; //arbitrary value
+        minBet = 1;
         MAX_TIMER = 60; //arbitrary value
         timer = MAX_TIMER;
         playerTurn = 0;
@@ -54,10 +59,12 @@ public class THState extends GameState {
     public THState(ArrayList<Player> players, int maxTimer, int blindBet) {
         this.players = (ArrayList<Player>) players.clone();
         this.blindBet = blindBet;
+        minBet = 1;
         MAX_TIMER = maxTimer; //TODO: change timer conditions in the future
         timer = MAX_TIMER;
         playerTurn = 0;
         round = 0;
+        roundTurns = 0;
         currentBet = 0;
         deck = new Deck();
     }
@@ -66,9 +73,11 @@ public class THState extends GameState {
     public THState(THState orig) {
         this.timer = orig.timer;
         this.round = orig.round;
+        this.roundTurns = orig.roundTurns;
         this.MAX_TIMER = orig.MAX_TIMER;
         this.playerTurn = orig.playerTurn;
         this.blindBet = orig.blindBet;
+        this.minBet = orig.minBet;
         this.currentBet = orig.currentBet;
 
         //the arraylists need deep copies so they don't contain references
@@ -79,7 +88,7 @@ public class THState extends GameState {
 
         this.dealerHand = new ArrayList<Card>();
         for (Card each : orig.dealerHand) {
-            dealerHand.add(new Card(each));
+            this.dealerHand.add(new Card(each));
         }
 
         this.deck = new Deck(orig.deck); //so we know which cards are already in play
@@ -94,6 +103,11 @@ public class THState extends GameState {
             Card[] hand = new Card[]{deck.deal(), deck.deal()}; //deal 2 cards
             player.setHand(hand); //set their new hand
         }
+    }
+
+    public void placeBlindBets() {
+        bet(0, blindBet/2);
+        bet(1, blindBet);
     }
 
     // pass the player who is betting and the amount they want to bet
@@ -111,8 +125,14 @@ public class THState extends GameState {
             return false;
         }
         //prevents player from skipping their turn
-        if (amount == 0) {
+        if (amount == 0 && roundTurns > 0) {
             return false;
+        }
+
+        if (amount == 0){
+            nextTurn();
+            roundTurns = 0;
+            return true;
         }
 
         currentPlayer.addBet(amount);
@@ -130,6 +150,8 @@ public class THState extends GameState {
 
         nextTurn(); //taking any action ends your turn
 
+        Log.i("GameState", "player "+playerID+" bets "+amount);
+
         return true;
     }
 
@@ -141,6 +163,8 @@ public class THState extends GameState {
         if (playerTurn != playerID) {
             return false;
         }
+
+        Log.i("GameState", "player "+playerID+" folds");
 
         currentPlayer.setFold(true);
         nextTurn(); //taking any action ends your turn
@@ -162,6 +186,7 @@ public class THState extends GameState {
      */
     public void nextTurn() {
         playerTurn++;
+        roundTurns++;
         int backupTurn = playerTurn;
         if (playerTurn >= players.size()) {
             playerTurn = 0;
@@ -215,7 +240,9 @@ public class THState extends GameState {
                 break;
             //if round is 3 we don't need to do anything since the game's over
         }
+        roundTurns = 0;
         round++;
+
         Log.i("round",""+round);
     }
 
@@ -274,63 +301,6 @@ public class THState extends GameState {
         //if ()
 
         //may return number instead...
-
-        /**
-         * this is a work in progress, for now this function jut returns the highest card
-         *
-         //arraylist is just nicer to work with for this
-
-        //for now, just check for each hand individually
-        int[] suits = new int[4]; //keep track of how many of each suit (Flushes) [H, D, S, C]
-        int[] values = new int[14]; //keep track of how many of each value
-        Card flushStart = null; //if we have a flush, this hold the start of the highest one
-        boolean isStraight = false; //true if we have a straight flush
-        //if we have a straight flush, flushStart instead tracks the highest straight flush
-        for (Card card : hand) {
-            String shortCard = card.getShortName();
-
-            //update lists
-            switch (shortCard.substring(1,2)){
-                case "H":
-                    suits[0]++;
-                    break;
-                case "D":
-                    suits[1]++;
-                    break;
-                case "S":
-                    suits[2]++;
-                    break;
-                case "C":
-                    suits[3]++;
-                    break;
-            }
-            values[card.getValue()]++;
-
-            //check for straight flush
-            Card lastCard = new Card(card);
-            boolean sFlush = true;
-            for (int i = 0; i < 5; i++) {
-                /**
-                 * Citation: Checked to see if .contains works on objects
-                 * https://stackoverflow.com/questions/2642589/how-does-a-arraylists-contains-method-evaluate-objects
-                 * Xavier Santiago (3.26.2022)
-                 */
-                /**Card nextCard = new Card(lastCard.nextCard());
-                if (hand.contains(nextCard)) {
-                    lastCard = nextCard; //shouldn't matter that we pass the reference
-                } else {
-                    sFlush = false;
-                    break;
-                }
-            }
-            if (sFlush) {
-                flushStart = new Card(card);
-                isStraight = true;
-            }
-        }
-
-
-        return new Card[5];*/
     }
 
     public Card highHand(ArrayList<Card> hand) {
@@ -375,6 +345,7 @@ public class THState extends GameState {
     public void setRound(int round) {
         this.round = round;
     }
+    public int getMinBet() {return minBet;}
 
     /**
      * @return number of players who aren't folded

@@ -81,8 +81,8 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         me = gameState.getPlayers().get(playerNum);
 
         if (handAnimator == null || dealerAnimator == null) {
-            handAnimator = new CardAnimator(me.getHand(), "player", 0xFFFFFFFF, handAS);
-            dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(), "dealer",
+            handAnimator = new CardAnimator(me.getHand(), 0xFFFFFFFF, handAS);
+            dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(),
                     backgroundColor, dealerAS);
             handAS.setAnimator(handAnimator);
             dealerAS.setAnimator(dealerAnimator);
@@ -130,9 +130,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
      * We need to call this once whenever we receive info
      */
     public void updateUI() {
-        //set up gui correctly
-        THState gameState = (THState) game.getGameState();
-
         //set our balance and the pool (probably just 0)
         balanceTV.setText(me.getBalance()+"$");
         potTV.setText("Pot: "+gameState.getPool()+"$\nBet: "+me.getBet());
@@ -141,9 +138,14 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         usernameTV.setText(me.getName());
 
         //(current min bet - our current bet) + ( our balance * ( seekbar value / seekbar max ) )
-        String value = ""+(int) ((gameState.getCurrentBet()-me.getBet())
-                +(me.getBalance()*((float) valueSB.getProgress()/valueSB.getMax())));
-        valueTV.setText(value);
+        valueTV.setText(""+getSliderBet());
+
+        //change bet TV
+        int betAmount = gameState.getCurrentBet()-me.getBet();
+        if (betAmount == getSliderBet()){
+            bet.setText("Check");
+        }
+        else bet.setText("Bet");
 
         //TODO: animationSurfaces
     }
@@ -156,7 +158,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                     +(me.getBalance()*((float) valueSB.getProgress()/valueSB.getMax())));
             Bet betAction = new Bet(this, betAmount);
             game.sendAction((GameAction) (THGameAction) betAction);
-
         }
         if (view.getId() == fold.getId()) {
             Fold foldAction = new Fold(this);
@@ -166,7 +167,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        //change bet TV
         updateUI();
 
         //TODO: GameFramework & surfaceView to invalidate
@@ -178,5 +178,17 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     }
     public void setPlayerObject(Player player) {
         me = player;
+    }
+
+    /**
+     * Function that returns the bet we want to place based on the value of the slider
+     * this is used in multiple places so this function is to keep things easy
+     * @return value that should be bet if the bet action is taken
+     */
+    private int getSliderBet() {
+        int minBet = Math.max(gameState.getCurrentBet()-me.getBet(), gameState.getMinBet());
+        float sliderProgress = (float) valueSB.getProgress()/valueSB.getMax();
+        int value = (int) (minBet+((me.getBalance()-minBet)*sliderProgress));
+        return value;
     }
 }
