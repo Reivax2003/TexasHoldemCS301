@@ -141,9 +141,14 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         usernameTV.setText(me.getName());
 
         //(current min bet - our current bet) + ( our balance * ( seekbar value / seekbar max ) )
-        String value = ""+(int) ((gameState.getCurrentBet()-me.getBet())
-                +(me.getBalance()*((float) valueSB.getProgress()/valueSB.getMax())));
-        valueTV.setText(value);
+        valueTV.setText(""+getSliderBet());
+
+        //change bet TV
+        int betAmount = gameState.getCurrentBet()-me.getBet();
+        if (betAmount == getSliderBet()){
+            bet.setText("Check");
+        }
+        else bet.setText("Bet");
 
         //TODO: animationSurfaces
     }
@@ -165,13 +170,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        //change bet TV
-        int betAmount = (int) ((gameState.getCurrentBet()-me.getBet())
-                +(me.getBalance()*((float) valueSB.getProgress()/valueSB.getMax())));
-        if (betAmount == 0){
-            bet.setText("Check");
-        }
-        else bet.setText("Bet");
         updateUI();
 
         //TODO: GameFramework & surfaceView to invalidate
@@ -183,5 +181,17 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     }
     public void setPlayerObject(Player player) {
         me = player;
+    }
+
+    /**
+     * Function that returns the bet we want to place based on the value of the slider
+     * this is used in multiple places so this function is to keep things easy
+     * @return value that should be bet if the bet action is taken
+     */
+    private int getSliderBet() {
+        int minBet = Math.max(gameState.getCurrentBet()-me.getBet(), gameState.getMinBet());
+        float sliderProgress = (float) valueSB.getProgress()/valueSB.getMax();
+        int value = (int) (minBet+((me.getBalance()-minBet)*sliderProgress));
+        return value;
     }
 }

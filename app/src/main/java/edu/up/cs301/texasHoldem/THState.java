@@ -27,11 +27,13 @@ public class THState extends GameState {
     int playerTurn;
     private int blindBet;
     private int currentBet; //easier to keep track of this than iterate through players every time we need it
+    private int minBet; //what is the minimum amount of money you are required to bet
 
     //just an empty constructor, this'll never be used but it's useful for now
     public THState() {
         players = new ArrayList<Player>();
         blindBet = 20; //arbitrary value
+        minBet = 1;
         MAX_TIMER = 60; //arbitrary value
         timer = MAX_TIMER;
         playerTurn = 0;
@@ -45,6 +47,7 @@ public class THState extends GameState {
     public THState(ArrayList<Player> players) {
         this.players = players;
         blindBet = 20; //arbitrary value
+        minBet = 1;
         MAX_TIMER = 60; //arbitrary value
         timer = MAX_TIMER;
         playerTurn = 0;
@@ -56,6 +59,7 @@ public class THState extends GameState {
     public THState(ArrayList<Player> players, int maxTimer, int blindBet) {
         this.players = (ArrayList<Player>) players.clone();
         this.blindBet = blindBet;
+        minBet = 1;
         MAX_TIMER = maxTimer; //TODO: change timer conditions in the future
         timer = MAX_TIMER;
         playerTurn = 0;
@@ -73,6 +77,7 @@ public class THState extends GameState {
         this.MAX_TIMER = orig.MAX_TIMER;
         this.playerTurn = orig.playerTurn;
         this.blindBet = orig.blindBet;
+        this.minBet = orig.minBet;
         this.currentBet = orig.currentBet;
 
         //the arraylists need deep copies so they don't contain references
@@ -385,6 +390,7 @@ public class THState extends GameState {
     public void setRound(int round) {
         this.round = round;
     }
+    public int getMinBet() {return minBet;}
 
     /**
      * @return number of players who aren't folded
