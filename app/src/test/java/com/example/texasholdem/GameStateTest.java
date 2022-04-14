@@ -297,4 +297,23 @@ public class GameStateTest {
         */
 
     }
+
+    @Test
+    public void dealerDecktest() {
+        ArrayList<Player> players = new ArrayList<Player>();
+
+        Player p1 = new Player("Joe", 1000);
+        players.add(p1);
+        Player p2 = new Player("Mary", 2000);
+        players.add(p2);
+        Player p3 = new Player("Bill", 3000);
+        players.add(p3);
+
+        THState gState = new THState(players, 60, 100);
+        ArrayList<Card> hand = gState.getDealerHand();
+
+        for (int i = 0; i < hand.size(); i++) {
+            System.out.println(hand.get(i).toString());
+        }
+    }
 }

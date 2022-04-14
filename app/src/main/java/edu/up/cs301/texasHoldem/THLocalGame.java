@@ -59,7 +59,7 @@ public class THLocalGame extends LocalGame {
 	@Override
     protected String checkIfGameOver() {
     	//make a copy state that won't change while we evaluate
-    	THState staticState = new THState(state);
+    	THState staticState = new THState(state); //TODO: some issue with static state
 
     	if (staticState.getActivePlayers() == 1) { //if only one player is left
     		Player winner = staticState.getActivePlayersList().get(0);
@@ -68,24 +68,26 @@ public class THLocalGame extends LocalGame {
     	boolean allIn = false;
     	if (checkIfAllIn(staticState)) {
     		allIn = true;
-    		while (state.getRound() < 3) {
+    		while (state.getRound() < 3) { //TODO
 				state.nextRound(); //if it's not the last round, proceed to the next round
 				sendAllUpdatedState(); //update all players
 			}
+    		staticState = new THState(state);
 		}
 
 		if (checkIfRoundOver(staticState) || allIn) {//check if the current round is over
 			if (staticState.getRound() == 3 || allIn) { //if the current round is the last then the game is over
 
 				//for now just evaluate highest card as win
-				int high = 0;
+				int high = -200;
 				Player winner = null;
-				for (Player player : staticState.getPlayers()) {
+				for (Player player : staticState.getPlayers()) { //TODO check dealerhand
 					ArrayList<Card> hand = staticState.getDealerHand(); //arraylist is just easier
 					hand.add(player.getHand()[0]);
 					hand.add(player.getHand()[1]);
 					Card best = staticState.highHand(hand);
 
+					//Log.d("hands: ", hand.toString());
 					//EvaluateHand eh = new EvaluateHand(hand);
 
 					String bestStr = staticState.bestHand(hand);
@@ -113,7 +115,7 @@ public class THLocalGame extends LocalGame {
 							value = 20 + best.getValue();
 							best.storeValue(value);
 							break;
-						case "straight":
+						case "straight": //Not performing straight correctly when theres two pairs
 							value = 0 + best.getValue();
 							best.storeValue(value);
 							break;
@@ -125,7 +127,7 @@ public class THLocalGame extends LocalGame {
 							value = -40 + best.getValue();
 							best.storeValue(value);
 							break;
-						case "one pair":
+						case "one pair": //TODO fix getvalue of besthand as it should be getting combo
 							value = -60 + best.getValue();
 							best.storeValue(value);
 							break;

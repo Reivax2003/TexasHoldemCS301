@@ -118,13 +118,17 @@ public class EvaluateHand {
     //2, 2, 5, 5, 9
     public int checkPair() {
         ArrayList<Card> temp = new ArrayList<>();
+        Card[] copy = new Card[cards.length];
+        for(int i = 0; i < cards.length; ++i) {
+            copy[i] = cards[i];
+        }
         int count = 0;
         this.sortValue();
-        for (int i = 0; i < cards.length-1; i++) {
+        for (int i = 0; i < copy.length-1; i++) {
 
             if (cards[i].getValue() == cards[i+1].getValue()) {
-                temp.add(cards[i]);
-                cards[i] = null;
+                temp.add(copy[i]);
+                copy[i] = null;
             }
         }
 
