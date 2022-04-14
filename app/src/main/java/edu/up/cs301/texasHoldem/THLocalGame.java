@@ -84,13 +84,73 @@ public class THLocalGame extends LocalGame {
 					ArrayList<Card> hand = staticState.getDealerHand(); //arraylist is just easier
 					hand.add(player.getHand()[0]);
 					hand.add(player.getHand()[1]);
-					Card best = staticState.bestHand(hand);
-					if (best.getValue() > high) {
+					Card best = staticState.highHand(hand);
+
+					//EvaluateHand eh = new EvaluateHand(hand);
+
+					String bestStr = staticState.bestHand(hand);
+
+					int value = -100;
+
+					switch(bestStr) {
+						case "royal flush":
+							value = 100 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "straight flush":
+							value = 80 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "four of a kind":
+							value = 60 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "full house":
+							value = 40 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "flush":
+							value = 20 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "straight":
+							value = 0 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "three of a kind":
+							value = -20 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "two pairs":
+							value = -40 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "one pair":
+							value = -60 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "high hand":
+							value = -80 + best.getValue();
+							best.storeValue(value);
+							break;
+					}
+
+					if (best.getEvalValue() > high) {
+						high = best.getValue();
+						winner = player;
+					} else if (best.getEvalValue() == high) {
+						winner = null;
+					}
+					/*if (best.getValue() > high) {
 						high = best.getValue();
 						winner = player;
 					} else if (best.getValue() == high) {
 						winner = null;
 					}
+
+					 */
+
+
 				}
 				if (winner == null) {
 					return "Game resulted in a tie";

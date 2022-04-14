@@ -30,6 +30,7 @@ public class Card implements Serializable {
     private int value;
     private String shortName;
     private String longName;
+    private int evalValue;
     //this array lets us quickly convert between integer value and string value
     //assume aces are high (doesn't really matter)
     private ArrayList<String> values = new ArrayList<String>
@@ -244,5 +245,13 @@ public class Card implements Serializable {
                                 resIdx[i][j]);
             }
         }
+    }
+
+    public void storeValue(int x) {
+        evalValue = x;
+    }
+
+    public int getEvalValue() {
+        return evalValue;
     }
 }
