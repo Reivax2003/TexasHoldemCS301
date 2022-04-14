@@ -156,7 +156,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                     +(me.getBalance()*((float) valueSB.getProgress()/valueSB.getMax())));
             Bet betAction = new Bet(this, betAmount);
             game.sendAction((GameAction) (THGameAction) betAction);
-
         }
         if (view.getId() == fold.getId()) {
             Fold foldAction = new Fold(this);
@@ -167,6 +166,12 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         //change bet TV
+        int betAmount = (int) ((gameState.getCurrentBet()-me.getBet())
+                +(me.getBalance()*((float) valueSB.getProgress()/valueSB.getMax())));
+        if (betAmount == 0){
+            bet.setText("Check");
+        }
+        else bet.setText("Bet");
         updateUI();
 
         //TODO: GameFramework & surfaceView to invalidate

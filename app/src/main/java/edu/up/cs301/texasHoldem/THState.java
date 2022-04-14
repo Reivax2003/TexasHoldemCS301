@@ -22,6 +22,7 @@ public class THState extends GameState {
     private Deck deck;
     private int timer;
     private int round; //pre-flop, post-flop 1, post-flop 2, and final round
+    private int roundTurns;
     private int MAX_TIMER;
     int playerTurn;
     private int blindBet;
@@ -35,6 +36,7 @@ public class THState extends GameState {
         timer = MAX_TIMER;
         playerTurn = 0;
         round = 0;
+        roundTurns = 0;
         currentBet = 0;
         deck = new Deck();
     }
@@ -58,6 +60,7 @@ public class THState extends GameState {
         timer = MAX_TIMER;
         playerTurn = 0;
         round = 0;
+        roundTurns = 0;
         currentBet = 0;
         deck = new Deck();
     }
@@ -66,6 +69,7 @@ public class THState extends GameState {
     public THState(THState orig) {
         this.timer = orig.timer;
         this.round = orig.round;
+        this.roundTurns = orig.roundTurns;
         this.MAX_TIMER = orig.MAX_TIMER;
         this.playerTurn = orig.playerTurn;
         this.blindBet = orig.blindBet;
@@ -111,8 +115,14 @@ public class THState extends GameState {
             return false;
         }
         //prevents player from skipping their turn
-        if (amount == 0) {
+        if (amount == 0 && roundTurns > 0) {
             return false;
+        }
+
+        if (amount == 0){
+            nextTurn();
+            roundTurns = 0;
+            return true;
         }
 
         currentPlayer.addBet(amount);
@@ -162,6 +172,7 @@ public class THState extends GameState {
      */
     public void nextTurn() {
         playerTurn++;
+        roundTurns++;
         int backupTurn = playerTurn;
         if (playerTurn >= players.size()) {
             playerTurn = 0;
@@ -213,7 +224,9 @@ public class THState extends GameState {
                 break;
             //if round is 3 we don't need to do anything since the game's over
         }
+        roundTurns = 0;
         round++;
+
         Log.i("round",""+round);
     }
 

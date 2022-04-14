@@ -53,7 +53,7 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
         int betNeeded = gameState.getCurrentBet()-self.getBet(); //check
 
         Random r = new Random();
-        // 1/50 chance to fold (might be too low)
+         //1/50 chance to fold (might be too low)
         //also fold if you don't have enough to bet
         if (r.nextFloat() < 0.02 || betNeeded > self.getBalance()) {
             Fold action = new Fold(this);
