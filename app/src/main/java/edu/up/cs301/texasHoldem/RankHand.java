@@ -2,6 +2,7 @@ package edu.up.cs301.texasHoldem;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 
 import java.io.InputStream;
 import java.io.Serializable;
@@ -100,6 +101,7 @@ public class RankHand implements Serializable {
                 for (int i = 0; i < hand.length; i++) {
                     if (each[i] == 1) {
                         subhand[index] = hand[i].getCardBinary();
+                        index++;
                     }
                 }
                 int rank = rank5(subhand);

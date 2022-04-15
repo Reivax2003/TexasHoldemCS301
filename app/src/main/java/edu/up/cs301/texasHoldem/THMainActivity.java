@@ -102,7 +102,7 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
  *
  * #9: Multiple Hard AI just bet forever. Not exactly a bug, just an unintended behavior. The AI
  * already has a counter for how many times it's bet in the current round, we jut need to tell it to
- * start checking instead of raising after a certain amount.
+ * start checking instead of raising after a certain amount. (Fixed after submission)
  *
  * As for discussing how these bugs and problems with our code could have been prevented, it all
  * just comes down to time. We let the deadline sneak up on us and didn't have the time to finish.
@@ -111,6 +111,11 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
  *
  * Anyways, thank you for reading my way too long comment explaining the sorry state of our project.
  * I hope it isn't too bad.
+ *
+ * Changelog after submission
+ * - Shy AI is now selectable
+ * - Hard AI no longer bets infinitely
+ * - Fixed a crash with Hard AI
  */
 
 
@@ -149,6 +154,11 @@ public class THMainActivity extends GameMainActivity {
 		playerTypes.add(new GamePlayerType("computer player (hard)") {
 			public GamePlayer createPlayer(String name) {
 				return new THComputerPlayerHard(name);
+			}});
+
+		playerTypes.add(new GamePlayerType("computer player (shy)") {
+			public GamePlayer createPlayer(String name) {
+				return new THComputerPlayerShy(name);
 			}});
 
 		// Create a game configuration class for SlapJack
