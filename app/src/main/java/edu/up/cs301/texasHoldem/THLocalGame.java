@@ -100,7 +100,65 @@ public class THLocalGame extends LocalGame {
 
 		if (checkIfRoundOver(state) || allIn) {//check if the current round is over
 			if (state.getRound() == 3 || allIn) { //if the current round is the last then the game is over
+				//need to keep track if players tied, but only if they have the highest cards
+				ArrayList<Player> winners = new ArrayList<>();
+				int bestHand = 9999; //lower is better, this is higher than any
+				for (Player player : state.getPlayers()) { //loop through all players
+					if (!player.isFolded()) { //only care if player is in
+						//grab player and dealer cards
+						Card[] dHand = state.getDealerHandAsArray();
+						Card[] allCards = new Card[dHand.length + 2];
+						allCards[0] = player.getHand()[0];
+						allCards[1] = player.getHand()[1];
 
+						//combine into one list
+						for (int i = 0; i < dHand.length; i++) {
+							allCards[i + 2] = dHand[i];
+						}
+
+						//get rank of hand
+						int handValue = handRanker.getHandRank(allCards);
+						//lower means better, 1 is a royal flush
+						if (handValue < bestHand) {
+							bestHand = handValue;
+							winners.clear();
+							winners.add(player);
+						}
+						//it's possible for multiple hands to have the same rank
+						//for example, you can have two full houses of equal value
+						else if (handValue == bestHand) {
+							winners.add(player);
+						}
+					}
+				}
+				if (winners.size() == 0) {
+					return "something went wrong\nwinner could not be evaluated";
+				} else if (winners.size() == 1) {
+					Log.i("Winning hand rank", ""+bestHand); //for debugging
+					//this is usually going to happen, just print the winner
+					return winners.get(0).getName()+" wins with a "
+							+handRanker.getRankText(bestHand)+"\n";
+				} else if (winners.size() == 2) {
+					Log.i("Winning hand rank", ""+bestHand); //for debugging
+					//have to handle a 2 player tie separately so the message looks right
+					String message = winners.get(0).getName()+" and "+winners.get(0).getName()
+							+" tied with a "+handRanker.getRankText(bestHand)+"\n";
+					return message;
+				}
+				else {
+					Log.i("Winning hand rank", ""+bestHand); //for debugging
+					String message = "";
+					//iterate through and add players to message
+					for (int i = 0; i < winners.size()-1; i++) {
+						message = message+winners.get(i).getName()+", ";
+					}
+					message = message+"and "+winners.get(winners.size()-1).getName()+" tied with a "
+							+handRanker.getRankText(bestHand)+"\n";
+					return message;
+				}
+
+				//Below is the brute force approach to hand evaluation
+				/**
 				//for now just evaluate highest card as win
 				int high = -200;
 				Player winner = null;
@@ -175,14 +233,14 @@ public class THLocalGame extends LocalGame {
 
 					 */
 
-
+				/**
 				}
 				if (winner == null) {
 					return "Game resulted in a tie";
 				} else {
 					// \n makes the message look nicer
 					return "Winner: "+winner.getName()+", Highest valued card: "+high+"\n";
-				}
+				}*/
 			} else {
 				//this one is the real state because we're making changes we want to apply
 				state.nextRound(); //if it's not the last round, proceed to the next round

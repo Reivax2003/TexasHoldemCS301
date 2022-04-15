@@ -27,6 +27,8 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
  * the main problem is that we currently only evaluate the highest card in a player's hand. this is
  * a leftover from the alpha release which has not been overwritten. We have the code to implement
  * the correct scoring, however it remains unimplemented. I plan on implementing it tomorrow morning.
+ * (Note after submission: I am unsure whether the brute force implementation actually works, I am
+ * using the evaluation made for the AI instead)
  *
  * GUI functionality: I'm not sure if extras count for this. For pure functionality We have
  * everything required for the game itself. However, UI elements like the timer and hand quality

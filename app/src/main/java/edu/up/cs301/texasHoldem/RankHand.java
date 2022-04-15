@@ -118,7 +118,7 @@ public class RankHand implements Serializable {
      * @return rank of card as an int between 1 (royal flush) and 0 (unsuited 7-5-4-3-2)
      */
     public float getHandRankFloat(Card[] hand) {
-        return (getHandRank(hand)-1)/7461f;
+        return 1-(getHandRank(hand)-1)/7461f;
     }
 
     private int rank5(int[] cards) {
@@ -128,7 +128,7 @@ public class RankHand implements Serializable {
          * # if flush
          * if cards[0] & cards[1] & cards[2] & cards[3] & cards[4] & 0xF000:
          *    handOR = (cards[0] | cards[1] | cards[2] | cards[3] | cards[4]) >> 16
-         *    prime = Card.prime_product_from_rankbits(handOR) <- TODO
+         *    prime = Card.prime_product_from_rankbits(handOR)
          *    return self.table.flush_lookup[prime]
          *
          * # otherwise
@@ -228,5 +228,66 @@ public class RankHand implements Serializable {
             }
         }
         return combinations;
+    }
+
+    /**
+     * returns the name of the given hand from its rank. for example passing in 1 would return
+     * "royal flush" while 7462 would return "high card"
+     *
+     * @param rank the rank of hand to get the name of
+     * @return the name of the type of hand the rank is
+     */
+    public String getRankText(int rank) {
+        /**
+         * Number of Distinct Hand Values:
+         *
+         *      Straight Flush   10
+         *      Four of a Kind   156      [(13 choose 2) * (2 choose 1)]
+         *      Full Houses      156      [(13 choose 2) * (2 choose 1)]
+         *      Flush            1277     [(13 choose 5) - 10 straight flushes]
+         *      Straight         10
+         *      Three of a Kind  858      [(13 choose 3) * (3 choose 1)]
+         *      Two Pair         858      [(13 choose 3) * (3 choose 2)]
+         *      One Pair         2860     [(13 choose 4) * (4 choose 1)]
+         *      High Card        1277     [(13 choose 5) - 10 straights]
+         *      -------------------------
+         *      TOTAL            7462
+         *
+         * credit: https://github.com/ihendley/treys
+         */
+        if (rank < 1) {
+            return null; //just in case
+        }
+        if ( rank == 1) {
+            return "Royal Flush";
+        }
+        if (rank <= 10) {
+            return "Straight Flush";
+        }
+        if (rank <= 10+156) {
+            return "Four of a Kind";
+        }
+        if (rank <= 10+156+156) {
+            return "Full House";
+        }
+        if (rank <= 10+156+156+1277) {
+            return "Flush";
+        }
+        if (rank <= 10+156+156+1277+10) {
+            return "Straight";
+        }
+        if (rank <= 10+156+156+1277+10+858) {
+            return "Three of a Kind";
+        }
+        if (rank <= 10+156+156+1277+10+858+858) {
+            return "Two Pair";
+        }
+        if (rank <= 10+156+156+1277+10+858+858+2860) {
+            return "Pair";
+        }
+        if (rank <= 10+156+156+1277+10+858+858+2860+1277) {
+            return "Highest Card";
+        }
+        return null; //just in case
     }
 }
