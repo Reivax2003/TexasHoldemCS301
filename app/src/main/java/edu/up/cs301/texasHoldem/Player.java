@@ -1,6 +1,7 @@
 package edu.up.cs301.texasHoldem;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 /**
  * Player class containing all variables we need
@@ -15,12 +16,15 @@ public class Player {
     private Card[] hand = new Card[2];
     private boolean folded = false;
     private boolean allIn = false;
+    private String action = "";
+    //private UiPlayerProfile profile;
 
     // simple constructor
-    public Player(String name, int balance) {//, Bitmap picture) {
-        this.name = name;
+    public Player(String initName, int balance) {//, Bitmap picture) {
+        this.name = initName;
         this.balance = balance;
         this.picture = picture;
+        //profile = new UiPlayerProfile(initName);
     }
 
     // deep copy constructor
@@ -31,6 +35,7 @@ public class Player {
         bet = orig.bet;
         folded = orig.folded;
         allIn = orig.allIn;
+        //profile = orig.profile;
 
         //the array is the only thing we really need to do a deep copy of
         hand = orig.hand.clone();
@@ -39,13 +44,24 @@ public class Player {
     public String getName(){ return name;}
 
     public int getBet(){ return bet;}
-    public void addBet(int newBet){ bet += newBet;}
+    public void addBet(int newBet){
+        bet += newBet;
+        action = "Bet: $" + newBet;
+        //profile.setActionText("Bet $" + newBet);
+    }
 
-    public void setFold(boolean foldStatus){ folded = foldStatus;}
+    public void setFold(boolean foldStatus){
+        folded = foldStatus;
+        action = "fold";
+        //profile.setActionText("Fold");
+    }
     public boolean isFolded() {return folded; }
 
     public Card[] getHand() {return hand.clone();}
-    public void setHand(Card[] hand) {this.hand = hand;}
+    public void setHand(Card[] hand) {
+        this.hand = hand;
+        //profile.setCardImg(hand);
+    }
     public void giveCard(Card card, int index) { hand[index] = card;}
 
     public int getBalance() { return this.balance; }
@@ -60,11 +76,19 @@ public class Player {
             return;
         }
         allIn = true;
+        action = "All In";
+        //profile.setActionText("All In");
     }
     public boolean isAllIn() {
         return allIn;
     }
 
+    public String getAction(){return action;}
+/*
+    public UiPlayerProfile getProfile(){
+        return profile;
+    }
+*/
     @Override
     public String toString() {
         return "Name: "+name+", balance: "+balance+", bet: "+bet+", folded: "+folded+", hand: "+hand[0]+", "+hand[1];
