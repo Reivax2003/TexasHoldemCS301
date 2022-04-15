@@ -73,6 +73,8 @@ public class THLocalGame extends LocalGame {
 	@Override
 	protected void sendUpdatedStateTo(GamePlayer p) {
     	THState copy = new THState(state);
+    	copy.redactFor(getPlayerIdx(p)); //remove other player's cards
+		copy.setHandRanker(handRanker);
     	p.sendInfo(copy);
 	}
 
