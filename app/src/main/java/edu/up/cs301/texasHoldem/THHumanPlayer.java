@@ -57,7 +57,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private AnimationSurface dealerAS;
     private AnimationSurface handAS;
     private LinearLayout[] oppProfiles = new LinearLayout[3];
-    private LinearLayout yourProfile;
 
     private ArrayList<Player> playerList = new ArrayList<>();
     private ArrayList<CardAnimator> hands = new ArrayList<>();
@@ -211,7 +210,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         this.handAS = activity.findViewById(R.id.playerHandAS);
         this.usernameTV = activity.findViewById(R.id.userID);
 
-        this.yourProfile = activity.findViewById(R.id.playerProfile);
         this.oppProfiles[0] = activity.findViewById(R.id.oppProfile1);
         this.oppProfiles[1] = activity.findViewById(R.id.oppProfile2);
         this.oppProfiles[2] = activity.findViewById(R.id.oppProfile3);
