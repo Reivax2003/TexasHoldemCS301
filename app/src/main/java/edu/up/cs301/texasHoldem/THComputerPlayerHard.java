@@ -17,12 +17,15 @@ import edu.up.cs301.game.R;
  * @author Kevin Nguyen
  * @version 3.30.22
  */
-public class THComputerPlayerEasy extends GameComputerPlayer {
+public class THComputerPlayerHard extends GameComputerPlayer {
+
+    private RankHand handRanker;
+
     /**
      * constructor
      * @param name the player's name (e.g., "John")
      */
-    public THComputerPlayerEasy(String name) {
+    public THComputerPlayerHard(String name) {
         super(name);
     }
 
@@ -44,6 +47,10 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
         }
         Player self = gameState.getPlayers().get(playerNum); //the Player object associated with us
 
+        if (handRanker == null) {
+            handRanker = gameState.getHandRanker();
+        }
+
         //for some reason we need this line to double check that a round isn't over
         if (gameState.getCurrentBet() == self.getBet()) {
             return;
@@ -51,16 +58,10 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
 
         int betNeeded = gameState.getCurrentBet()-self.getBet(); //check
 
-        Random r = new Random();
-         //1/50 chance to fold (might be too low)
-        //also fold if you don't have enough to bet
-        if (r.nextFloat() < 0.02 || betNeeded > self.getBalance()) {
+        if (true) {
             Fold action = new Fold(this);
             game.sendAction(action);
         } else {
-            if (r.nextFloat() < .25) { // 1/4 chance to raise
-                betNeeded += (r.nextInt(4)+1)*10; //raise anywhere from 10 to 50 (in multiples of 10)
-            }
             //make sure we don't bet above the amount we have
             Bet action = new Bet(this, Math.min(betNeeded, self.getBalance()));
             game.sendAction(action);

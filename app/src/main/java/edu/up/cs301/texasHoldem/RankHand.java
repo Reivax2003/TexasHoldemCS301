@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 
 import edu.up.cs301.game.R;
 
-public class RankHand {
+public class RankHand implements Serializable {
 
     private Context context; //allows us to read from resources
     private Dictionary<Integer, Integer> flushes;
@@ -73,19 +74,29 @@ public class RankHand {
 
     /**
      * Return the rank of best hand out of the given cards of the 7462 distinct
+     * returns -1 if it receives less than 5 cards
      * poker hands using lookup tables gotten from:
      *
      * https://github.com/ihendley/treys
      *
-     * @param hand the cards to be evaluated
+     * @param hand the cards to be evaluated (must be at least 5)
      * @return rank of card as an int between 1 (royal flush) and 7462 (unsuited 7-5-4-3-2)
      */
     public int getHandRank(Card[] hand) {
-        int[] cards = new int[hand.length];
-        for (int i = 0; i < hand.length; i++) {
-            cards[i] = hand[i].getCardBinary();
+        if (hand.length < 5) {
+            return -1;
+        } else if (hand.length == 5) {
+            int[] cards = new int[hand.length];
+            for (int i = 0; i < hand.length; i++) {
+                cards[i] = hand[i].getCardBinary();
+            }
+            return rank5(cards);
+        } else {
+            return 0;
         }
+    }
 
+    private int rank5(int[] cards) {
         /**
          * Original python code for 5 cards
          *
@@ -162,5 +173,18 @@ public class RankHand {
             product *= (each & 0xFF);
         }
         return product;
+    }
+
+    /**
+     * Gets all combinations of size 5 out of a list of objects
+     * @param size size of list
+     * @return list of lists of 1s and 0s, 1s meaning include, 0s meaning exclude
+     */
+    private int[][] getCombinationsofSize(int size) {
+        ArrayList<Integer[]> combinations = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+
+        }
+        return new int[0][0];
     }
 }

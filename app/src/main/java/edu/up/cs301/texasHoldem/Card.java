@@ -307,11 +307,8 @@ public class Card implements Serializable {
         int rank_prime = PRIMES[rank_int];
 
         int bitrank = 1 << rank_int << 16;
-        System.out.println("bitrank: "+bitrank);
         int bitsuit = suit_int << 12;
-        System.out.println("bitsuit: "+bitsuit+" "+suit_int);
         int rank = rank_int << 8;
-        System.out.println("rank: "+rank);
 
         int result = bitrank | bitsuit | rank | rank_prime;
 
