@@ -30,6 +30,10 @@ public class THState extends GameState implements Serializable {
     private int currentBet; //easier to keep track of this than iterate through players every time we need it
     private int minBet; //what is the minimum amount of money you are required to bet
 
+    //this has to be treated specially, it'll be passed in when the state is distributed
+    //it can't be put in the constructor because it requires a context, which breaks tests
+    private RankHand handRanker;
+
     //just an empty constructor, this'll never be used but it's useful for now
     public THState() {
         players = new ArrayList<Player>();
@@ -93,6 +97,21 @@ public class THState extends GameState implements Serializable {
         }
 
         this.deck = new Deck(orig.deck); //so we know which cards are already in play
+
+        this.handRanker = orig.handRanker; //just in case, this doesn't always exist
+    }
+
+    /**
+     * redacts the cards of all opponents
+     * @param playerNum the player who will receive this redacted version of the state
+     */
+    public void redactFor(int playerNum) {
+        for (int i = 0; i < players.size(); i++) {
+            if (i != playerNum) {
+                Player orig = players.remove(i);
+                players.add(i, new Player(orig.getName(), orig.getBalance()));
+            }
+        }
     }
 
     /**
@@ -318,35 +337,28 @@ public class THState extends GameState implements Serializable {
         return winCard;
     }
 
+    /**
+     * These are all getters and setters, I don't think there's any reason to explain them
+     * Everything involving lists clones so we don't pass the master copy accidentally
+     */
     public int getTimer() {return timer;}
     public int getRound() {return round;}
     public int getMAX_TIMER() {return MAX_TIMER;}
     public int getPlayerTurn() {return playerTurn;}
     public int getBlindBet() {return blindBet;}
     public int getCurrentBet() {return currentBet;}
-    //clone just to be safe
+    public int getMinBet() {return minBet;}
+    public void setCurrentBet(int bet) { currentBet = bet; } //for use in unit tests
+    public void setTimer(int time) { timer = time; } //for use in unit tests
+    public void setDealerHand(ArrayList<Card> hand) { dealerHand = (ArrayList<Card>) hand.clone(); }
+    public void setRound(int round) { this.round = round; }
+    public void setHandRanker(RankHand handRanker) { this.handRanker = handRanker; }
+    public RankHand getHandRanker() { return handRanker; } //no need to deep copy here
+    public ArrayList<Player> getPlayers() { return (ArrayList<Player>) players.clone();}
     public ArrayList<Card> getDealerHand() {return (ArrayList<Card>) dealerHand.clone();}
     public Card[] getDealerHandAsArray() {
-        Card[] dealerHand = getDealerHand().toArray(new Card[getDealerHand().size()]);
-        return dealerHand;
+        return getDealerHand().toArray(new Card[getDealerHand().size()]).clone();
     }
-    public ArrayList<Player> getPlayers() { return (ArrayList<Player>) players.clone();}
-
-    //set functions for use in unit tests
-    public void setCurrentBet(int bet) {
-        currentBet = bet;
-    }
-    public void setTimer(int time) {
-        timer = time;
-    }
-    //make sure we clone just to be safe
-    public void setDealerHand(ArrayList<Card> hand) {
-        dealerHand = (ArrayList<Card>) hand.clone();
-    }
-    public void setRound(int round) {
-        this.round = round;
-    }
-    public int getMinBet() {return minBet;}
 
     /**
      * @return number of players who aren't folded
@@ -369,7 +381,6 @@ public class THState extends GameState implements Serializable {
         }
         return active;
     }
-
 
     @Override
     public String toString() {

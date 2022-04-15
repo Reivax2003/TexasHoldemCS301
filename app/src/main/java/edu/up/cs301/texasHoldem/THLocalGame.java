@@ -48,12 +48,34 @@ public class THLocalGame extends LocalGame {
 		handRanker = new RankHand(context);
 	}
 
+	@Override
+	public void start(GamePlayer[] players) {
+		//couldn't find a better way to initialize players -Xavier
+
+		super.start(players); //this should initialize the playerNames array
+
+		ArrayList<Player> gamePlayers = new ArrayList<Player>();
+		//for each player create a Player object
+		for (int i = 0; i < players.length; i++) {
+			Player player = new Player(playerNames[i], 1000);
+			gamePlayers.add(player);
+		}
+		//use this to create a fresh game
+		state = new THState(gamePlayers);
+		state.dealPlayers(); //this is the only place this should happen
+		state.placeBlindBets(); //we treat the first player as the dealer
+		sendAllUpdatedState(); //need to call this to update everyone of blind bets
+	}
+
 	//Gutted all the functions so we can add our own, original can still be accessed since it's on moodle
 	//TODO: All functions below
 
 	@Override
 	protected void sendUpdatedStateTo(GamePlayer p) {
-    	p.sendInfo(new THState(state));
+    	THState copy = new THState(state);
+    	copy.redactFor(getPlayerIdx(p)); //remove other player's cards
+		copy.setHandRanker(handRanker);
+    	p.sendInfo(copy);
 	}
 
 	@Override
