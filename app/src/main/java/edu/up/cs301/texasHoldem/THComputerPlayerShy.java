@@ -18,7 +18,7 @@ import edu.up.cs301.game.GameFramework.players.GameComputerPlayer;
 public class THComputerPlayerShy extends GameComputerPlayer {
 
     private RankHand handRanker;
-    private boolean fisrtTurn = true;
+    private int turn = 0;
     private int round = -1;
     private Player self;
     private THState state;
@@ -101,10 +101,10 @@ public class THComputerPlayerShy extends GameComputerPlayer {
         }
 
         if (state.getRound() != round) {
-            fisrtTurn = true;
+            turn = 0;
             round = state.getRound();
         } else {
-            fisrtTurn = false;
+            turn++;
         }
 
         int betNeeded = state.getCurrentBet()-self.getBet(); //amount needed to check
@@ -137,7 +137,7 @@ public class THComputerPlayerShy extends GameComputerPlayer {
                         bet(betNeeded+raiseAmount);
                         break;
                     case 1: //raise once then call
-                        if (fisrtTurn) {
+                        if (turn == 0) {
                             bet(betNeeded+raiseAmount);
                         } else {
                             bet(betNeeded);
@@ -147,7 +147,7 @@ public class THComputerPlayerShy extends GameComputerPlayer {
                         bet(betNeeded);
                         break;
                     case 3: //call once then fold
-                        if (fisrtTurn) {
+                        if (turn == 0) {
                             bet(betNeeded);
                         } else {
                             fold();
@@ -171,7 +171,7 @@ public class THComputerPlayerShy extends GameComputerPlayer {
                         bet(betNeeded+raiseAmount);
                         break;
                     case 9: //raise once then call
-                        if (fisrtTurn) {
+                        if (turn == 0) {
                             bet(betNeeded+raiseAmount);
                         } else {
                             bet(betNeeded);
@@ -181,7 +181,7 @@ public class THComputerPlayerShy extends GameComputerPlayer {
                         bet(betNeeded);
                         break;
                     case 11: //call once then fold
-                        if (fisrtTurn) {
+                        if (turn == 0) {
                             bet(betNeeded);
                         } else {
                             fold();
@@ -205,7 +205,7 @@ public class THComputerPlayerShy extends GameComputerPlayer {
                         bet(betNeeded+raiseAmount);
                         break;
                     case 5: //raise once then call
-                        if (fisrtTurn) {
+                        if (turn == 0) {
                             bet(betNeeded+raiseAmount);
                         } else {
                             bet(betNeeded);
@@ -215,7 +215,7 @@ public class THComputerPlayerShy extends GameComputerPlayer {
                         bet(betNeeded);
                         break;
                     case 7: //call once then fold
-                        if (fisrtTurn) {
+                        if (turn == 0) {
                             bet(betNeeded);
                         } else {
                             fold();
@@ -245,7 +245,7 @@ public class THComputerPlayerShy extends GameComputerPlayer {
             if (quality > 0.9f) {
                 bet(betNeeded+raiseAmount);
             } else if (quality > 0.75f) {
-                if (fisrtTurn) {
+                if (turn == 0) {
                     bet(betNeeded+raiseAmount);
                 } else {
                     bet(betNeeded);
@@ -278,14 +278,27 @@ public class THComputerPlayerShy extends GameComputerPlayer {
         Fold action = new Fold(this);
         game.sendAction(action);
     }
+    /**
+     * Bets the specified amount, bounding it between the minimum bet and the AIs remaining money.
+     * Prioritizes remaining money over minimum bet, but we'll have to check the rules on that
+     * if the AI has already raised 3 times, it will always check (failsafe to prevent going all in
+     * on the first round)
+     * @param amount
+     */
     private void bet(int amount) {
+        int betNeeded = state.getCurrentBet()-self.getBet();
         if (amount == 0) { //only in the case of the start of a round (so we'll bet less
             int raiseAmount = (int) (self.getBalance()*0.03f);
             //randomize raise amount from 6% to 10% of remaining money
             Random r = new Random(); //to make things a bit more human-like
             raiseAmount += r.nextInt((int) (self.getBalance()*0.02f));
             raiseAmount = (raiseAmount/5)*5; //intentional integer division (round to 5)
+            amount = raiseAmount;
         }
+        if (turn >= 3) {
+            amount = betNeeded;
+        }
+        amount = Math.max(amount, betNeeded); //just in case, this should never be needed
         amount = Math.max(amount, state.getMinBet());
         // if the min bet is greater than our balance we still bet, I don't know if this is allowed
         // for now it'll stay in since going all in seems to be a unique case
