@@ -57,7 +57,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private AnimationSurface dealerAS;
     private AnimationSurface handAS;
     private LinearLayout[] oppProfiles = new LinearLayout[3];
-    private LinearLayout yourProfile;
 
     private ArrayList<Player> playerList = new ArrayList<>();
     private ArrayList<CardAnimator> hands = new ArrayList<>();
@@ -98,9 +97,9 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         me = gameState.getPlayers().get(playerNum);
 
         if (handAnimator == null || dealerAnimator == null) {
-            handAnimator = new CardAnimator(me.getHand(), "player", 0xFFFFFFFF, handAS);
+            handAnimator = new CardAnimator(me.getHand(), 0xFFFFFFFF, handAS);
             hands.add(playerNum,handAnimator);
-            dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(), "dealer",
+            dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(),
                     backgroundColor, dealerAS);
             handAS.setAnimator(handAnimator);
             dealerAS.setAnimator(dealerAnimator);
@@ -161,7 +160,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                                 //creates the hand if it hasn't before using playerlist as size reference
                                 //TODO: Find a way to hide the opponent's cards until the game completes
                                 if(hands.size() < playerList.size()){
-                                    hands.add(i , new CardAnimator(player.getHand(),"player",0xFFFFFF,(AnimationSurface) childView));
+                                    hands.add(i , new CardAnimator(player.getHand(),0xFFFFFF,(AnimationSurface) childView));
                                     ((AnimationSurface) childView).setAnimator(hands.get(i));
                                 }
                                 ((AnimationSurface) childView).setAnimator(hands.get(i));
@@ -209,7 +208,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         this.handAS = activity.findViewById(R.id.playerHandAS);
         this.usernameTV = activity.findViewById(R.id.userID);
 
-        this.yourProfile = activity.findViewById(R.id.playerProfile);
         this.oppProfiles[0] = activity.findViewById(R.id.oppProfile1);
         this.oppProfiles[1] = activity.findViewById(R.id.oppProfile2);
         this.oppProfiles[2] = activity.findViewById(R.id.oppProfile3);
