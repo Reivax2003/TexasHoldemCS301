@@ -18,7 +18,7 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
  * release. As I am writing this, it's 12:18 in the morning and I have been working since around
  * 1:30. I will continue to work on this tomorrow, however since the deadline was technically about
  * 20 minutes ago I am writing this to commit. I will put a footnote listing the changes I gave made
- * after submitting this.
+ * after submitting this as well as note them wherever applicable.
  *
  * Beta Release Checklist:
  *
@@ -28,7 +28,8 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
  * a leftover from the alpha release which has not been overwritten. We have the code to implement
  * the correct scoring, however it remains unimplemented. I plan on implementing it tomorrow morning.
  * (Note after submission: I am unsure whether the brute force implementation actually works, I am
- * using the evaluation made for the AI instead)
+ * using the evaluation made for the AI instead). After submission this has all been fixed. Hands
+ * are correctly evaluated at the end of the game and all rules are complete outside of bugs.
  *
  * GUI functionality: I'm not sure if extras count for this. For pure functionality We have
  * everything required for the game itself. However, UI elements like the timer and hand quality
@@ -90,7 +91,7 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
  *
  * #4: Deciding game winner. We have the code we need, we jut need to implement it. We have a brute
  * force method which didn't get finished in time and then the method that the AI uses to evaluate
- * its hand, which would also work.
+ * its hand, which would also work. (Fixed after submission)
  *
  * #6: First run on tablet is buggy. like #3, there's not much we can really do about this one, and
  * I'm not even sure it's something we need to be concerned with
@@ -118,6 +119,7 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
  * - Shy AI is now selectable
  * - Hard AI no longer bets infinitely
  * - Fixed a crash with Hard AI
+ * - Hands are now evaluated correctly at the end of the game
  */
 
 
