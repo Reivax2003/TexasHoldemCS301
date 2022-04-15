@@ -317,16 +317,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:gravity="center|center_horizontal"
+                    android:gravity="bottom|center_horizontal"
                     android:text="Hand Quality"
                     android:textSize="20sp" />
 
-                <ProgressBar
-                    android:id="@+id/handQualMeter"
-                    style="?android:attr/progressBarStyle"
+                <TextView
+                    android:id="@+id/handQuality"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="2"
+                    android:gravity="center_horizontal|top"
+                    android:text="N/A"
+                    android:textAlignment="center"
+                    android:textSize="50sp" />
+
             </LinearLayout>
         </LinearLayout>
 

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -46,10 +47,10 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
      * A basic implementation of PokerHumanPlayer derived from GameFrameWork Diagram. Many things
      * are still incomplete and need further implementations.
      */
-    private Player user;
     private Button bet;
     private Button fold;
     private SeekBar valueSB;
+    private TextView qualityTV;
     private TextView valueTV;
     private TextView balanceTV;
     private TextView potTV;
@@ -67,6 +68,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private CardAnimator dealerAnimator;
 
     private THState gameState;
+    private RankHand handRanker;
 
     private int backgroundColor = 0xFF35654D;
 
@@ -92,6 +94,12 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         }
         gameState = (THState) info;
         playerList = gameState.getPlayers();
+
+        //if this is the first time we're receiving gamestate
+        //it's also possible for a gamestate to not have a handranker
+        if (handRanker == null && gameState.getHandRanker() != null) {
+            handRanker = gameState.getHandRanker();
+        }
 
         //this actually needs to get updated every time we get new info
         me = gameState.getPlayers().get(playerNum);
@@ -206,15 +214,11 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         this.dealerAS = activity.findViewById(R.id.dealerHandAS);
         this.handAS = activity.findViewById(R.id.playerHandAS);
         this.usernameTV = activity.findViewById(R.id.userID);
+        this.qualityTV = activity.findViewById(R.id.handQuality);
 
         this.oppProfiles[0] = activity.findViewById(R.id.oppProfile1);
         this.oppProfiles[1] = activity.findViewById(R.id.oppProfile2);
         this.oppProfiles[2] = activity.findViewById(R.id.oppProfile3);
-
-        //Add the views of the opponent's profiles (Temporary until alternatives work)
-
-
-
 
         //Listen for button presses
         bet.setOnClickListener(this);
@@ -237,14 +241,29 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         //(current min bet - our current bet) + ( our balance * ( seekbar value / seekbar max ) )
         valueTV.setText(""+getSliderBet());
 
+        //show hand quality in post-flop rounds
+        if (gameState.getRound() > 0) {
+            //get all cards
+            Card[] dHand = gameState.getDealerHandAsArray();
+            Card[] allCards = new Card[dHand.length + 2];
+            allCards[0] = me.getHand()[0];
+            allCards[1] = me.getHand()[1];
+
+            //combine into one list
+            for (int i = 0; i < dHand.length; i++) {
+                allCards[i + 2] = dHand[i];
+            }
+
+            int quality = (int) (handRanker.getHandRankFloat(allCards)*100);
+            qualityTV.setText(quality+"%");
+        }
+
         //change bet TV
         int betAmount = gameState.getCurrentBet()-me.getBet();
         if (betAmount == getSliderBet()){
             bet.setText("Check");
         }
         else bet.setText("Bet");
-
-        //TODO: animationSurfaces
     }
 
     public void onClick(View view) {
@@ -267,9 +286,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         //change bet TV
         updateUI();
-
-        //TODO: GameFramework & surfaceView to invalidate
-        //.invalidate()
     }
 
     public Player getPlayerObject() { //using "getPlayerObject" for clarity

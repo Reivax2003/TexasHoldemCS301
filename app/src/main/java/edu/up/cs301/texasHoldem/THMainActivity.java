@@ -33,7 +33,9 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
  *
  * GUI functionality: I'm not sure if extras count for this. For pure functionality We have
  * everything required for the game itself. However, UI elements like the timer and hand quality
- * meter remain unimplemented (these are extras, not required for poker).
+ * meter remain unimplemented (these are extras, not required for poker). After submission the hand
+ * quality meter has been implemented, however it had to be changed to a textview since circular
+ * progress bars are actually just loading symbols and cannot have their progress set.
  *
  * AIs: In this regard our project is complete, and it is also what I've spent the past 10 hours
  * working on. The Hard AI is nearly bug-free (see https://github.com/Reivax2003/TexasHoldemCS301/issues/9)
@@ -42,7 +44,7 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
  * a "context" to access, which I have been unable to get in the test. We also have a Shy AI, which
  * is a leftover from an older version of the pre-flop AI, which plays far more conservatively
  * (and probably better) but is less fun to play with. The shy AI is completely extra, but is
- * currently unimplemented (another thing to do tomorrow)
+ * currently unimplemented. Note: after submission the shy AI has now been implemented.
  *
  * Network Play: Currently untested. I was going to implement this, however something is wrong with
  * my tablet (it won't start and won't charge). We have serializable implemented most places that
@@ -120,6 +122,9 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
  * - Hard AI no longer bets infinitely
  * - Fixed a crash with Hard AI
  * - Hands are now evaluated correctly at the end of the game
+ * - Hand quality meter removed, displays quality of hand instead. Displays N/A during pre-flop
+ * round. Percentage is percentage of other hands that player's is better than, ignoring whether
+ * or not those other hands are possible given the current cards.
  */
 
 
