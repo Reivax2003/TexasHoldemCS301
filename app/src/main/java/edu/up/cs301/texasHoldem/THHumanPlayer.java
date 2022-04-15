@@ -98,9 +98,9 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         me = gameState.getPlayers().get(playerNum);
 
         if (handAnimator == null || dealerAnimator == null) {
-            handAnimator = new CardAnimator(me.getHand(), "player", 0xFFFFFFFF, handAS);
+            handAnimator = new CardAnimator(me.getHand(), 0xFFFFFFFF, handAS);
             hands.add(playerNum,handAnimator);
-            dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(), "dealer",
+            dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(),
                     backgroundColor, dealerAS);
             handAS.setAnimator(handAnimator);
             dealerAS.setAnimator(dealerAnimator);
@@ -161,7 +161,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                                 //creates the hand if it hasn't before using playerlist as size reference
                                 //TODO: Find a way to hide the opponent's cards until the game completes
                                 if(hands.size() < playerList.size()){
-                                    hands.add(i , new CardAnimator(player.getHand(),"player",0xFFFFFF,(AnimationSurface) childView));
+                                    hands.add(i , new CardAnimator(player.getHand(),0xFFFFFF,(AnimationSurface) childView));
                                     ((AnimationSurface) childView).setAnimator(hands.get(i));
                                 }
                                 ((AnimationSurface) childView).setAnimator(hands.get(i));
