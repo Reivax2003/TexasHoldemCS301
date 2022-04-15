@@ -48,24 +48,8 @@ public class THLocalGame extends LocalGame {
 		handRanker = new RankHand(context);
 	}
 
-	@Override
-	public void start(GamePlayer[] players) {
-    	//couldn't find a better way to initialize players -Xavier
-
-		super.start(players); //this should initialize the playerNames array
-
-		ArrayList<Player> gamePlayers = new ArrayList<Player>();
-		//for each player create a Player object
-		for (int i = 0; i < players.length; i++) {
-			Player player = new Player(playerNames[i], 1000);
-			gamePlayers.add(player);
-		}
-		//use this to create a fresh game
-		state = new THState(gamePlayers);
-		state.dealPlayers(); //this is the only place this should happen
-		state.placeBlindBets(); //we treat the first player as the dealer
-		sendAllUpdatedState(); //need to call this to update everyone of blind bets
-	}
+	//Gutted all the functions so we can add our own, original can still be accessed since it's on moodle
+	//TODO: All functions below
 
 	@Override
 	protected void sendUpdatedStateTo(GamePlayer p) {
@@ -80,7 +64,7 @@ public class THLocalGame extends LocalGame {
 	@Override
     protected String checkIfGameOver() {
     	//make a copy state that won't change while we evaluate
-    	THState staticState = new THState(state);
+    	THState staticState = new THState(state); //TODO: some issue with static state
 
     	if (staticState.getActivePlayers() == 1) { //if only one player is left
     		Player winner = staticState.getActivePlayersList().get(0);
@@ -89,91 +73,91 @@ public class THLocalGame extends LocalGame {
     	boolean allIn = false;
     	if (checkIfAllIn(staticState)) {
     		allIn = true;
-    		while (state.getRound() < 3) {
+    		while (state.getRound() < 3) { //TODO
 				state.nextRound(); //if it's not the last round, proceed to the next round
 				sendAllUpdatedState(); //update all players
 			}
-			staticState = new THState(state); //make sure we have the actual version of the game
+    		staticState = new THState(state); //make sure we have the actual version of the game
 		}
 
 		if (checkIfRoundOver(staticState) || allIn) {//check if the current round is over
 			if (staticState.getRound() == 3 || allIn) { //if the current round is the last then the game is over
 
 				//for now just evaluate highest card as win
-				int high = 0;
+				int high = -200;
 				Player winner = null;
-				for (Player player : staticState.getPlayers()) {
-					if (!player.isFolded()) { //only care about players who are still in
-						ArrayList<Card> hand = staticState.getDealerHand(); //arraylist is just easier
-						hand.add(player.getHand()[0]);
-						hand.add(player.getHand()[1]);
-						Card best = staticState.highHand(hand);
+				for (Player player : staticState.getPlayers()) { //TODO check dealerhand
+					ArrayList<Card> hand = staticState.getDealerHand(); //arraylist is just easier
+					hand.add(player.getHand()[0]);
+					hand.add(player.getHand()[1]);
+					Card best = staticState.highHand(hand);
 
-						//EvaluateHand eh = new EvaluateHand(hand);
+					//Log.d("hands: ", hand.toString());
+					//EvaluateHand eh = new EvaluateHand(hand);
 
-						String bestStr = staticState.bestHand(hand);
+					String bestStr = staticState.bestHand(hand);
 
-						int value = -100;
+					int value = -100;
 
-						switch (bestStr) {
-							case "royal flush":
-								value = 100 + best.getValue();
-								best.storeValue(value);
-								break;
-							case "straight flush":
-								value = 80 + best.getValue();
-								best.storeValue(value);
-								break;
-							case "four of a kind":
-								value = 60 + best.getValue();
-								best.storeValue(value);
-								break;
-							case "full house":
-								value = 40 + best.getValue();
-								best.storeValue(value);
-								break;
-							case "flush":
-								value = 20 + best.getValue();
-								best.storeValue(value);
-								break;
-							case "straight":
-								value = 0 + best.getValue();
-								best.storeValue(value);
-								break;
-							case "three of a kind":
-								value = -20 + best.getValue();
-								best.storeValue(value);
-								break;
-							case "two pairs":
-								value = -40 + best.getValue();
-								best.storeValue(value);
-								break;
-							case "one pair":
-								value = -60 + best.getValue();
-								best.storeValue(value);
-								break;
-							case "high hand":
-								value = -80 + best.getValue();
-								best.storeValue(value);
-								break;
-						}
-
-						if (best.getEvalValue() > high) {
-							high = best.getValue();
-							winner = player;
-						} else if (best.getEvalValue() == high) {
-							winner = null;
-						}
-						/*if (best.getValue() > high) {
-							high = best.getValue();
-							winner = player;
-						} else if (best.getValue() == high) {
-							winner = null;
-						}
-
-						 */
-
+					switch(bestStr) {
+						case "royal flush":
+							value = 100 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "straight flush":
+							value = 80 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "four of a kind":
+							value = 60 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "full house":
+							value = 40 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "flush":
+							value = 20 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "straight": //Not performing straight correctly when theres two pairs
+							value = 0 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "three of a kind":
+							value = -20 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "two pairs":
+							value = -40 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "one pair": //TODO fix getvalue of besthand as it should be getting combo
+							value = -60 + best.getValue();
+							best.storeValue(value);
+							break;
+						case "high hand":
+							value = -80 + best.getValue();
+							best.storeValue(value);
+							break;
 					}
+
+					if (best.getEvalValue() > high) {
+						high = best.getValue();
+						winner = player;
+					} else if (best.getEvalValue() == high) {
+						winner = null;
+					}
+					/*if (best.getValue() > high) {
+						high = best.getValue();
+						winner = player;
+					} else if (best.getValue() == high) {
+						winner = null;
+					}
+
+					 */
+
+
 				}
 				if (winner == null) {
 					return "Game resulted in a tie";

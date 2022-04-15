@@ -227,13 +227,15 @@ public class THState extends GameState implements Serializable {
          * https://www.w3schools.com/java/java_switch.asp
          * Xavier Santiago (3.26.2022)
          */
-        switch (round) {
+        switch (round) { //TODO
             case 0: //if pre-flop, then deal the flop
                 dealerHand.add(deck.deal());
                 dealerHand.add(deck.deal());
                 dealerHand.add(deck.deal());
                 break;
-            case 1: //other 2 rounds just deal 1
+            case 1:
+                //other 2 rounds just deal 1
+
             case 2:
                 dealerHand.add(deck.deal());
                 break;
@@ -273,6 +275,7 @@ public class THState extends GameState implements Serializable {
 
 
         EvaluateHand eh = new EvaluateHand(hand);
+
 
         if (eh.checkFlush() == true && eh.checkStraight() == true && eh.highHand().getValue() == 14) {
             str = "royal flush";
