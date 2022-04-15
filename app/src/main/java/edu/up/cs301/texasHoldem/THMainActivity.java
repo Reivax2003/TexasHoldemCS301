@@ -42,12 +42,17 @@ public class THMainActivity extends GameMainActivity {
 				return new THComputerPlayerEasy(name);
 			}});
 
+		playerTypes.add(new GamePlayerType("computer player (hard)") {
+			public GamePlayer createPlayer(String name) {
+				return new THComputerPlayerHard(name);
+			}});
+
 		// Create a game configuration class for SlapJack
 		GameConfig defaultConfig = new GameConfig(playerTypes, 2, 6, "Texas Holdem", PORT_NUMBER);
 
 		// Add the default players
 		defaultConfig.addPlayer("Human", 0);
-		defaultConfig.addPlayer("Computer", 1);
+		defaultConfig.addPlayer("Computer", 2);
 		
 		// Set the initial information for the remote player
 		defaultConfig.setRemoteData("Guest", "", 1);

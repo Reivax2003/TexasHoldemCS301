@@ -124,6 +124,9 @@ public class THState extends GameState implements Serializable {
         }
     }
 
+    /**
+     * forces the first two players to place a small and large bet starting with player 0
+     */
     public void placeBlindBets() {
         bet(0, blindBet/2);
         bet(1, blindBet);
@@ -143,15 +146,21 @@ public class THState extends GameState implements Serializable {
         if (currentPlayer.getBet() + amount < currentBet) {
             return false;
         }
-        //prevents player from skipping their turn
+        /**
+         * WHY IS THIS HERE THIS BREAKS EVERYTHING, I'M COMMENTING THIS OUT
+         *
+         //prevents player from skipping their turn
         if (amount == 0 && roundTurns > 0) {
             return false;
         }
-
         if (amount == 0){
             nextTurn();
             roundTurns = 0;
             return true;
+        }*/
+
+        if (amount > currentPlayer.getBalance()) {
+            amount = currentPlayer.getBalance(); //this shouldn't happen but it is for some reason
         }
 
         currentPlayer.addBet(amount);
@@ -206,19 +215,19 @@ public class THState extends GameState implements Serializable {
     public void nextTurn() {
         playerTurn++;
         roundTurns++;
-        int backupTurn = playerTurn;
         if (playerTurn >= players.size()) {
             playerTurn = 0;
         }
+        int backupTurn = playerTurn;
         Player player = players.get(playerTurn);
 
         while (player.isAllIn() || player.isFolded()) {
+            playerTurn++;
             //if same as length reset to 0
             if (playerTurn >= players.size()) {
                 playerTurn = 0;
             }
             player = players.get(playerTurn);
-            playerTurn++;
             if (playerTurn == backupTurn) {
                 break; //in case everyone goes all in, game should proceed to end immediately
             }
@@ -230,22 +239,15 @@ public class THState extends GameState implements Serializable {
      * called in local game while evaluating if the game is over
      */
     public void nextRound() {
-        playerTurn = 0; //always starts with the first player. technically between games this should rotate
-        Player player = players.get(playerTurn);
-        while (player.isAllIn() || player.isFolded()) {
-            player = players.get(playerTurn);
-            playerTurn++;
-            if (playerTurn == players.size()) { //if everyone is all in or folded
-                playerTurn = 0;
-                break;
-            }
-        }
+        //always starts with the first player. technically between games this should rotate
+        playerTurn = players.size()-1;
+        nextTurn(); //easier than rewriting all that code
         /**
          * Citation: looked up how switch/case works
          * https://www.w3schools.com/java/java_switch.asp
          * Xavier Santiago (3.26.2022)
          */
-        switch (round) { //TODO
+        switch (round) {
             case 0: //if pre-flop, then deal the flop
                 dealerHand.add(deck.deal());
                 dealerHand.add(deck.deal());
@@ -263,6 +265,7 @@ public class THState extends GameState implements Serializable {
         round++;
 
         Log.i("round",""+round);
+        Log.i("player turn", ""+playerTurn);
     }
 
     /**

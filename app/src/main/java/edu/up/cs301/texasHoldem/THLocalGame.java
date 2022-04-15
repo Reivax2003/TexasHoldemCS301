@@ -85,39 +85,35 @@ public class THLocalGame extends LocalGame {
 
 	@Override
     protected String checkIfGameOver() {
-    	//make a copy state that won't change while we evaluate
-    	THState staticState = new THState(state); //TODO: some issue with static state
-
-    	if (staticState.getActivePlayers() == 1) { //if only one player is left
-    		Player winner = staticState.getActivePlayersList().get(0);
+    	if (state.getActivePlayers() == 1) { //if only one player is left
+    		Player winner = state.getActivePlayersList().get(0);
     		return "Winner: "+winner.getName()+", everyone else folded\n";
 		}
     	boolean allIn = false;
-    	if (checkIfAllIn(staticState)) {
+    	if (checkIfAllIn(state)) {
     		allIn = true;
     		while (state.getRound() < 3) { //TODO
 				state.nextRound(); //if it's not the last round, proceed to the next round
 				sendAllUpdatedState(); //update all players
 			}
-    		staticState = new THState(state); //make sure we have the actual version of the game
 		}
 
-		if (checkIfRoundOver(staticState) || allIn) {//check if the current round is over
-			if (staticState.getRound() == 3 || allIn) { //if the current round is the last then the game is over
+		if (checkIfRoundOver(state) || allIn) {//check if the current round is over
+			if (state.getRound() == 3 || allIn) { //if the current round is the last then the game is over
 
 				//for now just evaluate highest card as win
 				int high = -200;
 				Player winner = null;
-				for (Player player : staticState.getPlayers()) { //TODO check dealerhand
-					ArrayList<Card> hand = staticState.getDealerHand(); //arraylist is just easier
+				for (Player player : state.getPlayers()) { //TODO check dealerhand
+					ArrayList<Card> hand = state.getDealerHand(); //arraylist is just easier
 					hand.add(player.getHand()[0]);
 					hand.add(player.getHand()[1]);
-					Card best = staticState.highHand(hand);
+					Card best = state.highHand(hand);
 
 					//Log.d("hands: ", hand.toString());
 					//EvaluateHand eh = new EvaluateHand(hand);
 
-					String bestStr = staticState.bestHand(hand);
+					String bestStr = state.bestHand(hand);
 
 					int value = -100;
 

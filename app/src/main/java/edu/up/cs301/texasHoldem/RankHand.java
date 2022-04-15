@@ -92,8 +92,31 @@ public class RankHand implements Serializable {
             }
             return rank5(cards);
         } else {
-            return 0;
+            int bestRank = 9999;
+            ArrayList<int[]> combos = getCombinationsOfSize(hand.length);
+            for (int[] each : combos) {
+                int[] subhand = new int[5];
+                int index = 0;
+                for (int i = 0; i < hand.length; i++) {
+                    if (each[i] == 1) {
+                        subhand[index] = hand[i].getCardBinary();
+                    }
+                }
+                int rank = rank5(subhand);
+                if (rank < bestRank) bestRank = rank;
+            }
+            return bestRank;
         }
+    }
+
+    /**
+     * Return the % of cards this hand is better than
+     *
+     * @param hand the cards to be evaluated (must be at least 5)
+     * @return rank of card as an int between 1 (royal flush) and 0 (unsuited 7-5-4-3-2)
+     */
+    public float getHandRankFloat(Card[] hand) {
+        return (getHandRank(hand)-1)/7461f;
     }
 
     private int rank5(int[] cards) {
@@ -180,11 +203,28 @@ public class RankHand implements Serializable {
      * @param size size of list
      * @return list of lists of 1s and 0s, 1s meaning include, 0s meaning exclude
      */
-    private int[][] getCombinationsofSize(int size) {
-        ArrayList<Integer[]> combinations = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-
+    private ArrayList<int[]> getCombinationsOfSize(int size) {
+        ArrayList<int[]> combinations = new ArrayList<>();
+        for (int i = 0; i < Math.pow(2, size)-1; i++) {
+            /**
+             * how to convert a integer to a binary string
+             * https://www.educative.io/edpresso/how-to-convert-an-integer-to-binary-in-java
+             * Xavier Santiago 4.14.22
+             */
+            String bString = Integer.toBinaryString(i);
+            String bString0s = bString.replace("1","");
+            //if there are exactly 5 1s
+            if (bString0s.length() == bString.length()-5) {
+                char[] chars = bString.toCharArray();
+                int[] ints = new int[size];
+                for (int j = 0; j < size; j++) {
+                    //convert to integers
+                    if (j < chars.length) ints[j] = chars[j] == '1' ? 1 : 0;
+                    else ints[j] = 0;
+                }
+                combinations.add(ints);
+            }
         }
-        return new int[0][0];
+        return combinations;
     }
 }

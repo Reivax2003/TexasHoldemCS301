@@ -116,6 +116,13 @@ public class Card implements Serializable {
     }
 
     /**
+     * @return value of the card as a single character
+     */
+    public String getValueChar() {
+        return values.get(value);
+    }
+
+    /**
      * @return Suit of card as a char: H, D, S, or C
      */
     public char getSuit() {

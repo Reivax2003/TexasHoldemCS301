@@ -1,7 +1,5 @@
 package edu.up.cs301.texasHoldem;
 
-import android.util.Log;
-
 import java.util.Arrays;
 import java.util.Random;
 
@@ -17,7 +15,7 @@ import edu.up.cs301.game.GameFramework.players.GameComputerPlayer;
  * @author Kevin Nguyen
  * @version 3.30.22
  */
-public class THComputerPlayerHard extends GameComputerPlayer {
+public class THComputerPlayerShy extends GameComputerPlayer {
 
     private RankHand handRanker;
     private boolean fisrtTurn = true;
@@ -39,41 +37,40 @@ public class THComputerPlayerHard extends GameComputerPlayer {
 
             // start with the suited hands
             // index 0, always raise
-            {"AK", "AQ", "AJ", "AT", "A9", "A8", "A7", "A6", "A5", "A4", "A3", "A2", "KQ", "KJ",
-                    "KT", "QJ", "QT", "JT", "T9", "65"},
+            {"AK"},
             // index 1, raise once then call
-            {"K9", "K8", "Q9", "J9", "98", "87", "76", "54"},
+            {"AQ", "AJ", "KQ"},
             // index 2, always call
-            {"K7", "K6", "K5", "Q8", "J8", "T8", "97", "86", "75"},
+            {"AT", "JK", "JQ"},
             // index 3, call once then fold
-            {"K4", "K3", "K2", "Q7", "Q6", "Q5", "J7", "T7", "T6", "96", "85", "64", "53", "43"},
+            {"9A", "KT", "QT", "JT"},
 
             //next unsuited hands
             // index 4, always raise
-            {"AK", "AQ", "KQ", "AJ", "AT"},
+            {},
             // index 5, raise once then call
-            {"KJ", "QJ"},
+            {},
             // index 6, always call
-            {"KT", "QT", "JT"},
+            {"AK", "AQ"},
             //index 7, call once then fold
-            {"A9", "K9", "Q9", "J9", "T9", "A8", "98", "A7", "A6", "A5", "A4"},
+            {"KQ"},
 
             //and finally pairs
             // index 8, always raise
-            {"AA", "KK", "QQ", "JJ", "TT", "99", "88", "77", "66", "55"},
+            {"AA", "KK", "QQ"},
             // index 9, raise once then call
-            {"44"},
+            {"JJ"},
             // index 10, always call
-            {"33", "22"},
+            {"TT", "99"},
             // index 11, call once then fold
-            {}
+            {"88", "77"}
     };
 
     /**
      * constructor
      * @param name the player's name (e.g., "John")
      */
-    public THComputerPlayerHard(String name) {
+    public THComputerPlayerShy(String name) {
         super(name);
     }
 

@@ -109,62 +109,64 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         dealerAnimator.setCards(gameState.getDealerHandAsArray());
 
 
+        //hopefully I remember to remove this, i just want to play a bunch of ais against each other
+        if (false) {
+            //Sets up the other players Information
+            int idx = 0;
+            for(int i = 0; i < playerList.size(); i++){
+                Player player = gameState.getPlayers().get(i);
+                LinearLayout layout = null;
+                //To separate which one is the player and which one is the opponent
+                if(i == playerNum){
+                    //skip the player bc they'll be updated in UpdateUI
+                    continue;
+                }
+                else{
+                    layout = oppProfiles[idx];
+                    idx++;
+                }
 
-        //Sets up the other players Information
-        int idx = 0;
-        for(int i = 0; i < playerList.size(); i++){
-            Player player = gameState.getPlayers().get(i);
-            LinearLayout layout = null;
-            //To separate which one is the player and which one is the opponent
-            if(i == playerNum){
-                //skip the player bc they'll be updated in UpdateUI
-                continue;
-            }
-            else{
-                layout = oppProfiles[idx];
-                idx++;
-            }
+                if(player != null) { //Makes sure that the player exist (should not trigger)
+                    /**
+                     * External citation - Feb 13, 2022
+                     * problem: getting the children of the liner layout
+                     * link: https://stackoverflow.com/questions/6615723/getting-child-elements-from-linearlayout
+                     * solution: do a for loop to access all the views inside the layout
+                     */
+                    int count = layout.getChildCount();
+                    for (int j = 0; j < count; j++) {
+                        View id = layout.getChildAt(j);
 
-            if(player != null) { //Makes sure that the player exist (should not trigger)
-                /**
-                 * External citation - Feb 13, 2022
-                 * problem: getting the children of the liner layout
-                 * link: https://stackoverflow.com/questions/6615723/getting-child-elements-from-linearlayout
-                 * solution: do a for loop to access all the views inside the layout
-                 */
-                int count = layout.getChildCount();
-                for (int j = 0; j < count; j++) {
-                    View id = layout.getChildAt(j);
-
-                    if(id instanceof ImageView){
-                        ((ImageView) id).setImageResource(R.drawable.cheems_avatar);
-                    }
-                    else if(id instanceof LinearLayout){
-                        //Since one of the child is also a linear layout, I have to do the same damned for loop
-                        //But this time with tag! (yay....)
-                        LinearLayout childLayout = ((LinearLayout) id);
-                        int countId = childLayout.getChildCount();
-                        for(int c = 0; c < countId; c++){
-                            View childView = childLayout.getChildAt(c);
-                            if(childView instanceof TextView) {
-                                String tag = (String) childView.getTag();
-                                if (tag.equals("name")) {
-                                    ((TextView)childView).setText(player.getName());
-                                } else if (tag.equals("action")) {
-                                    //TODO: Get the action from each player from somewhere
-                                    ((TextView)childView).setText(player.getAction());
-                                } else if (tag.equals("money")) {
-                                    ((TextView)childView).setText("$ " + player.getBalance());
+                        if(id instanceof ImageView){
+                            ((ImageView) id).setImageResource(R.drawable.cheems_avatar);
+                        }
+                        else if(id instanceof LinearLayout){
+                            //Since one of the child is also a linear layout, I have to do the same damned for loop
+                            //But this time with tag! (yay....)
+                            LinearLayout childLayout = ((LinearLayout) id);
+                            int countId = childLayout.getChildCount();
+                            for(int c = 0; c < countId; c++){
+                                View childView = childLayout.getChildAt(c);
+                                if(childView instanceof TextView) {
+                                    String tag = (String) childView.getTag();
+                                    if (tag.equals("name")) {
+                                        ((TextView)childView).setText(player.getName());
+                                    } else if (tag.equals("action")) {
+                                        //TODO: Get the action from each player from somewhere
+                                        ((TextView)childView).setText(player.getAction());
+                                    } else if (tag.equals("money")) {
+                                        ((TextView)childView).setText("$ " + player.getBalance());
+                                    }
                                 }
-                            }
-                            else if(childView instanceof AnimationSurface){
-                                //creates the hand if it hasn't before using playerlist as size reference
-                                //TODO: Find a way to hide the opponent's cards until the game completes
-                                if(hands.size() < playerList.size()){
-                                    hands.add(i , new CardAnimator(player.getHand(),0xFFFFFF,(AnimationSurface) childView));
+                                else if(childView instanceof AnimationSurface){
+                                    //creates the hand if it hasn't before using playerlist as size reference
+                                    //TODO: Find a way to hide the opponent's cards until the game completes
+                                    if(hands.size() < playerList.size()){
+                                        hands.add(i , new CardAnimator(player.getHand(),0xFFFFFF,(AnimationSurface) childView));
+                                        ((AnimationSurface) childView).setAnimator(hands.get(i));
+                                    }
                                     ((AnimationSurface) childView).setAnimator(hands.get(i));
                                 }
-                                ((AnimationSurface) childView).setAnimator(hands.get(i));
                             }
                         }
                     }
