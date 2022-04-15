@@ -2,13 +2,14 @@ package edu.up.cs301.texasHoldem;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
  * 
  */
-public class Deck {
+public class Deck implements Serializable {
     //use an arraylist so we can vary the size
     private ArrayList<Card> cards;
 

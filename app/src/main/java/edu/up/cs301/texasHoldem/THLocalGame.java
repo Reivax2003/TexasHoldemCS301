@@ -1,5 +1,6 @@
 package edu.up.cs301.texasHoldem;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class THLocalGame extends LocalGame {
 
     // the game's state
     THState state;
+    Context context;
+    RankHand handRanker;
 
     /**
      * Constructors for the SJLocalGame.
@@ -36,11 +39,13 @@ public class THLocalGame extends LocalGame {
         super.state = this.state;
     }
 
-	public THLocalGame(THState initState) {
+	public THLocalGame(THState initState, Context context) {
 		Log.i("THLocalGame", "creating game");
 		// create the state for the beginning of the game
 		this.state = initState;
 		super.state = initState;
+		this.context = context;
+		handRanker = new RankHand(context);
 	}
 
 	@Override

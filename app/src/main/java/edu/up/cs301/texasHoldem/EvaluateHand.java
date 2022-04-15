@@ -1,7 +1,16 @@
 package edu.up.cs301.texasHoldem;
 
+import android.content.Context;
+import android.content.res.Resources;
+
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Scanner;
+
+import edu.up.cs301.game.R;
 
 /**
  * Class to evaluate a given set of cards for the best poker hand
@@ -22,7 +31,6 @@ public class EvaluateHand {
          for (int i = 0; i < game.length; i++) {
              cards[i] = game[i];
          }
-
     }
 
     public EvaluateHand(ArrayList<Card> game) {
@@ -30,7 +38,6 @@ public class EvaluateHand {
         for (int i = 0; i < game.size(); i++) {
             cards[i] = game.get(i);
         }
-
     }
 
     public boolean checkFlush()
@@ -218,5 +225,4 @@ public class EvaluateHand {
         }
         return str;
     }
-
 }

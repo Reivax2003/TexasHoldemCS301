@@ -2,6 +2,7 @@ package edu.up.cs301.texasHoldem;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,7 +17,7 @@ import edu.up.cs301.game.GameFramework.infoMessage.GameState;
  * @author Kevin Nguyen
  * @version 2.22.2022
  */
-public class THState extends GameState {
+public class THState extends GameState implements Serializable {
     private ArrayList<Player> players;
     private ArrayList<Card> dealerHand = new ArrayList<Card>();
     private Deck deck;
