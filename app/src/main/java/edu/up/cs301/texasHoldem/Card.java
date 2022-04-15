@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class Card implements Serializable {
     private int value;
     private String shortName;
     private String longName;
+    private int evalValue;
     //this array lets us quickly convert between integer value and string value
     //assume aces are high (doesn't really matter)
     private ArrayList<String> values = new ArrayList<String>
@@ -244,5 +246,76 @@ public class Card implements Serializable {
                                 resIdx[i][j]);
             }
         }
+    }
+
+    public void storeValue(int x) {
+        evalValue = x;
+    }
+
+    public int getEvalValue() {
+        return evalValue;
+    }
+
+    /**
+     * Gets the representation of a card in binary form
+     * Originally from:
+     *
+     * Static class that handles cards. We represent cards as 32-bit integers, so
+     * there is no object instantiation - they are just ints. Most of the bits are
+     * used, and have a specific meaning. See below:
+     *
+     *                                 Card:
+     *
+     *                       bitrank     suit rank   prime
+     *                 +--------+--------+--------+--------+
+     *                 |xxxbbbbb|bbbbbbbb|cdhsrrrr|xxpppppp|
+     *                 +--------+--------+--------+--------+
+     *
+     *     1) p = prime number of rank (deuce=2,trey=3,four=5,...,ace=41)
+     *     2) r = rank of card (deuce=0,trey=1,four=2,five=3,...,ace=12)
+     *     3) cdhs = suit of card (bit turned on based on suit of card)
+     *     4) b = bit turned on depending on rank of card
+     *     5) x = unused
+     *
+     * This representation will allow us to do very important things like:
+     * - Make a unique prime prodcut for each hand
+     * - Detect flushes
+     * - Detect straights
+     *
+     * and is also quite performant.
+     *
+     * @return integer form of binary described above
+     */
+    public int getCardBinary() {
+        String STR_RANKS = "23456789TJQKA";
+        int[] INT_RANKS = {0,1,2,3,4,5,6,7,8,9,10,11,12};
+        int[] PRIMES = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41};
+
+        String[] CHAR_RANK_TO_INT_RANK = {"2","3","4","5","6","7","8","9","T","J","Q","K","A"};
+        /**
+         * how to initialize an arraylist with variables
+         * https://stackoverflow.com/questions/16194921/initializing-arraylist-with-some-predefined-values
+         * Xavier Santiago 4.12.22
+         */
+        ArrayList<String> CHAR_SUIT_TO_INT_SUIT = new ArrayList<>(
+                Arrays.asList(null, "S", "H", null, "D", null, null, null, "C"));
+
+        String INT_SUIT_TO_CHAR_SUIT = "xshxdxxxc";
+
+        int rank_int = value-2;
+        int suit_int = CHAR_SUIT_TO_INT_SUIT.indexOf(String.valueOf(suit));
+        int rank_prime = PRIMES[rank_int];
+
+        int bitrank = 1 << rank_int << 16;
+        System.out.println("bitrank: "+bitrank);
+        int bitsuit = suit_int << 12;
+        System.out.println("bitsuit: "+bitsuit+" "+suit_int);
+        int rank = rank_int << 8;
+        System.out.println("rank: "+rank);
+
+        int result = bitrank | bitsuit | rank | rank_prime;
+
+        //Log.i("card", ""+result);
+        return result;
     }
 }

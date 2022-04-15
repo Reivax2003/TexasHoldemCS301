@@ -1,7 +1,16 @@
 package edu.up.cs301.texasHoldem;
 
+import android.content.Context;
+import android.content.res.Resources;
+
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Scanner;
+
+import edu.up.cs301.game.R;
 
 /**
  * Class to evaluate a given set of cards for the best poker hand
@@ -15,13 +24,20 @@ import java.util.Collections;
 public class EvaluateHand {
 
     private Card[] cards;
+    private ArrayList<Card> cardsAL;
 
     public EvaluateHand(Card[] game) {
          cards = new Card[game.length];
          for (int i = 0; i < game.length; i++) {
              cards[i] = game[i];
          }
+    }
 
+    public EvaluateHand(ArrayList<Card> game) {
+        cards = new Card[game.size()];
+        for (int i = 0; i < game.size(); i++) {
+            cards[i] = game.get(i);
+        }
     }
 
     public boolean checkFlush()
@@ -76,7 +92,7 @@ public class EvaluateHand {
 
     //3, 2, 5, 10, 3
     public void sortValue() {
-        for (int x = 0; x < 7; x++) { //INTERATIONS MAY VARY, CHECK WITH DECK
+        for (int x = 0; x < 7; x++) { //ITERATIONS MAY VARY, CHECK WITH DECK
             for (int i = 0; i < cards.length-1; i++) {
                 Card[] temp = new Card[cards.length];
                 if (cards[i].getValue() > cards[i+1].getValue()) {
@@ -109,13 +125,17 @@ public class EvaluateHand {
     //2, 2, 5, 5, 9
     public int checkPair() {
         ArrayList<Card> temp = new ArrayList<>();
+        Card[] copy = new Card[cards.length];
+        for(int i = 0; i < cards.length; ++i) {
+            copy[i] = cards[i];
+        }
         int count = 0;
         this.sortValue();
-        for (int i = 0; i < cards.length-1; i++) {
+        for (int i = 0; i < copy.length-1; i++) {
 
             if (cards[i].getValue() == cards[i+1].getValue()) {
-                temp.add(cards[i]);
-                cards[i] = null;
+                temp.add(copy[i]);
+                copy[i] = null;
             }
         }
 
@@ -198,6 +218,10 @@ public class EvaluateHand {
         return winCard;
     }
 
+    public int highHandInt() {
+        return highHand().getValue();
+    }
+
     public String toString() {
         String str = " ";
         for (int i = 0; i < cards.length; i++) {
@@ -205,5 +229,4 @@ public class EvaluateHand {
         }
         return str;
     }
-
 }

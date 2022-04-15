@@ -3,12 +3,14 @@ package edu.up.cs301.texasHoldem;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.io.Serializable;
+
 /**
  * Player class containing all variables we need
  * @author Xavier Santiago
  * @version 3.29.22
  */
-public class Player {
+public class Player implements Serializable {
     private String name;
     private int balance;
     private int bet = 0;
