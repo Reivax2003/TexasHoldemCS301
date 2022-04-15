@@ -38,6 +38,10 @@ public class Player implements Serializable {
         hand = orig.hand.clone();
     }
 
+    public void redactCards() {
+        hand[0] = null;
+        hand[1] = null;
+    }
     public String getName(){ return name;}
 
     public int getBet(){ return bet;}

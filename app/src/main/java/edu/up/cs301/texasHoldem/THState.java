@@ -102,14 +102,13 @@ public class THState extends GameState implements Serializable {
     }
 
     /**
-     * redacts the cards of all opponents
+     * redacts the cards of all opponents. this should only ever be called on a copy of the state
      * @param playerNum the player who will receive this redacted version of the state
      */
     public void redactFor(int playerNum) {
         for (int i = 0; i < players.size(); i++) {
             if (i != playerNum) {
-                Player orig = players.remove(i);
-                players.add(i, new Player(orig.getName(), orig.getBalance()));
+                players.get(i).redactCards();
             }
         }
     }
