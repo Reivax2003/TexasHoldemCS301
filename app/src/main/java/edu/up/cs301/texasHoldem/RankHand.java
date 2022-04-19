@@ -230,9 +230,9 @@ public class RankHand implements Serializable {
              * Xavier Santiago 4.14.22
              */
             String bString = Integer.toBinaryString(i);
-            String bString0s = bString.replace("1","");
+            String bString0s = bString.replace("0","");
             //if there are exactly 5 1s
-            if (bString0s.length() == bString.length()-5) {
+            if (bString0s.length() == 5) {
                 char[] chars = bString.toCharArray();
                 int[] ints = new int[size];
                 for (int j = 0; j < size; j++) {
