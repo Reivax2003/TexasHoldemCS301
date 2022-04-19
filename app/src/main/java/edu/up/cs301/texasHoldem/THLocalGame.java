@@ -268,6 +268,9 @@ public class THLocalGame extends LocalGame {
 				return false;
 			}
 		}
+		if (!state.allChecked()) {
+			return false;
+		}
 		return true;
 	}
 

@@ -28,7 +28,7 @@ public class THState extends GameState implements Serializable {
     int playerTurn;
     private int blindBet;
     private int currentBet; //easier to keep track of this than iterate through players every time we need it
-    private int minBet; //what is the minimum amount of money you are required to bet
+    private boolean[] startOfRoundCheck;
 
     //this has to be treated specially, it'll be passed in when the state is distributed
     //it can't be put in the constructor because it requires a context, which breaks tests
@@ -37,8 +37,8 @@ public class THState extends GameState implements Serializable {
     //just an empty constructor, this'll never be used but it's useful for now
     public THState() {
         players = new ArrayList<Player>();
+        startOfRoundCheck = new boolean[0];
         blindBet = 20; //arbitrary value
-        minBet = 1;
         MAX_TIMER = 60; //arbitrary value
         timer = MAX_TIMER;
         playerTurn = 0;
@@ -52,19 +52,20 @@ public class THState extends GameState implements Serializable {
     public THState(ArrayList<Player> players) {
         this.players = players;
         blindBet = 20; //arbitrary value
-        minBet = 1;
         MAX_TIMER = 60; //arbitrary value
         timer = MAX_TIMER;
         playerTurn = 0;
         round = 0;
         currentBet = 0;
         deck = new Deck();
+
+        startOfRoundCheck = new boolean[players.size()];
+        resetCheckCounter();
     }
 
     public THState(ArrayList<Player> players, int maxTimer, int blindBet) {
         this.players = (ArrayList<Player>) players.clone();
         this.blindBet = blindBet;
-        minBet = 1;
         MAX_TIMER = maxTimer; //TODO: change timer conditions in the future
         timer = MAX_TIMER;
         playerTurn = 0;
@@ -72,6 +73,9 @@ public class THState extends GameState implements Serializable {
         roundTurns = 0;
         currentBet = 0;
         deck = new Deck();
+
+        startOfRoundCheck = new boolean[players.size()];
+        resetCheckCounter();
     }
 
     //deep copy constructor, need to iterate through lists to make copies of all objects
@@ -82,7 +86,6 @@ public class THState extends GameState implements Serializable {
         this.MAX_TIMER = orig.MAX_TIMER;
         this.playerTurn = orig.playerTurn;
         this.blindBet = orig.blindBet;
-        this.minBet = orig.minBet;
         this.currentBet = orig.currentBet;
 
         //the arraylists need deep copies so they don't contain references
@@ -99,6 +102,14 @@ public class THState extends GameState implements Serializable {
         this.deck = new Deck(orig.deck); //so we know which cards are already in play
 
         this.handRanker = orig.handRanker; //just in case, this doesn't always exist
+
+        this.startOfRoundCheck = orig.startOfRoundCheck.clone();
+    }
+
+    public void resetCheckCounter() {
+        for (int i = 0; i < players.size(); i++) {
+            startOfRoundCheck[i] = false;
+        }
     }
 
     /**
@@ -176,6 +187,7 @@ public class THState extends GameState implements Serializable {
             currentPlayer.goAllIn();
         }
 
+        startOfRoundCheck[playerID] = true;
         nextTurn(); //taking any action ends your turn
 
         Log.i("GameState", "player "+playerID+" bets "+amount);
@@ -194,6 +206,7 @@ public class THState extends GameState implements Serializable {
 
         Log.i("GameState", "player "+playerID+" folds");
 
+        startOfRoundCheck[playerID] = true;
         currentPlayer.setFold(true);
         nextTurn(); //taking any action ends your turn
         return true;
@@ -263,6 +276,7 @@ public class THState extends GameState implements Serializable {
         }
         roundTurns = 0;
         round++;
+        resetCheckCounter();
 
         Log.i("round",""+round);
         Log.i("player turn", ""+playerTurn);
@@ -328,7 +342,6 @@ public class THState extends GameState implements Serializable {
     public int getPlayerTurn() {return playerTurn;}
     public int getBlindBet() {return blindBet;}
     public int getCurrentBet() {return currentBet;}
-    public int getMinBet() {return minBet;}
     public void setCurrentBet(int bet) { currentBet = bet; } //for use in unit tests
     public void setTimer(int time) { timer = time; } //for use in unit tests
     public void setDealerHand(ArrayList<Card> hand) { dealerHand = (ArrayList<Card>) hand.clone(); }
@@ -339,6 +352,19 @@ public class THState extends GameState implements Serializable {
     public ArrayList<Card> getDealerHand() {return (ArrayList<Card>) dealerHand.clone();}
     public Card[] getDealerHandAsArray() {
         return getDealerHand().toArray(new Card[getDealerHand().size()]).clone();
+    }
+
+    /**
+     * for use at the start of a round, if all the players check 0 the round is over
+     * @return whether or not all players have checked this round
+     */
+    public boolean allChecked() {
+        for (int i = 0; i < startOfRoundCheck.length; i++) {
+            if (!startOfRoundCheck[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

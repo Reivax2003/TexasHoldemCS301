@@ -225,7 +225,7 @@ public class RankHand implements Serializable {
         ArrayList<int[]> combinations = new ArrayList<>();
         for (int i = 0; i < Math.pow(2, size)-1; i++) {
             /**
-             * how to convert a integer to a binary string
+             * how to convert an integer to a binary string
              * https://www.educative.io/edpresso/how-to-convert-an-integer-to-binary-in-java
              * Xavier Santiago 4.14.22
              */

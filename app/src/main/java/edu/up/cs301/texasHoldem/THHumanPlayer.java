@@ -301,7 +301,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
      * @return value that should be bet if the bet action is taken
      */
     private int getSliderBet() {
-        int minBet = Math.max(gameState.getCurrentBet()-me.getBet(), gameState.getMinBet());
+        int minBet = gameState.getCurrentBet()-me.getBet();
         float sliderProgress = (float) valueSB.getProgress()/valueSB.getMax();
         int value = (int) (minBet+((me.getBalance()-minBet)*sliderProgress));
         return value;

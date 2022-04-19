@@ -305,7 +305,6 @@ public class THComputerPlayerHard extends GameComputerPlayer {
             amount = betNeeded;
         }
         amount = Math.max(amount, betNeeded); //just in case, this should never be needed
-        amount = Math.max(amount, state.getMinBet());
         // if the min bet is greater than our balance we still bet, I don't know if this is allowed
         // for now it'll stay in since going all in seems to be a unique case
         amount = Math.min(amount, self.getBalance());
