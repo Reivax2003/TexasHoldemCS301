@@ -55,7 +55,7 @@ public class RankHand implements Serializable {
              * https://stackoverflow.com/questions/9260126/what-are-the-differences-between-char-literals-n-and-r-in-java
              * Xavier Santiago 4.19.22
              */
-            String[] lookup = result.split(System.getProperty("line.separator")); //turn into list
+            String[] lookup = result.split(System.lineSeparator()); //turn into list
             for (int i = 0; i < lookup.length; i++) {
                 String[] temp = lookup[i].split(",");
 
@@ -69,15 +69,11 @@ public class RankHand implements Serializable {
 
         in = res.openRawResource(R.raw.unsuited);
         try {
-            /**
-             * Checked how to read all of an input stream
-             * https://stackoverflow.com/questions/309424/how-do-i-read-convert-an-inputstream-into-a-string-in-java
-             * Xavier Santiago 4.14.22
-             */
+            //repeat what we did for the flushes
             Scanner s = new Scanner(in).useDelimiter("\\A");
             String result = s.hasNext() ? s.next() : ""; //read all of file
 
-            String[] lookup = result.split(System.getProperty("line.separator")); //turn into list
+            String[] lookup = result.split(System.lineSeparator()); //turn into list
             for (int i = 0; i < lookup.length; i++) {
                 String[] temp = lookup[i].split(",");
                 unsuited.put(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
