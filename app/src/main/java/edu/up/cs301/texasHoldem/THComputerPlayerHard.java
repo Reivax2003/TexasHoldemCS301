@@ -115,7 +115,7 @@ public class THComputerPlayerHard extends GameComputerPlayer {
 
         //randomize raise amount from 6% to 10% of remaining money
         Random r = new Random(); //to make things a bit more human-like
-        raiseAmount += r.nextInt((int) ((self.getBalance()-betNeeded)*0.04f));
+        raiseAmount += r.nextInt((int) (1 + (self.getBalance()-betNeeded)*0.04f));
         raiseAmount = (raiseAmount/5)*5; //intentional integer division (round to 5)
 
         /** PRE-FLOP EVALUATION */
