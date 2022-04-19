@@ -15,6 +15,9 @@ import edu.up.cs301.game.GameFramework.animation.Animator;
  * in the center of whatever bounds the animator is given
  *
  * @author Xavier Santiago
+ * @author Milton Nguy
+ * @author Thomas Kone
+ * @author Kevin Nguyen
  * @version 3.30.22
  */
 public class CardAnimator implements Animator {

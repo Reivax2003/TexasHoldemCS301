@@ -7,7 +7,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * 
+ * Class that stores a deck of cards and deals cards to players.
+ *
+ * @author Xavier Santiago
+ * @author Milton Nguy
+ * @author Thomas Kone
+ * @author Kevin Nguyen
+ * @version 3.15.22
  */
 public class Deck implements Serializable {
     //use an arraylist so we can vary the size

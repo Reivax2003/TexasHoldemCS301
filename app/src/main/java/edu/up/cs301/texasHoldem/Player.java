@@ -8,6 +8,9 @@ import java.io.Serializable;
 /**
  * Player class containing all variables we need
  * @author Xavier Santiago
+ * @author Milton Nguy
+ * @author Thomas Kone
+ * @author Kevin Nguyen
  * @version 3.29.22
  */
 public class Player implements Serializable {

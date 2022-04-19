@@ -14,6 +14,16 @@ import java.util.Scanner;
 
 import edu.up.cs301.game.R;
 
+/**
+ * Class to evaluate a given set of cards for the best poker hand using binaries and hashtables.
+ *
+ * @author Xavier Santiago
+ * @author Milton Nguy
+ * @author Thomas Kone
+ * @author Kevin Nguyen
+ * @version 4.15.22
+ */
+
 public class RankHand implements Serializable {
 
     private Context context; //allows us to read from resources
@@ -142,6 +152,7 @@ public class RankHand implements Serializable {
         // check if the suit bits are all the same
         // 61440 is so we only check the suit bits
         // & is bitwise and operator so all must have same suit
+
         if ((cards[0] & cards[1] & cards[2] & cards[3] & cards[4] & 61440) != 0){
             //bitshift right 16 places to just get bit ranks
             //this gets the bit ranks of all cards, i.e. tracks which values we have in our hand

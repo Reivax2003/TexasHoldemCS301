@@ -118,6 +118,7 @@ public class THComputerPlayerHard extends GameComputerPlayer {
         raiseAmount += r.nextInt((int) (1 + (self.getBalance()-betNeeded)*0.04f));
         raiseAmount = (raiseAmount/5)*5; //intentional integer division (round to 5)
 
+
         /** PRE-FLOP EVALUATION */
         if (state.getRound() == 0) { //if we're in the pre-flop
             Card[] hand = self.getHand();
@@ -299,6 +300,7 @@ public class THComputerPlayerHard extends GameComputerPlayer {
             raiseAmount = (raiseAmount/5)*5; //intentional integer division (round to 5)
             amount = raiseAmount;
         }
+
         if (turn >= 3) {
             amount = betNeeded;
         }
@@ -307,6 +309,9 @@ public class THComputerPlayerHard extends GameComputerPlayer {
         // if the min bet is greater than our balance we still bet, I don't know if this is allowed
         // for now it'll stay in since going all in seems to be a unique case
         amount = Math.min(amount, self.getBalance());
+        if (amount < 0) {
+            amount *= -1;
+        }
         Bet action = new Bet(this, amount);
         game.sendAction(action);
     }

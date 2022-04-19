@@ -13,7 +13,8 @@ import java.util.Scanner;
 import edu.up.cs301.game.R;
 
 /**
- * Class to evaluate a given set of cards for the best poker hand
+ * Helper Class to evaluate a given set of cards for the best poker hand. This is outdated.
+ * Please refer to RankHand.java
  *
  * @author Xavier Santiago
  * @author Milton Nguy

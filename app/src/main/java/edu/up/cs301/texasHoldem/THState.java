@@ -270,33 +270,14 @@ public class THState extends GameState implements Serializable {
 
     /**
      * calculate highest value set of 5 cards given a hand of arbitrary size (not implemented)
-     * TODO: a unit test for this might be a good idea
      * @param hand: the hand do be evaluated
      * @return highest card
      */
     public String bestHand(ArrayList<Card> hand) {
 
-        /*
-        int high = 0;
-        Card winCard = null;
-        for (Card card : hand) {
-            if (card.getValue() > high) {
-                high = card.getValue();
-                winCard = new Card(card);
-            }
-        }
-        return winCard;
-
-
-         */
-        
-
         String str = " ";
 
-
-
         EvaluateHand eh = new EvaluateHand(hand);
-
 
         if (eh.checkFlush() == true && eh.checkStraight() == true && eh.highHand().getValue() == 14) {
             str = "royal flush";
@@ -320,9 +301,7 @@ public class THState extends GameState implements Serializable {
             str = "high hand";
         }
         return str;
-        //if ()
 
-        //may return number instead...
     }
 
     public Card highHand(ArrayList<Card> hand) {
