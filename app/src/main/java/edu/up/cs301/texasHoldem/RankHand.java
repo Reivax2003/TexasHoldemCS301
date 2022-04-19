@@ -50,6 +50,11 @@ public class RankHand implements Serializable {
             Scanner s = new Scanner(in).useDelimiter("\\A");
             String result = s.hasNext() ? s.next() : ""; //read all of file
 
+            /**
+             * We had a problem with line separators
+             * https://stackoverflow.com/questions/9260126/what-are-the-differences-between-char-literals-n-and-r-in-java
+             * Xavier Santiago 4.19.22
+             */
             String[] lookup = result.split(System.getProperty("line.separator")); //turn into list
             for (int i = 0; i < lookup.length; i++) {
                 String[] temp = lookup[i].split(",");
