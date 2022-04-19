@@ -50,7 +50,7 @@ public class RankHand implements Serializable {
             Scanner s = new Scanner(in).useDelimiter("\\A");
             String result = s.hasNext() ? s.next() : ""; //read all of file
 
-            String[] lookup = result.split("\n"); //turn into list
+            String[] lookup = result.split(System.getProperty("line.separator")); //turn into list
             for (int i = 0; i < lookup.length; i++) {
                 String[] temp = lookup[i].split(",");
 
@@ -72,7 +72,7 @@ public class RankHand implements Serializable {
             Scanner s = new Scanner(in).useDelimiter("\\A");
             String result = s.hasNext() ? s.next() : ""; //read all of file
 
-            String[] lookup = result.split("\r\n"); //turn into list
+            String[] lookup = result.split(System.getProperty("line.separator")); //turn into list
             for (int i = 0; i < lookup.length; i++) {
                 String[] temp = lookup[i].split(",");
                 unsuited.put(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
