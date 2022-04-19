@@ -76,6 +76,9 @@ public class RankHand implements Serializable {
             String[] lookup = result.split(System.lineSeparator()); //turn into list
             for (int i = 0; i < lookup.length; i++) {
                 String[] temp = lookup[i].split(",");
+                if(temp[1].contains("\r")){
+                    temp[1] = temp[1].substring(0,temp[1].indexOf("\r"));
+                }
                 unsuited.put(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
             }
             in.close();
