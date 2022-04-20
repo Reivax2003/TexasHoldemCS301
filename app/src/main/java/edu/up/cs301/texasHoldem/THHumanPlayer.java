@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +22,7 @@ import androidx.fragment.app.FragmentManager;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import edu.up.cs301.game.GameFramework.GameMainActivity;
 import edu.up.cs301.game.GameFramework.actionMessage.GameAction;
@@ -41,8 +43,6 @@ import edu.up.cs301.game.R;
  */
 public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
-    //TODO: move View.OnClickListener to GameMainActivity
-
     /**
      * A basic implementation of PokerHumanPlayer derived from GameFrameWork Diagram. Many things
      * are still incomplete and need further implementations.
@@ -55,6 +55,8 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private TextView balanceTV;
     private TextView potTV;
     private TextView usernameTV;
+    private TextView timerTV;
+    private ProgressBar timePB;
     private AnimationSurface dealerAS;
     private AnimationSurface handAS;
     private LinearLayout[] oppProfiles = new LinearLayout[3];
@@ -69,6 +71,9 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
     private THState gameState;
     private RankHand handRanker;
+    private long time;
+    private CountDownTimer timer;
+
 
     private int backgroundColor = 0xFF35654D;
 
@@ -94,6 +99,9 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         }
         gameState = (THState) info;
         playerList = gameState.getPlayers();
+
+
+
 
         //if this is the first time we're receiving gamestate
         //it's also possible for a gamestate to not have a handranker
@@ -186,6 +194,20 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         }
 */
 
+        /**
+         * External Citation - April 20, 2022
+         * Problem: Trying to setup a timer in java
+         * link: https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/TimeUnit.html
+         * Solution: access methods contained in TimeUnit
+         *
+         * */
+        time = TimeUnit.SECONDS.toMillis(gameState.getTimer());
+
+        cancelTimer();
+
+        startTimer();
+
+
         updateUI();
     }
     @Override
@@ -215,6 +237,8 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         this.handAS = activity.findViewById(R.id.playerHandAS);
         this.usernameTV = activity.findViewById(R.id.userID);
         this.qualityTV = activity.findViewById(R.id.handQuality);
+        this.timerTV = activity.findViewById(R.id.textView);
+        this.timePB = activity.findViewById(R.id.userPlayTimer);
 
         this.oppProfiles[0] = activity.findViewById(R.id.oppProfile1);
         this.oppProfiles[1] = activity.findViewById(R.id.oppProfile2);
@@ -227,10 +251,12 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     }
 
     /**
-     * Method to update all the text in the UI and (not currently implemented) the cards shown
+     * Method to update all the text in the UI and the cards shown
      * We need to call this once whenever we receive info
      */
     public void updateUI() {
+
+
         //set our balance and the pool (probably just 0)
         balanceTV.setText(me.getBalance()+"$");
         potTV.setText("Pot: "+gameState.getPool()+"$\nBet: "+me.getBet());
@@ -240,6 +266,8 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
         //(current min bet - our current bet) + ( our balance * ( seekbar value / seekbar max ) )
         valueTV.setText(""+getSliderBet());
+
+
 
         //show hand quality in post-flop rounds
         if (gameState.getRound() > 0) {
@@ -274,12 +302,15 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                     +(me.getBalance()*((float) valueSB.getProgress()/valueSB.getMax())));
             Bet betAction = new Bet(this, betAmount);
             game.sendAction((GameAction) (THGameAction) betAction);
+            cancelTimer();
 
         }
         if (view.getId() == fold.getId()) {
             Fold foldAction = new Fold(this);
             game.sendAction(foldAction);
+            cancelTimer();
         }
+
     }
 
     @Override
@@ -305,5 +336,37 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         float sliderProgress = (float) valueSB.getProgress()/valueSB.getMax();
         int value = (int) (minBet+((me.getBalance()-minBet)*sliderProgress));
         return value;
+    }
+
+    /**
+     * External Citation - April 20, 2022
+     * Problem: Trying to setup a timer in java without data leaks
+     * link: https://stackoverflow.com/questions/10032003/how-to-make-a-countdown-timer-in-android
+     * Solution: create void methods
+     *
+     * */
+    private void startTimer() {
+        Fold foldactionTime = new Fold(this);
+        timer = new CountDownTimer(time, 1000) {
+            public void onTick(long millisUntilFinished) {
+                timerTV.setText("Time: " + millisUntilFinished / 1000);
+                timePB.setProgress((int) millisUntilFinished / 1000);
+                int w = (int) millisUntilFinished / 1000;
+                Log.i("Timer Count", "" + w);
+            }
+            public void onFinish() {
+                game.sendAction(foldactionTime);
+
+            }
+        };
+        timer.start();
+
+    }
+
+
+    //cancel timer
+    private void cancelTimer() {
+        if(timer!=null)
+            timer.cancel();
     }
 }

@@ -55,6 +55,7 @@ public class ProxyGame implements Game {
         // the object, otherwise null
         boolean isReady = rtnVal.networkPasser.isReady();
         if (isReady) {
+            Logger.debugLog(TAG, "Network is Ready");
             return rtnVal;
         }
         else {

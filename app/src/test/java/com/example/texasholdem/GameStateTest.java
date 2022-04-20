@@ -286,6 +286,9 @@ public class GameStateTest {
         System.out.println(test.highHand().getValue());
 
 
+        THState timer = new THState();
+
+        System.out.println(timer.getTimer());
 
 
 

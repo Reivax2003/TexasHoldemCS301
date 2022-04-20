@@ -41,7 +41,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
-                    android:progress="80" />
+                    android:max="15"
+                    android:progress="15" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -50,7 +51,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_weight="0"
                     android:gravity="center"
-                    android:text="Time: 25"
+                    android:text="Time: 15"
                     android:textSize="30dp" />
 
             </LinearLayout>

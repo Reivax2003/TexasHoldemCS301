@@ -39,7 +39,7 @@ public class THState extends GameState implements Serializable {
         players = new ArrayList<Player>();
         startOfRoundCheck = new boolean[0];
         blindBet = 20; //arbitrary value
-        MAX_TIMER = 60; //arbitrary value
+        MAX_TIMER = 15; //arbitrary value
         timer = MAX_TIMER;
         playerTurn = 0;
         round = 0;
@@ -52,7 +52,7 @@ public class THState extends GameState implements Serializable {
     public THState(ArrayList<Player> players) {
         this.players = players;
         blindBet = 20; //arbitrary value
-        MAX_TIMER = 60; //arbitrary value
+        MAX_TIMER = 15; //arbitrary value
         timer = MAX_TIMER;
         playerTurn = 0;
         round = 0;
@@ -66,7 +66,7 @@ public class THState extends GameState implements Serializable {
     public THState(ArrayList<Player> players, int maxTimer, int blindBet) {
         this.players = (ArrayList<Player>) players.clone();
         this.blindBet = blindBet;
-        MAX_TIMER = maxTimer; //TODO: change timer conditions in the future
+        MAX_TIMER = maxTimer;
         timer = MAX_TIMER;
         playerTurn = 0;
         round = 0;
@@ -444,4 +444,6 @@ public class THState extends GameState implements Serializable {
 
         return message;
     }
+
+
 }

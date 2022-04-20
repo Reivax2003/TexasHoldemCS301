@@ -92,6 +92,7 @@ public class THLocalGame extends LocalGame {
     	if (state.getActivePlayers() == 1) { //if only one player is left
     		Player winner = state.getActivePlayersList().get(0);
     		return "Winner: "+winner.getName()+", everyone else folded\n";
+
 		}
     	boolean allIn = false;
     	if (checkIfAllIn(state)) {
@@ -297,4 +298,6 @@ public class THLocalGame extends LocalGame {
 
 		return succeeded;
 	}
+
+
 }
