@@ -114,9 +114,11 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
         if (handAnimator == null || dealerAnimator == null) {
             handAnimator = new CardAnimator(me.getHand(), 0xFFFFFFFF, handAS);
+            handAnimator.initImages(myActivity);
             hands.add(playerNum,handAnimator);
             dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(),
                     backgroundColor, dealerAS);
+            dealerAnimator.initImages(myActivity);
             handAS.setAnimator(handAnimator);
             dealerAS.setAnimator(dealerAnimator);
         }
@@ -222,9 +224,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
         // Load the layout resource for our GUI
         activity.setContentView(R.layout.th_human_player_2);
-
-        //read in the card images
-        Card.initImages(activity);
 
         //Initialize the widget reference member variables
         this.bet = activity.findViewById(R.id.buttonBet);
