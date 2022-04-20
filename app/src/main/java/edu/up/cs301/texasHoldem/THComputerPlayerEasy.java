@@ -45,19 +45,21 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
         Player self = gameState.getPlayers().get(playerNum); //the Player object associated with us
 
         int betNeeded = gameState.getCurrentBet()-self.getBet(); //check
+        /*
         boolean requiredRaise = false;
         if (betNeeded == 0) {
             requiredRaise = true;
         }
+         */
 
         Random r = new Random();
          //1/50 chance to fold (might be too low)
         //also fold if you don't have enough to bet
-        if (r.nextFloat() < 0.02 || betNeeded > self.getBalance() && !requiredRaise) {
+        if (r.nextFloat() < 0.02 || betNeeded > self.getBalance()) {
             Fold action = new Fold(this);
             game.sendAction(action);
         } else {
-            if (r.nextFloat() < .25 || requiredRaise) { // 1/4 chance to raise
+            if (r.nextFloat() < .25) { // 1/4 chance to raise
                 betNeeded += (r.nextInt(4)+1)*10; //raise anywhere from 10 to 50 (in multiples of 10)
             }
             //make sure we don't bet above the amount we have
