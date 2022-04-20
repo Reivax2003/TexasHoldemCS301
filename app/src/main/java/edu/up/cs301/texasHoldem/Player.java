@@ -40,6 +40,7 @@ public class Player implements Serializable {
         bet = orig.bet;
         folded = orig.folded;
         allIn = orig.allIn;
+        action = orig.action;
         //profile = orig.profile;
 
         //the array is the only thing we really need to do a deep copy of
