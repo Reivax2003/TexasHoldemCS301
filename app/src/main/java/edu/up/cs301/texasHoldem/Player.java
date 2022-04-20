@@ -56,7 +56,11 @@ public class Player implements Serializable {
     public int getBet(){ return bet;}
     public void addBet(int newBet){
         bet += newBet;
-        action = "Bet: $" + newBet;
+        if(newBet == 0){
+            action = "Check";
+        }else {
+            action = "Bet: $" + newBet;
+        }
         //profile.setActionText("Bet $" + newBet);
     }
 
