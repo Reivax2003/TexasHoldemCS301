@@ -56,7 +56,6 @@ public class THLocalGame extends LocalGame {
 	 * Thus, it'll call actions to deal cards to players and place blindbets.
 	 * */
 	public void start(GamePlayer[] players) {
-
 		super.start(players);
 
 		ArrayList<Player> gamePlayers = new ArrayList<Player>();
@@ -165,91 +164,6 @@ public class THLocalGame extends LocalGame {
 							+handRanker.getRankText(bestHand)+"\n";
 					return message;
 				}
-
-				//Below is the brute force approach to hand evaluation
-				/**
-				//for now just evaluate highest card as win
-				int high = -200;
-				Player winner = null;
-				for (Player player : state.getPlayers()) { //TODO check dealerhand
-					ArrayList<Card> hand = state.getDealerHand(); //arraylist is just easier
-					hand.add(player.getHand()[0]);
-					hand.add(player.getHand()[1]);
-					Card best = state.highHand(hand);
-
-					//Log.d("hands: ", hand.toString());
-					//EvaluateHand eh = new EvaluateHand(hand);
-
-					String bestStr = state.bestHand(hand);
-
-					int value = -100;
-
-					switch(bestStr) {
-						case "royal flush":
-							value = 100 + best.getValue();
-							best.storeValue(value);
-							break;
-						case "straight flush":
-							value = 80 + best.getValue();
-							best.storeValue(value);
-							break;
-						case "four of a kind":
-							value = 60 + best.getValue();
-							best.storeValue(value);
-							break;
-						case "full house":
-							value = 40 + best.getValue();
-							best.storeValue(value);
-							break;
-						case "flush":
-							value = 20 + best.getValue();
-							best.storeValue(value);
-							break;
-						case "straight": //Not performing straight correctly when theres two pairs
-							value = 0 + best.getValue();
-							best.storeValue(value);
-							break;
-						case "three of a kind":
-							value = -20 + best.getValue();
-							best.storeValue(value);
-							break;
-						case "two pairs":
-							value = -40 + best.getValue();
-							best.storeValue(value);
-							break;
-						case "one pair":
-							value = -60 + best.getValue();
-							best.storeValue(value);
-							break;
-						case "high hand":
-							value = -80 + best.getValue();
-							best.storeValue(value);
-							break;
-					}
-
-					if (best.getEvalValue() > high) {
-						high = best.getValue();
-						winner = player;
-					} else if (best.getEvalValue() == high) {
-						winner = null;
-					}
-					/*if (best.getValue() > high) {
-						high = best.getValue();
-						winner = player;
-					} else if (best.getValue() == high) {
-						winner = null;
-					}
-
-					 */
-
-				/**
-				}
-				if (winner == null) {
-					return "Game resulted in a tie";
-				} else {
-					// \n makes the message look nicer
-					return "Winner: "+winner.getName()+", Highest valued card: "+high+"\n";
-				}*/
 			} else {
 				//this one is the real state because we're making changes we want to apply
 				state.nextRound(); //if it's not the last round, proceed to the next round
