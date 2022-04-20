@@ -50,13 +50,16 @@ public class CardAnimator implements Animator {
      * @param bottom bottom border of animation bounds
      * @param right right border of animation bounds
      */
-    public CardAnimator(Card[] cards, int bgColor, float left, float top, float bottom, float right) {
+    public CardAnimator(Card[] cards, int bgColor, float left, float top, float bottom, float right,
+                        Activity activity) {
         this.cards = cards;
         backgroundColor = bgColor;
         this.left = left;
         this.top = top;
         this.bottom = bottom;
         this.right = right;
+
+        initImages(activity);
 
         calcCardSize();
     }
@@ -67,13 +70,15 @@ public class CardAnimator implements Animator {
      * @param bgColor color of the background
      * @param AS animation surface to get bounds from
      */
-    public CardAnimator(Card[] cards, int bgColor, AnimationSurface AS) {
+    public CardAnimator(Card[] cards, int bgColor, AnimationSurface AS, Activity activity) {
         this.cards = cards;
         backgroundColor = bgColor;
         this.left = AS.getLeft();
         this.top = AS.getTop();
         this.bottom = AS.getBottom();
         this.right = AS.getRight();
+
+        initImages(activity);
 
         calcCardSize();
     }
@@ -301,7 +306,7 @@ public class CardAnimator implements Animator {
      *
      * @param activity the current activity
      */
-    public static void initImages(Activity activity) {
+    private static void initImages(Activity activity) {
         // if it's already initialized, then ignore
         if (cardImages != null) return;
 
