@@ -110,7 +110,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         me = gameState.getPlayers().get(playerNum);
 
         if (handAnimator == null || dealerAnimator == null) {
-            handAnimator = new CardAnimator(me.getHand(), 0xFFFFFFFF, handAS, myActivity);
+            handAnimator = new CardAnimator(me.getHand(), backgroundColor, handAS, myActivity);
             hands.add(playerNum,handAnimator);
             dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(),
                     backgroundColor, dealerAS, myActivity);
@@ -172,7 +172,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                                 //creates the hand if it hasn't before using playerlist as size reference
                                 //TODO: Find a way to hide the opponent's cards until the game completes
                                 if(hands.size() < playerList.size()){
-                                    hands.add(i , new CardAnimator(player.getHand(),0xFFFFFF,
+                                    hands.add(i , new CardAnimator(player.getHand(),backgroundColor,
                                             (AnimationSurface) childView, myActivity));
                                     ((AnimationSurface) childView).setAnimator(hands.get(i));
                                 }
@@ -260,7 +260,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         usernameTV.setText(me.getName());
 
         //(current min bet - our current bet) + ( our balance * ( seekbar value / seekbar max ) )
-        valueTV.setText(""+getSliderBet());
+        valueTV.setText("$"+getSliderBet());
 
 
 

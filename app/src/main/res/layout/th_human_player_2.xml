@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:screenOrientation="portrait">
+    android:background="#FF35654D"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:configChanges="keyboardHidden|orientation|screenSize">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/profileList"
@@ -50,7 +49,7 @@
                         android:layout_weight="2"
                         android:gravity="center"
                         android:tag="name"
-                        android:text="Player 2"
+                        android:textColor="#FFFFFFFF"
                         android:textSize="20sp" />
 
                     <TextView
@@ -60,7 +59,7 @@
                         android:layout_weight="2"
                         android:gravity="center_horizontal"
                         android:tag="action"
-                        android:text="Bet: 500 $"
+                        android:textColor="#FFFFFFFF"
                         android:textSize="20sp" />
 
                     <edu.up.cs301.game.GameFramework.animation.AnimationSurface
@@ -103,7 +102,7 @@
                         android:layout_weight="2"
                         android:gravity="center"
                         android:tag="name"
-                        android:text="Player 3"
+                        android:textColor="#FFFFFFFF"
                         android:textSize="20sp" />
 
                     <TextView
@@ -113,7 +112,7 @@
                         android:layout_weight="2"
                         android:gravity="center_horizontal"
                         android:tag="action"
-                        android:text="Fold"
+                        android:textColor="#FFFFFFFF"
                         android:textSize="20sp" />
 
                     <edu.up.cs301.game.GameFramework.animation.AnimationSurface
@@ -155,7 +154,7 @@
                         android:layout_weight="2"
                         android:gravity="center"
                         android:tag="name"
-                        android:text="Player 4"
+                        android:textColor="#FFFFFFFF"
                         android:textSize="20sp" />
 
                     <TextView
@@ -165,7 +164,7 @@
                         android:layout_weight="2"
                         android:gravity="center_horizontal"
                         android:tag="action"
-                        android:text="Bet: 500 $"
+                        android:textColor="#FFFFFFFF"
                         android:textSize="20sp" />
 
                     <edu.up.cs301.game.GameFramework.animation.AnimationSurface
@@ -213,6 +212,7 @@
                     android:layout_weight="0"
                     android:gravity="center"
                     android:text="Time: 15"
+                    android:textColor="#FFFFFFFF"
                     android:textSize="30dp" />
 
             </LinearLayout>
@@ -230,6 +230,7 @@
                 android:layout_weight="3"
                 android:gravity="center_horizontal"
                 android:text="Pot: 1500 $ \n Bet: 400 $ "
+                android:textColor="#FFFFFFFF"
                 android:textSize="25dp" />
 
         </LinearLayout>
@@ -278,6 +279,7 @@
                     android:gravity="bottom"
                     android:tag="name"
                     android:text="Player 1"
+                    android:textColor="#FFFFFFFF"
                     android:textSize="25sp" />
 
                 <TextView
@@ -288,6 +290,7 @@
                     android:layout_weight="1"
                     android:tag="money"
                     android:text="5000 $"
+                    android:textColor="#FFFFFFFF"
                     android:textSize="25sp" />
 
             </LinearLayout>
@@ -322,6 +325,7 @@
                     android:layout_weight="2"
                     android:gravity="bottom|center_horizontal"
                     android:text="Hand Quality"
+                    android:textColor="#FFFFFFFF"
                     android:textSize="20sp" />
 
                 <TextView
@@ -332,6 +336,7 @@
                     android:gravity="center_horizontal|top"
                     android:text="N/A"
                     android:textAlignment="center"
+                    android:textColor="#FFFFFFFF"
                     android:textSize="50sp" />
 
             </LinearLayout>
@@ -373,6 +378,7 @@
                         android:layout_marginRight="15dp"
                         android:gravity="center_vertical"
                         android:text="TextView"
+                        android:textColor="#FFFFFFFF"
                         android:textSize="20sp"
                         tools:text="200 $" />
 
@@ -388,7 +394,8 @@
                         android:layout_height="match_parent"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:text="Fold" />
+                        android:text="Fold"
+                        android:textColor="#FFFFFFFF" />
 
                     <Button
                         android:id="@+id/buttonBet"
@@ -396,7 +403,8 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
-                        android:text="Bet" />
+                        android:text="Bet"
+                        android:textColor="#FFFFFFFF" />
 
                 </LinearLayout>
 
