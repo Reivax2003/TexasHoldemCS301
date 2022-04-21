@@ -255,6 +255,7 @@ public class THState extends GameState implements Serializable {
         //always starts with the first player. technically between games this should rotate
         playerTurn = players.size()-1;
         nextTurn(); //easier than rewriting all that code
+
         /**
          * Citation: looked up how switch/case works
          * https://www.w3schools.com/java/java_switch.asp
@@ -276,7 +277,13 @@ public class THState extends GameState implements Serializable {
         }
         roundTurns = 0;
         round++;
+
         resetCheckCounter();
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).isFolded()) {
+                startOfRoundCheck[i] = true;
+            }
+        }
 
         Log.i("round",""+round);
         Log.i("player turn", ""+playerTurn);
