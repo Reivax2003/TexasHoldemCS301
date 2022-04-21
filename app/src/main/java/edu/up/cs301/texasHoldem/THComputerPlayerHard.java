@@ -19,7 +19,6 @@ import edu.up.cs301.game.GameFramework.players.GameComputerPlayer;
  */
 public class THComputerPlayerHard extends GameComputerPlayer {
 
-    private RankHand handRanker;
     private int turn = 0;
     private int round = -1;
     private Player self;
@@ -94,14 +93,6 @@ public class THComputerPlayerHard extends GameComputerPlayer {
             return;
         }
         self = state.getPlayers().get(playerNum); //the Player object associated with us
-
-        if (handRanker == null && state.getHandRanker() != null) {
-            handRanker = state.getHandRanker();
-        } else if (state.getHandRanker() == null) {
-            assert(false);
-            fold();
-            return;
-        }
 
         if (state.getRound() != round) {
             turn = 0;
@@ -245,7 +236,7 @@ public class THComputerPlayerHard extends GameComputerPlayer {
                 allCards[i+2] = dHand[i];
             }
             //get hand quality as a float between 0 and 1
-            float quality = handRanker.getHandRankFloat(allCards);
+            float quality = 1-(self.getHandValue()-1)/7461f;
             if (quality > 0.9f) {
                 bet(betNeeded+raiseAmount);
             } else if (quality > 0.75f) {

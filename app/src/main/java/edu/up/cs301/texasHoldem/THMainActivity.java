@@ -189,8 +189,9 @@ public class THMainActivity extends GameMainActivity {
 	public LocalGame createLocalGame(GameState gameState) {
 		//just a blank game for now, this'll be handled in the start() function in THLocalGame
 		if (gameState == null) { gameState = new THState(); }
+		RankHand handRanker = new RankHand(getApplicationContext());
 		//have to pass in context so that RankHand can access the lookup tables in resources
-		return new THLocalGame((THState) gameState, getApplicationContext());
+		return new THLocalGame((THState) gameState, getApplicationContext(), handRanker);
 	}
 
 }

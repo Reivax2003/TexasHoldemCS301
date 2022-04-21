@@ -39,13 +39,13 @@ public class THLocalGame extends LocalGame {
         super.state = this.state;
     }
 
-	public THLocalGame(THState initState, Context context) {
+	public THLocalGame(THState initState, Context context, RankHand handRanker) {
 		Log.i("THLocalGame", "creating game");
 		// create the state for the beginning of the game
 		this.state = initState;
 		super.state = initState;
 		this.context = context;
-		handRanker = new RankHand(context);
+		this.handRanker = handRanker;
 	}
 
 	@Override
@@ -77,7 +77,8 @@ public class THLocalGame extends LocalGame {
 	protected void sendUpdatedStateTo(GamePlayer p) {
     	THState copy = new THState(state);
     	copy.redactFor(getPlayerIdx(p)); //remove other player's cards
-		copy.setHandRanker(handRanker);
+		int value = handRanker.getHandRank(compileCards(getPlayerIdx(p)));
+		copy.setPlayerHandValue(getPlayerIdx(p), value); //tell the player their hand rank
     	p.sendInfo(copy);
 	}
 
@@ -113,15 +114,7 @@ public class THLocalGame extends LocalGame {
 				//player and dealer cards.
 				for (Player player : state.getPlayers()) {
 					if (!player.isFolded()) {
-						Card[] dHand = state.getDealerHandAsArray();
-						Card[] allCards = new Card[dHand.length + 2];
-						allCards[0] = player.getHand()[0];
-						allCards[1] = player.getHand()[1];
-
-						//combine into one list
-						for (int i = 0; i < dHand.length; i++) {
-							allCards[i + 2] = dHand[i];
-						}
+						Card[] allCards = compileCards(state.getPlayerID(player));
 
 						//get rank of hand
 						int handValue = handRanker.getHandRank(allCards);
@@ -213,5 +206,17 @@ public class THLocalGame extends LocalGame {
 		return succeeded;
 	}
 
+	public Card[] compileCards(int playerID) {
+		Card[] dHand = state.getDealerHandAsArray();
+		Card[] allCards = new Card[dHand.length + 2];
+		allCards[0] = state.getPlayers().get(playerID).getHand()[0];
+		allCards[1] = state.getPlayers().get(playerID).getHand()[1];
+
+		//combine into one list
+		for (int i = 0; i < dHand.length; i++) {
+			allCards[i + 2] = dHand[i];
+		}
+		return allCards;
+	}
 
 }

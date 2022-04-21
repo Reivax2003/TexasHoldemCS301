@@ -21,6 +21,7 @@ public class Player implements Serializable {
     private boolean folded = false;
     private boolean allIn = false;
     private String action = "";
+    private int handValue; //long story short, this is so that gamestate is serializable
     //private UiPlayerProfile profile;
 
     // simple constructor
@@ -47,6 +48,7 @@ public class Player implements Serializable {
     public void redactCards() {
         hand[0] = null;
         hand[1] = null;
+        handValue = -1;
     }
     public String getName(){ return name;}
 
@@ -81,6 +83,8 @@ public class Player implements Serializable {
         this.balance -= betAmount;
     }
     public void setBalance(int amount) {balance = amount;}
+    public void setHandValue(int value) { handValue = value; }
+    public int getHandValue() {return handValue; }
 
     public void goAllIn() {
         if (balance > 0) {

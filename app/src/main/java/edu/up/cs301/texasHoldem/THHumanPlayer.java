@@ -70,7 +70,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private CardAnimator dealerAnimator;
 
     private THState gameState;
-    private RankHand handRanker;
     private long time;
     private CountDownTimer timer;
 
@@ -99,12 +98,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         }
         gameState = (THState) info;
         playerList = gameState.getPlayers();
-
-        //if this is the first time we're receiving gamestate
-        //it's also possible for a gamestate to not have a handranker
-        if (handRanker == null && gameState.getHandRanker() != null) {
-            handRanker = gameState.getHandRanker();
-        }
 
         //this actually needs to get updated every time we get new info
         me = gameState.getPlayers().get(playerNum);
@@ -277,8 +270,9 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 allCards[i + 2] = dHand[i];
             }
 
-            int quality = (int) (handRanker.getHandRankFloat(allCards)*100);
-            qualityTV.setText(quality+"%");
+            float exactValue = 1-(me.getHandValue()-1)/7461f;
+            int displayValue = (int) (exactValue*100);
+            qualityTV.setText(displayValue+"%");
         }
 
         //change bet TV

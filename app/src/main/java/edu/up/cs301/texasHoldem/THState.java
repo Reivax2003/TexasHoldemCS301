@@ -30,10 +30,6 @@ public class THState extends GameState implements Serializable {
     private int currentBet; //easier to keep track of this than iterate through players every time we need it
     private boolean[] startOfRoundCheck;
 
-    //this has to be treated specially, it'll be passed in when the state is distributed
-    //it can't be put in the constructor because it requires a context, which breaks tests
-    private RankHand handRanker;
-
     //just an empty constructor, this'll never be used but it's useful for now
     public THState() {
         players = new ArrayList<Player>();
@@ -100,8 +96,6 @@ public class THState extends GameState implements Serializable {
         }
 
         this.deck = new Deck(orig.deck); //so we know which cards are already in play
-
-        this.handRanker = orig.handRanker; //just in case, this doesn't always exist
 
         this.startOfRoundCheck = orig.startOfRoundCheck.clone();
     }
@@ -353,12 +347,34 @@ public class THState extends GameState implements Serializable {
     public void setTimer(int time) { timer = time; } //for use in unit tests
     public void setDealerHand(ArrayList<Card> hand) { dealerHand = (ArrayList<Card>) hand.clone(); }
     public void setRound(int round) { this.round = round; }
-    public void setHandRanker(RankHand handRanker) { this.handRanker = handRanker; }
-    public RankHand getHandRanker() { return handRanker; } //no need to deep copy here
     public ArrayList<Player> getPlayers() { return (ArrayList<Player>) players.clone();}
     public ArrayList<Card> getDealerHand() {return (ArrayList<Card>) dealerHand.clone();}
     public Card[] getDealerHandAsArray() {
         return getDealerHand().toArray(new Card[getDealerHand().size()]).clone();
+    }
+
+    /**
+     * returns the ID of the given player
+     * @param player the player whose ID you want
+     * @return the ID of that player
+     */
+    public int getPlayerID(Player player) {
+        for (int i = 0; i < players.size(); i++) {
+            if (player.getName() == players.get(i).getName()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * sets the hand value of the player object. this is used to set the win likelihood of
+     * remote players
+     * @param playerID the player whose value is to be set
+     * @param value the value to set it to
+     */
+    public void setPlayerHandValue(int playerID, int value) {
+        players.get(playerID).setHandValue(value);
     }
 
     /**
