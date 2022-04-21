@@ -152,7 +152,6 @@ public class THState extends GameState implements Serializable {
             return false;
         }
         /**
-         * WHY IS THIS HERE THIS BREAKS EVERYTHING, I'M COMMENTING THIS OUT
          *
          //prevents player from skipping their turn
         if (amount == 0 && roundTurns > 0) {
