@@ -102,9 +102,9 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         }
         gameState = (THState) info;
         playerList = gameState.getPlayers();
-
         //this actually needs to get updated every time we get new info
         me = gameState.getPlayers().get(playerNum);
+/*
 
         if (handAnimator == null || dealerAnimator == null) {
             handAnimator = new CardAnimator(me.getHand(), backgroundColor, handAS, myActivity);
@@ -117,15 +117,27 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         handAnimator.setCards(me.getHand()); //make sure we're rendering the current game state
         dealerAnimator.setCards(gameState.getDealerHandAsArray());
 
+ */
 
-        //Sets up the other players Information
+
+        //Sets up the players Information
         int idx = 0;
         for(int i = 0; i < playerList.size(); i++){
             Player player = gameState.getPlayers().get(i);
             LinearLayout layout = null;
             //To separate which one is the player and which one is the opponent
             if(i == playerNum){
-                //skip the player bc they'll be updated in UpdateUI
+                if (handAnimator == null || dealerAnimator == null) {
+                    handAnimator = new CardAnimator(player.getHand(), backgroundColor, handAS, myActivity);
+                    hands.add(playerNum,handAnimator);
+                    dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(),
+                            backgroundColor, dealerAS, myActivity);
+                    handAS.setAnimator(handAnimator);
+                    dealerAS.setAnimator(dealerAnimator);
+                }
+                handAnimator.setCards(me.getHand()); //make sure we're rendering the current game state
+                dealerAnimator.setCards(gameState.getDealerHandAsArray());
+                //skips the rest as those are for the opponents
                 continue;
             }
             else{
@@ -159,15 +171,12 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                                 if (tag.equals("name")) {
                                     ((TextView)childView).setText(player.getName());
                                 } else if (tag.equals("action")) {
-                                    //TODO: Get the action from each player from somewhere
                                     ((TextView)childView).setText(player.getAction());
                                 } else if (tag.equals("money")) {
                                     ((TextView)childView).setText("$ " + player.getBalance());
                                 }
                             }
                             else if(childView instanceof AnimationSurface){
-                                //creates the hand if it hasn't before using playerlist as size reference
-                                //TODO: Find a way to hide the opponent's cards until the game completes
                                 if(hands.size() < playerList.size()){
                                     hands.add(i , new CardAnimator(player.getHand(),backgroundColor,
                                             (AnimationSurface) childView, myActivity));
@@ -293,20 +302,22 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
      * @param view the view that called this method
      */
     public void onClick(View view) {
-        //checks if id equals the bet or fold action.
-        if (view.getId() == bet.getId()) {
-            //recalculate this here. feels flimsy to just use whatever text is on the screen
-            int betAmount = (int) ((gameState.getCurrentBet()-me.getBet())
-                    +(me.getBalance()*((float) valueSB.getProgress()/valueSB.getMax())));
-            Bet betAction = new Bet(this, betAmount);
-            game.sendAction((GameAction) (THGameAction) betAction);
-            cancelTimer();
+        if(gameState.getPlayerTurn() == playerNum) {
+            //checks if id equals the bet or fold action.
+            if (view.getId() == bet.getId()) {
+                //recalculate this here. feels flimsy to just use whatever text is on the screen
+                int betAmount = (int) ((gameState.getCurrentBet() - me.getBet())
+                        + (me.getBalance() * ((float) valueSB.getProgress() / valueSB.getMax())));
+                Bet betAction = new Bet(this, betAmount);
+                game.sendAction((GameAction) (THGameAction) betAction);
+                cancelTimer();
 
-        }
-        if (view.getId() == fold.getId()) {
-            Fold foldAction = new Fold(this);
-            game.sendAction(foldAction);
-            cancelTimer();
+            }
+            if (view.getId() == fold.getId()) {
+                Fold foldAction = new Fold(this);
+                game.sendAction(foldAction);
+                cancelTimer();
+            }
         }
 
     }
