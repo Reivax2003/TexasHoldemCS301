@@ -145,7 +145,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 idx++;
             }
 
-            if(player != null) { //Makes sure that the player exist (should not trigger)
+            if(player != null) { //Makes sure that the player exist
                 /**
                  * External citation - Feb 13, 2022
                  * problem: getting the children of the liner layout
