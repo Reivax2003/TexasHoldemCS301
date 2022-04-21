@@ -76,6 +76,13 @@ public class THComputerPlayerHard extends GameComputerPlayer {
         super(name);
     }
 
+    /**
+     * the AI uses multiple lookup tables to evaluate the strength of its hand and how it should act
+     * actions are sorted into four groups: 1 - fold, 2 - check once then fold, 3 - always check
+     * 4 - raise once then check, and 5 - always raise (there's a failsafe to stop a raise loop
+     * between multiple AI after 3 round)
+     * @param info the received info (we only care if it's a GameState)
+     */
     @Override
     protected void receiveInfo(GameInfo info) {
         try {
@@ -269,6 +276,9 @@ public class THComputerPlayerHard extends GameComputerPlayer {
         }
     }
 
+    /**
+     * abstracts the fold action to match the bet action
+     */
     private void fold() {
         Fold action = new Fold(this);
         game.sendAction(action);
@@ -279,7 +289,7 @@ public class THComputerPlayerHard extends GameComputerPlayer {
      * Prioritizes remaining money over minimum bet, but we'll have to check the rules on that
      * if the AI has already raised 3 times, it will always check (failsafe to prevent going all in
      * on the first round)
-     * @param amount
+     * @param amount the initial amount the AI wants to bet
      */
     private void bet(int amount) {
         int betNeeded = state.getCurrentBet()-self.getBet();

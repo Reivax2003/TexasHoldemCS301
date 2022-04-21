@@ -17,7 +17,6 @@ public class THGameAction extends GameAction {
     // the player who generated the request
     private GamePlayer player;
 
-
     public THGameAction(GamePlayer p) {
         super(p);
         this.player = p;
@@ -28,8 +27,8 @@ public class THGameAction extends GameAction {
         return player;
     }
 
+    //set the player associated with this action
     public void setPlayer(GamePlayer p) {
         this.player = p;
     }
-
 }

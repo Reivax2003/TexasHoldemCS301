@@ -48,13 +48,13 @@ public class THLocalGame extends LocalGame {
 		this.handRanker = handRanker;
 	}
 
-	@Override
 	/**
 	 * the start method initializes an array of GamePlayers by inheriting from
 	 * super class and creates the GameState with a set balance of $1000
 	 * to give to all players that will be playing.
 	 * Thus, it'll call actions to deal cards to players and place blindbets.
 	 * */
+	@Override
 	public void start(GamePlayer[] players) {
 		super.start(players);
 
@@ -71,8 +71,10 @@ public class THLocalGame extends LocalGame {
 		sendAllUpdatedState(); //need to call this to update everyone of blind bets
 	}
 
-
-
+	/**
+	 * sends the updated state to a player, redacting information like opponent hands first
+	 * @param p the player who the state should be sent to
+	 */
 	@Override
 	protected void sendUpdatedStateTo(GamePlayer p) {
     	THState copy = new THState(state);
@@ -82,17 +84,44 @@ public class THLocalGame extends LocalGame {
     	p.sendInfo(copy);
 	}
 
+	/**
+	 * sends an un-redacted GameState to a player
+	 * @param p the player to send the state to
+	 */
+	private void sendFinalStateTo(GamePlayer p) {
+		THState copy = new THState(state);
+		p.sendInfo(copy);
+	}
+
+	/**
+	 * sends an un-redacted GameState to all the players
+	 */
+	private void sendFinalStateToAll() {
+		for (GamePlayer p : players) {
+			sendFinalStateTo(p);
+		}
+	}
+
+	/**
+	 * checks whether the player is allowed to move (if it is their turn)
+	 * @param playerIdx the player's player-number (ID)
+	 * @return whether or not the player can take an action right now
+	 */
 	@Override
 	protected boolean canMove(int playerIdx) {
 		return playerIdx == state.getPlayerTurn();
 	}
 
+	/**
+	 * checks if the game has ended, by doing so also progresses the round of the game if needed
+	 * @return a string containing the win message. if the game has not ended returns null
+	 */
 	@Override
     protected String checkIfGameOver() {
     	if (state.getActivePlayers() == 1) { //if only one player is left
     		Player winner = state.getActivePlayersList().get(0);
+			sendFinalStateToAll();
     		return "Winner: "+winner.getName()+", everyone else folded\n";
-
 		}
     	boolean allIn = false;
     	if (checkIfAllIn(state)) {
@@ -133,14 +162,17 @@ public class THLocalGame extends LocalGame {
 				}
 				//lines 144-165 are for debugging purposes
 				if (winners.size() == 0) {
+					sendFinalStateToAll();
 					return "something went wrong\nwinner could not be evaluated";
 				} else if (winners.size() == 1) {
 					Log.i("Winning hand rank", ""+bestHand);
+					sendFinalStateToAll();
 					//this is usually going to happen, just print the winner
 					return winners.get(0).getName()+" wins with a "
 							+handRanker.getRankText(bestHand)+"\n";
 				} else if (winners.size() == 2) {
 					Log.i("Winning hand rank", ""+bestHand);
+					sendFinalStateToAll();
 					//have to handle a 2 player tie separately so the message looks right
 					String message = winners.get(0).getName()+" and "+winners.get(0).getName()
 							+" tied with a "+handRanker.getRankText(bestHand)+"\n";
@@ -155,6 +187,7 @@ public class THLocalGame extends LocalGame {
 					}
 					message = message+"and "+winners.get(winners.size()-1).getName()+" tied with a "
 							+handRanker.getRankText(bestHand)+"\n";
+					sendFinalStateToAll();
 					return message;
 				}
 			} else {
@@ -166,7 +199,13 @@ public class THLocalGame extends LocalGame {
 		return null;
     }
 
-    public boolean checkIfRoundOver(THState state) {
+	/**
+	 * returns whether or not the round is over. for the round to be over everyone must have had a
+	 * turn and must either have a matching bet or be folded
+	 * @param state the GameState to evaluate
+	 * @return whether or not the round is over
+	 */
+	public boolean checkIfRoundOver(THState state) {
     	//iterate through all players
 		for (int i = 0; i < state.getPlayers().size(); i++) {
 			Player player = state.getPlayers().get(i);
@@ -176,12 +215,17 @@ public class THLocalGame extends LocalGame {
 				return false;
 			}
 		}
-		if (!state.allChecked()) {
+		if (!state.allChecked()) { //see if everyone has had a turn
 			return false;
 		}
 		return true;
 	}
 
+	/**
+	 * checks whether everyone in the game is "all in" (has bet all their money)
+	 * @param state the state to evaluate
+	 * @return whether or not every player is flagged as "all in"
+	 */
 	public boolean checkIfAllIn(THState state) {
 		for (int i = 0; i < state.getPlayers().size(); i++) {
 			Player player = state.getPlayers().get(i);
@@ -192,6 +236,11 @@ public class THLocalGame extends LocalGame {
 		return true;
 	}
 
+	/**
+	 * takes an action
+	 * @param action The move that the player has sent to the game
+	 * @return whether or not the action succeeded
+	 */
 	@Override
 	protected boolean makeMove(GameAction action) {
     	boolean succeeded = false;
@@ -206,6 +255,11 @@ public class THLocalGame extends LocalGame {
 		return succeeded;
 	}
 
+	/**
+	 * compiles the player's hand and the dealer's hand into one list of cards
+	 * @param playerID the player whose hand to combine the dealer's hand with
+	 * @return a list of cards containing both the player and dealer's cards
+	 */
 	public Card[] compileCards(int playerID) {
 		Card[] dHand = state.getDealerHandAsArray();
 		Card[] allCards = new Card[dHand.length + 2];
@@ -218,5 +272,4 @@ public class THLocalGame extends LocalGame {
 		}
 		return allCards;
 	}
-
 }

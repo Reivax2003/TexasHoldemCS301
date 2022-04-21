@@ -65,12 +65,20 @@ public class Card implements Serializable {
         longName = orig.longName;
     }
 
-    // already stored as longName
+    /**
+     * Essentially does the same thing as getLongName, i.e. "Ace of Diamonds", but overwrites
+     * the normal toString method
+     * @return the long name of the card as a string
+     */
     @Override
     public String toString() {
         return longName;
     }
 
+    /**
+     * Returns the long name of the card, i.e. "Ace of Diamonds"
+     * @return the long name of the cards as a string
+     */
     // this needs to be run when the card is created and any time something is changed
     public String getLongName() {
         String name = "";
@@ -92,6 +100,11 @@ public class Card implements Serializable {
 
         return name;
     }
+
+    /**
+     * returns the short unit name, i.e. "AH"
+     * @return a string containing 2 characters representing the value and suit in that order
+     */
     public String getShortName() {
         return shortName;
     }

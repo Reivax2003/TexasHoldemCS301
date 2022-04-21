@@ -59,6 +59,7 @@ public class THState extends GameState implements Serializable {
         resetCheckCounter();
     }
 
+    //constructor that lets you set some game rules
     public THState(ArrayList<Player> players, int maxTimer, int blindBet) {
         this.players = (ArrayList<Player>) players.clone();
         this.blindBet = blindBet;
@@ -100,6 +101,9 @@ public class THState extends GameState implements Serializable {
         this.startOfRoundCheck = orig.startOfRoundCheck.clone();
     }
 
+    /**
+     * resets the list that keeps track of whether a player has had an action on the current round
+     */
     public void resetCheckCounter() {
         for (int i = 0; i < players.size(); i++) {
             startOfRoundCheck[i] = false;
@@ -137,8 +141,12 @@ public class THState extends GameState implements Serializable {
         bet(1, blindBet);
     }
 
-    // pass the player who is betting and the amount they want to bet
-    // bet should be amount to add, not their total bet
+    /**
+     * Bets a certain amount and ends the player's turn
+     * @param playerID the player who is betting
+     * @param amount the amount they want to bet (on top of their current bet, not total)
+     * @return whether or not the action succeeded (is a high enough bet, etc.)
+     */
     public boolean bet(int playerID, int amount) {
         //get a reference to the current player
         Player currentPlayer = players.get(playerTurn);
@@ -151,7 +159,6 @@ public class THState extends GameState implements Serializable {
         if (currentPlayer.getBet() + amount < currentBet) {
             return false;
         }
-
 
         if (amount > currentPlayer.getBalance()) {
             amount = currentPlayer.getBalance(); //this shouldn't happen but it is for some reason
@@ -178,7 +185,11 @@ public class THState extends GameState implements Serializable {
         return true;
     }
 
-    //only requirement to fold is it needs to be your turn
+    /**
+     * folds and ends the player's turn
+     * @param playerID the player who wants to fold
+     * @return whether or not the fold succeeded (only requirement is turn)
+     */
     public boolean fold(int playerID) {
         Player currentPlayer = players.get(playerTurn);
 
@@ -195,7 +206,9 @@ public class THState extends GameState implements Serializable {
         return true;
     }
 
-    //just sum up all bets
+    /**
+     * @return the total amount in the pot (the amount you would win)
+     */
     public int getPool() {
         int pool = 0;
         for (Player each : players) {
@@ -308,20 +321,6 @@ public class THState extends GameState implements Serializable {
 
     }
 
-    public Card highHand(ArrayList<Card> hand) {
-
-
-        int high = 0;
-        Card winCard = null;
-        for (Card card : hand) {
-            if (card.getValue() > high) {
-                high = card.getValue();
-                winCard = new Card(card);
-            }
-        }
-        return winCard;
-    }
-
     /**
      * These are all getters and setters, I don't think there's any reason to explain them
      * Everything involving lists clones so we don't pass the master copy accidentally
@@ -391,6 +390,10 @@ public class THState extends GameState implements Serializable {
         }
         return count;
     }
+
+    /**
+     * @return a list containing all players who haven't folded
+     */
     public ArrayList<Player> getActivePlayersList() {
         ArrayList<Player> active = new ArrayList<Player>();
         for (int i = 0; i < players.size(); i++) {
@@ -401,6 +404,9 @@ public class THState extends GameState implements Serializable {
         return active;
     }
 
+    /**
+     * @return all the information in the GameState as a string (see below)
+     */
     @Override
     public String toString() {
         /*
@@ -456,6 +462,4 @@ public class THState extends GameState implements Serializable {
 
         return message;
     }
-
-
 }

@@ -73,6 +73,12 @@ public class THComputerPlayerShy extends GameComputerPlayer {
         super(name);
     }
 
+    /**
+     * acts similarly to the Hard AI, but during the pre-flop is much more cautious about playing
+     * hands. This behavior is based on a chart I found online but ended up being very boring to
+     * play against
+     * @param info the received info (only care if it's a GameState)
+     */
     @Override
     protected void receiveInfo(GameInfo info) {
         try {
@@ -265,6 +271,9 @@ public class THComputerPlayerShy extends GameComputerPlayer {
         }
     }
 
+    /**
+     * abstracts the fold action to match the bet action
+     */
     private void fold() {
         Fold action = new Fold(this);
         game.sendAction(action);

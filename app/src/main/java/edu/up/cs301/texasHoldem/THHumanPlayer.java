@@ -64,7 +64,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private ArrayList<Player> playerList = new ArrayList<>();
     private ArrayList<CardAnimator> hands = new ArrayList<>();
 
-    private int valueInt;
     private Player me; //this will make things much easier
     private CardAnimator handAnimator;
     private CardAnimator dealerAnimator;
@@ -78,18 +77,23 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
     /**
      * constructor
-     *
      * @param name the name of the player
      */
     public THHumanPlayer(String name) {
         super(name);
     }
 
-
-    //TEMPORARY BLANK CLASSES
+    /**
+     * @return the GUI's top view
+     */
     public View getTopView() {
-        return null;
+        return myActivity.findViewById(R.id.top_gui_layout);
     }
+
+    /**
+     * upon receiving info, either handles the message or updates the UI with the current GameState
+     * @param info the recieved info
+     */
     @Override
     public void receiveInfo(GameInfo info) {
         if (!(info instanceof THState)) {
@@ -202,12 +206,24 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
         updateUI();
     }
+
+    /**
+     * required by SeekBar.OnSeekBarChangeListener but never used
+     * @param seekBar the seekbar which sent the action
+     */
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) { }
+
+    /**
+     * required by SeekBar.OnSeekBarChangeListener but never used
+     * @param seekBar the seekbar which sent the action
+     */
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) { }
-    //END TEMPORARY BLANK CLASSES
 
+    /**
+     * initializes all the variables o let us which let us change things on the screen
+     */
     public void setAsGui(GameMainActivity activity) {
         // remember the activity
         myActivity = activity;
@@ -244,8 +260,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
      * We need to call this once whenever we receive info
      */
     public void updateUI() {
-
-
         //set our balance and the pool (probably just 0)
         balanceTV.setText(me.getBalance()+"$");
         potTV.setText("Pot: "+gameState.getPool()+"$\nBet: "+me.getBet());
@@ -255,8 +269,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
         //(current min bet - our current bet) + ( our balance * ( seekbar value / seekbar max ) )
         valueTV.setText("$"+getSliderBet());
-
-
 
         //show hand quality in post-flop rounds
         if (gameState.getRound() > 0) {
@@ -284,6 +296,11 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         else bet.setText("Bet");
     }
 
+    /**
+     * Handles button presses, in our case that's the bet and fold buttons. in either case we send
+     * an action to the game
+     * @param view the view that called this method
+     */
     public void onClick(View view) {
         if(gameState.getPlayerTurn() == playerNum) {
             //checks if id equals the bet or fold action.
@@ -305,17 +322,17 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
     }
 
+    /**
+     * required by SeekBar.OnSeekBarChangeListener, this is the bet slider and needs to update the
+     * UI to change the number on the text view to the right of it
+     * @param seekBar the seek bar that changed
+     * @param i required parameter
+     * @param b required parameter
+     */
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         //change bet TV
         updateUI();
-    }
-
-    public Player getPlayerObject() { //using "getPlayerObject" for clarity
-        return me;
-    }
-    public void setPlayerObject(Player player) {
-        me = player;
     }
 
     /**
@@ -335,7 +352,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
      * Problem: Trying to setup a timer in java without data leaks
      * link: https://stackoverflow.com/questions/10032003/how-to-make-a-countdown-timer-in-android
      * Solution: create void methods
-     *
      * */
     private void startTimer() {
         Fold foldactionTime = new Fold(this);
@@ -354,7 +370,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         timer.start();
 
     }
-
 
     //cancel timer
     private void cancelTimer() {
