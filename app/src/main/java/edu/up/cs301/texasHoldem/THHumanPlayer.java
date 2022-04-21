@@ -293,20 +293,22 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     }
 
     public void onClick(View view) {
-        //checks if id equals the bet or fold action.
-        if (view.getId() == bet.getId()) {
-            //recalculate this here. feels flimsy to just use whatever text is on the screen
-            int betAmount = (int) ((gameState.getCurrentBet()-me.getBet())
-                    +(me.getBalance()*((float) valueSB.getProgress()/valueSB.getMax())));
-            Bet betAction = new Bet(this, betAmount);
-            game.sendAction((GameAction) (THGameAction) betAction);
-            cancelTimer();
+        if(gameState.getPlayerTurn() == playerNum) {
+            //checks if id equals the bet or fold action.
+            if (view.getId() == bet.getId()) {
+                //recalculate this here. feels flimsy to just use whatever text is on the screen
+                int betAmount = (int) ((gameState.getCurrentBet() - me.getBet())
+                        + (me.getBalance() * ((float) valueSB.getProgress() / valueSB.getMax())));
+                Bet betAction = new Bet(this, betAmount);
+                game.sendAction((GameAction) (THGameAction) betAction);
+                cancelTimer();
 
-        }
-        if (view.getId() == fold.getId()) {
-            Fold foldAction = new Fold(this);
-            game.sendAction(foldAction);
-            cancelTimer();
+            }
+            if (view.getId() == fold.getId()) {
+                Fold foldAction = new Fold(this);
+                game.sendAction(foldAction);
+                cancelTimer();
+            }
         }
 
     }
