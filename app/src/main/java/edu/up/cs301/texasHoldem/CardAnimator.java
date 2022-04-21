@@ -125,8 +125,7 @@ public class CardAnimator implements Animator {
     }
 
     /**
-     * @return
-     * 		the amimation interval, in milliseconds
+     * @return the amimation interval, in milliseconds
      */
     public int interval() {
         // 1/20 of a second
@@ -134,24 +133,21 @@ public class CardAnimator implements Animator {
     }
 
     /**
-     * @return
-     * 		the background color
+     * @return the background color
      */
     public int backgroundColor() {
         return backgroundColor;
     }
 
     /**
-     * @return
-     * 		whether the animation should be paused
+     * @return whether the animation should be paused
      */
     public boolean doPause() {
         return false;
     }
 
     /**
-     * @return
-     * 		whether the animation should be terminated
+     * @return whether the animation should be terminated
      */
     public boolean doQuit() {
         return false;
@@ -180,6 +176,10 @@ public class CardAnimator implements Animator {
         }
     }
 
+    /**
+     * Overrides onTouch, this is required by implementing Animator but we don't use it
+     * @param event a MotionEvent describing the touch
+     */
     @Override
     public void onTouch(MotionEvent event) {
         //no need to do anything here since we don't move around cards in texas holdem
@@ -301,7 +301,7 @@ public class CardAnimator implements Animator {
 
     /**
      * Credit: Steven R. Vegdahl, July 2013
-     * <p>
+     *
      * initializes the card images
      *
      * @param activity the current activity

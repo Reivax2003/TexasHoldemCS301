@@ -35,6 +35,9 @@ public class RankHand implements Serializable {
         initialize();
     }
 
+    /**
+     * run upon creation, fills out the flushes and unsuited dictionaries
+     */
     private void initialize() {
         flushes = new Hashtable<>();
         unsuited = new Hashtable<>();

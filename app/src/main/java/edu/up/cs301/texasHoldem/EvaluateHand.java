@@ -24,6 +24,10 @@ import edu.up.cs301.game.R;
  */
 public class EvaluateHand {
 
+    /**
+     * I'm not gonna put comments here since I don't know what everything is for, Milton will need
+     * to get it up to the code standard
+     */
     private Card[] cards;
     private ArrayList<Card> cardsAL;
 

@@ -22,7 +22,6 @@ public class Player implements Serializable {
     private boolean allIn = false;
     private String action = "";
     private int handValue; //long story short, this is so that gamestate is serializable
-    //private UiPlayerProfile profile;
 
     // simple constructor
     public Player(String initName, int balance) {//, Bitmap picture) {

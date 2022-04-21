@@ -12,7 +12,7 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
  * @version 3.30.22
  */
 public class Fold extends THGameAction {
-
+    //practically nothing to explain here
     public Fold(GamePlayer x) {
         super(x);
     }

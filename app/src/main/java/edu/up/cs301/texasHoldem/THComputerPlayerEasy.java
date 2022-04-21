@@ -26,6 +26,11 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
         super(name);
     }
 
+    /**
+     * When it becomes the AI's turn it has a 2% chance to fold, if it doesn't fold then it has a
+     * 25% chance to raise, if neither happens then it checks
+     * @param info the gamestate (usually) at the start of the AI's turn
+     */
     @Override
     protected void receiveInfo(GameInfo info) {
         try {
@@ -45,12 +50,6 @@ public class THComputerPlayerEasy extends GameComputerPlayer {
         Player self = gameState.getPlayers().get(playerNum); //the Player object associated with us
 
         int betNeeded = gameState.getCurrentBet()-self.getBet(); //check
-        /*
-        boolean requiredRaise = false;
-        if (betNeeded == 0) {
-            requiredRaise = true;
-        }
-         */
 
         Random r = new Random();
          //1/50 chance to fold (might be too low)
