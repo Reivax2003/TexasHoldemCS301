@@ -151,17 +151,7 @@ public class THState extends GameState implements Serializable {
         if (currentPlayer.getBet() + amount < currentBet) {
             return false;
         }
-        /**
-         *
-         //prevents player from skipping their turn
-        if (amount == 0 && roundTurns > 0) {
-            return false;
-        }
-        if (amount == 0){
-            nextTurn();
-            roundTurns = 0;
-            return true;
-        }*/
+
 
         if (amount > currentPlayer.getBalance()) {
             amount = currentPlayer.getBalance(); //this shouldn't happen but it is for some reason
