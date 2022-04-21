@@ -17,7 +17,6 @@ public class Player implements Serializable {
     private String name;
     private int balance;
     private int bet = 0;
-    private Bitmap picture;
     private Card[] hand = new Card[2];
     private boolean folded = false;
     private boolean allIn = false;
@@ -28,7 +27,6 @@ public class Player implements Serializable {
     public Player(String initName, int balance) {//, Bitmap picture) {
         this.name = initName;
         this.balance = balance;
-        this.picture = picture;
         //profile = new UiPlayerProfile(initName);
     }
 
@@ -36,7 +34,6 @@ public class Player implements Serializable {
     public Player(Player orig) {
         name = orig.name;
         balance = orig.balance;
-        picture = orig.picture;
         bet = orig.bet;
         folded = orig.folded;
         allIn = orig.allIn;
