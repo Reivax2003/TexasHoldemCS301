@@ -85,6 +85,24 @@ public class THLocalGame extends LocalGame {
 	}
 
 	/**
+	 * sends an un-redacted GameState to a player
+	 * @param p the player to send the state to
+	 */
+	private void sendFinalStateTo(GamePlayer p) {
+		THState copy = new THState(state);
+		p.sendInfo(copy);
+	}
+
+	/**
+	 * sends an un-redacted GameState to all the players
+	 */
+	private void sendFinalStateToAll() {
+		for (GamePlayer p : players) {
+			sendFinalStateTo(p);
+		}
+	}
+
+	/**
 	 * checks whether the player is allowed to move (if it is their turn)
 	 * @param playerIdx the player's player-number (ID)
 	 * @return whether or not the player can take an action right now
@@ -102,8 +120,8 @@ public class THLocalGame extends LocalGame {
     protected String checkIfGameOver() {
     	if (state.getActivePlayers() == 1) { //if only one player is left
     		Player winner = state.getActivePlayersList().get(0);
+			sendFinalStateToAll();
     		return "Winner: "+winner.getName()+", everyone else folded\n";
-
 		}
     	boolean allIn = false;
     	if (checkIfAllIn(state)) {
@@ -144,14 +162,17 @@ public class THLocalGame extends LocalGame {
 				}
 				//lines 144-165 are for debugging purposes
 				if (winners.size() == 0) {
+					sendFinalStateToAll();
 					return "something went wrong\nwinner could not be evaluated";
 				} else if (winners.size() == 1) {
 					Log.i("Winning hand rank", ""+bestHand);
+					sendFinalStateToAll();
 					//this is usually going to happen, just print the winner
 					return winners.get(0).getName()+" wins with a "
 							+handRanker.getRankText(bestHand)+"\n";
 				} else if (winners.size() == 2) {
 					Log.i("Winning hand rank", ""+bestHand);
+					sendFinalStateToAll();
 					//have to handle a 2 player tie separately so the message looks right
 					String message = winners.get(0).getName()+" and "+winners.get(0).getName()
 							+" tied with a "+handRanker.getRankText(bestHand)+"\n";
@@ -166,6 +187,7 @@ public class THLocalGame extends LocalGame {
 					}
 					message = message+"and "+winners.get(winners.size()-1).getName()+" tied with a "
 							+handRanker.getRankText(bestHand)+"\n";
+					sendFinalStateToAll();
 					return message;
 				}
 			} else {
