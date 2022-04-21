@@ -386,23 +386,26 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
                     <Button
                         android:id="@+id/buttonFold"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
+                        android:background="@drawable/red_chip"
                         android:text="Fold"
                         android:textColor="#FFFFFFFF" />
 
                     <Button
                         android:id="@+id/buttonBet"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
+                        android:background="@drawable/black_chip"
                         android:text="Bet"
                         android:textColor="#FFFFFFFF" />
 

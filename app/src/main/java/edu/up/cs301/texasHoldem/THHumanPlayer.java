@@ -141,7 +141,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 idx++;
             }
 
-            if(player != null) { //Makes sure that the player exist (should not trigger)
+            if(player != null) { //Makes sure that the player exist
                 /**
                  * External citation - Feb 13, 2022
                  * problem: getting the children of the liner layout
@@ -185,14 +185,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 }
             }
         }
-/*
-        manager = new ProfileManager(gameState.getProfiles(),R.id.profileList);
-        for(int  i = 0; i < gameState.getPlayers().size(); i++){
-            if(playerNum != i) {
-                manager.addProfiles(i);
-            }
-        }
-*/
 
         /**
          * External Citation - April 20, 2022
