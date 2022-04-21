@@ -83,7 +83,7 @@ public class THLocalGame extends LocalGame {
 
 	@Override
 	protected boolean canMove(int playerIdx) {
-		return playerIdx == state.playerTurn;
+		return playerIdx == state.getPlayerTurn();
 	}
 
 	@Override

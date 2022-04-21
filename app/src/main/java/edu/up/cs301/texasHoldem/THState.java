@@ -25,7 +25,7 @@ public class THState extends GameState implements Serializable {
     private int round; //pre-flop, post-flop 1, post-flop 2, and final round
     private int roundTurns;
     private int MAX_TIMER;
-    int playerTurn;
+    private int playerTurn;
     private int blindBet;
     private int currentBet; //easier to keep track of this than iterate through players every time we need it
     private boolean[] startOfRoundCheck;

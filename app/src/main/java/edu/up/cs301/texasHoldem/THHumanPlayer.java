@@ -100,9 +100,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         gameState = (THState) info;
         playerList = gameState.getPlayers();
 
-
-
-
         //if this is the first time we're receiving gamestate
         //it's also possible for a gamestate to not have a handranker
         if (handRanker == null && gameState.getHandRanker() != null) {
