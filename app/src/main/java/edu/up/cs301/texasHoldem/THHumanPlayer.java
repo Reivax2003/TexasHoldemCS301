@@ -1,6 +1,7 @@
 package edu.up.cs301.texasHoldem;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.Image;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -67,6 +68,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private int backgroundColor = 0xFF35654D;
     private int oppNameColor = 0xFFFFFFFF;
     private int oppNameColorFolded = 0x66FFFFFF; //gray out a player who has folded
+    private int oppNameColorTurn = 0xFF00FFFF;
 
     /**
      * constructor
@@ -121,6 +123,19 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 usernameTV.setText(me.getName());
                 profileIV.setImageResource(R.drawable.cheems_avatar);
 
+                if (me.isFolded()) {
+                    usernameTV.setTextColor(oppNameColorFolded);
+                } else {
+                    usernameTV.setTextColor(oppNameColor);
+                }
+                if (gameState.getPlayerTurn() == i) {
+                    usernameTV.setTextColor(oppNameColorTurn);
+                    usernameTV.setTypeface(Typeface.DEFAULT_BOLD);
+                } else {
+                    usernameTV.setTextColor(oppNameColor);
+                    usernameTV.setTypeface(Typeface.DEFAULT);
+                }
+
                 //skips the rest as those are for the opponents
                 continue;
             }
@@ -160,6 +175,13 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                                 }
                                 if (tag.equals("name")) {
                                     textView.setText(player.getName());
+                                    if (gameState.getPlayerTurn() == i) {
+                                        textView.setTextColor(oppNameColorTurn);
+                                        textView.setTypeface(Typeface.DEFAULT_BOLD);
+                                    } else {
+                                        textView.setTextColor(oppNameColor);
+                                        textView.setTypeface(Typeface.DEFAULT);
+                                    }
                                 }  else if (tag.equals("bet")) {
                                     textView.setText("Bet: " + player.getBet()+"$");
                                     if (player.isFolded()) {
