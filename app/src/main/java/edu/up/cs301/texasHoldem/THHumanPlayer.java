@@ -1,34 +1,23 @@
 package edu.up.cs301.texasHoldem;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
+import android.media.Image;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-
-import org.w3c.dom.Text;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import edu.up.cs301.game.GameFramework.GameMainActivity;
 import edu.up.cs301.game.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.game.GameFramework.animation.AnimationSurface;
-import edu.up.cs301.game.GameFramework.animation.Animator;
 import edu.up.cs301.game.GameFramework.infoMessage.GameInfo;
 import edu.up.cs301.game.GameFramework.players.GameHumanPlayer;
 import edu.up.cs301.game.R;
@@ -58,6 +47,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private TextView potTV;
     private TextView usernameTV;
     private TextView timerTV;
+    private ImageView profileIV;
     private ProgressBar timePB;
     private AnimationSurface dealerAS;
     private AnimationSurface handAS;
@@ -74,8 +64,9 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private long time;
     private CountDownTimer timer;
 
-
     private int backgroundColor = 0xFF35654D;
+    private int oppNameColor = 0xFFFFFFFF;
+    private int oppNameColorFolded = 0x66FFFFFF; //gray out a player who has folded
 
     /**
      * constructor
@@ -106,27 +97,14 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         playerList = gameState.getPlayers();
         //this actually needs to get updated every time we get new info
         me = gameState.getPlayers().get(playerNum);
-/*
-
-        if (handAnimator == null || dealerAnimator == null) {
-            handAnimator = new CardAnimator(me.getHand(), backgroundColor, handAS, myActivity);
-            hands.add(playerNum,handAnimator);
-            dealerAnimator = new CardAnimator(gameState.getDealerHandAsArray(),
-                    backgroundColor, dealerAS, myActivity);
-            handAS.setAnimator(handAnimator);
-            dealerAS.setAnimator(dealerAnimator);
-        }
-        handAnimator.setCards(me.getHand()); //make sure we're rendering the current game state
-        dealerAnimator.setCards(gameState.getDealerHandAsArray());
-
- */
-
 
         //Sets up the players Information
         int idx = 0;
-        for(int i = 0; i < playerList.size(); i++){
-            Player player = gameState.getPlayers().get(i);
-            LinearLayout layout = null;
+        for(int i = 0; i < oppProfiles.length+1; i++){ //gets the number of opponents+1
+            Player player = null;
+            if (gameState.getPlayers().size() > i) {
+                player = gameState.getPlayers().get(i);
+            }
             //To separate which one is the player and which one is the opponent
             if(i == playerNum){
                 if (handAnimator == null || dealerAnimator == null) {
@@ -139,14 +117,19 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 }
                 handAnimator.setCards(me.getHand()); //make sure we're rendering the current game state
                 dealerAnimator.setCards(gameState.getDealerHandAsArray());
+
+                usernameTV.setText(me.getName());
+                profileIV.setImageResource(R.drawable.cheems_avatar);
+
                 //skips the rest as those are for the opponents
                 continue;
             }
-            else{
-                layout = oppProfiles[idx];
-                idx++;
-            }
 
+            //all this is for opponents
+            LinearLayout layout = oppProfiles[idx];
+            idx++;
+
+            int count = layout.getChildCount();
             if(player != null) { //Makes sure that the player exist
                 /**
                  * External citation - Feb 13, 2022
@@ -154,7 +137,6 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                  * link: https://stackoverflow.com/questions/6615723/getting-child-elements-from-linearlayout
                  * solution: do a for loop to access all the views inside the layout
                  */
-                int count = layout.getChildCount();
                 for (int j = 0; j < count; j++) {
                     View id = layout.getChildAt(j);
 
@@ -170,12 +152,19 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                             View childView = childLayout.getChildAt(c);
                             if(childView instanceof TextView) {
                                 String tag = (String) childView.getTag();
+                                TextView textView = (TextView)childView;
+                                if (player.isFolded()) { //gray out if player is folded
+                                    textView.setTextColor(oppNameColorFolded);
+                                } else {
+                                    textView.setTextColor(oppNameColor);
+                                }
                                 if (tag.equals("name")) {
-                                    ((TextView)childView).setText(player.getName());
-                                } else if (tag.equals("action")) {
-                                    ((TextView)childView).setText(player.getAction());
-                                } else if (tag.equals("money")) {
-                                    ((TextView)childView).setText("$ " + player.getBalance());
+                                    textView.setText(player.getName());
+                                }  else if (tag.equals("bet")) {
+                                    textView.setText("Bet: " + player.getBet()+"$");
+                                    if (player.isFolded()) {
+                                        textView.setText("(Folded)");
+                                    }
                                 }
                             }
                             else if(childView instanceof AnimationSurface){
@@ -189,6 +178,25 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                         }
                     }
                 }
+            } else { //if the player is null make the animation surface blend in
+                //do what we did above but only look for an animation surface
+                for (int j = 0; j < count; j++) {
+                    View id = layout.getChildAt(j);
+                    if(id instanceof LinearLayout){
+                        LinearLayout childLayout = ((LinearLayout) id);
+                        int countId = childLayout.getChildCount();
+                        for(int c = 0; c < countId; c++){
+                            View childView = childLayout.getChildAt(c);
+                            if(childView instanceof AnimationSurface){
+                                //make empty card animator that just makes a background
+                                CardAnimator anim = new CardAnimator(new Card[0],backgroundColor,
+                                        (AnimationSurface) childView, myActivity);
+                                ((AnimationSurface) childView).setAnimator(anim);
+                            }
+                        }
+                    }
+                }
+
             }
         }
 
@@ -246,6 +254,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         this.qualityTV = activity.findViewById(R.id.handQuality);
         this.timerTV = activity.findViewById(R.id.textView);
         this.timePB = activity.findViewById(R.id.userPlayTimer);
+        this.profileIV = activity.findViewById(R.id.userImage);
 
         this.oppProfiles[0] = activity.findViewById(R.id.oppProfile1);
         this.oppProfiles[1] = activity.findViewById(R.id.oppProfile2);

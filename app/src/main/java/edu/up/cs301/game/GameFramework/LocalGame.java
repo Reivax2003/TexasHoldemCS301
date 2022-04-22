@@ -39,7 +39,7 @@ public abstract class LocalGame implements Game, Tickable {
     private static final String TAG = "LocalGame";
 
     // the stage that the game is in
-    private GameStage gameStage = GameStage.BEFORE_GAME;
+    protected GameStage gameStage = GameStage.BEFORE_GAME;
 
     // the handler for the game's thread
     private Handler myHandler;
@@ -171,7 +171,7 @@ public abstract class LocalGame implements Game, Tickable {
      * @param msg
      * 			the message that was received
      */
-    private void receiveMessage(Message msg) {
+    protected void receiveMessage(Message msg) {
         if (msg.obj instanceof GameAction) { // ignore if not GameAction
             GameAction action = (GameAction)msg.obj;
 

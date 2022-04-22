@@ -1,6 +1,7 @@
 package edu.up.cs301.texasHoldem;
 
 import android.content.Context;
+import android.os.Message;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -59,7 +60,6 @@ public class THLocalGame extends LocalGame {
 		super.start(players);
 
 		ArrayList<Player> gamePlayers = new ArrayList<Player>();
-		//for each player create a Player object
 		for (int i = 0; i < players.length; i++) {
 			Player player = new Player(playerNames[i], 1000);
 			gamePlayers.add(player);
@@ -69,6 +69,24 @@ public class THLocalGame extends LocalGame {
 		state.dealPlayers();
 		state.placeBlindBets();
 		sendAllUpdatedState(); //need to call this to update everyone of blind bets
+	}
+
+	/**
+	 * for some reason when we initialize the players in start it doesn't get the first name
+	 * this just catches all the messages containing names and assigns them
+	 * @param msg the message we received
+	 */
+	@Override
+	protected void receiveMessage(Message msg) {
+		super.receiveMessage(msg);
+		if (msg.obj instanceof GameAction) { // ignore if not GameAction
+			GameAction action = (GameAction) msg.obj;
+			if (action instanceof MyNameIsAction && state.getPlayers() != null
+					&& state.getPlayers().size() > 0) {
+				MyNameIsAction mnis = (MyNameIsAction) action;
+				state.getPlayers().get(mnis.getPlayerID()).setName(mnis.getName());
+			}
+		}
 	}
 
 	/**

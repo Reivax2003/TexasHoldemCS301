@@ -58,7 +58,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:gravity="center_horizontal"
-                        android:tag="action"
+                        android:tag="bet"
                         android:textColor="#FFFFFFFF"
                         android:textSize="20sp" />
 
@@ -111,7 +111,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:gravity="center_horizontal"
-                        android:tag="action"
+                        android:tag="bet"
                         android:textColor="#FFFFFFFF"
                         android:textSize="20sp" />
 
@@ -163,7 +163,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:gravity="center_horizontal"
-                        android:tag="action"
+                        android:tag="bet"
                         android:textColor="#FFFFFFFF"
                         android:textSize="20sp" />
 

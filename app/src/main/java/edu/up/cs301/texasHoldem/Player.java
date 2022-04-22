@@ -84,6 +84,7 @@ public class Player implements Serializable {
     public void setBalance(int amount) {balance = amount;}
     public void setHandValue(int value) { handValue = value; }
     public int getHandValue() {return handValue; }
+    public void setName(String name) { this.name = name; }
 
     public void goAllIn() {
         if (balance > 0) {
