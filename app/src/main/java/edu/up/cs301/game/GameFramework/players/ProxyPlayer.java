@@ -1,5 +1,9 @@
 package edu.up.cs301.game.GameFramework.players;
 
+import android.util.Log;
+
+import java.util.ArrayList;
+
 import edu.up.cs301.game.GameFramework.Game;
 import edu.up.cs301.game.GameFramework.GameMainActivity;
 import edu.up.cs301.game.GameFramework.actionMessage.GameAction;
@@ -33,6 +37,8 @@ public class ProxyPlayer implements GamePlayer {
     // has been established
     private boolean isReady;
 
+    private int id = -1;
+
     /**
      * ProxyPlayer constructor.
      *
@@ -58,11 +64,15 @@ public class ProxyPlayer implements GamePlayer {
                             // if it's a game action (which it should be), send
                             // the action to the game
                             GameAction action = (GameAction)obj;
-                            action.setPlayer(ProxyPlayer.this);
+                            action.setPlayerID(id);
                             game.sendAction(action);
                         }
                     }
                 };
+    }
+
+    public void setID(int ID) {
+        this.id = ID;
     }
 
     /**
@@ -98,6 +108,7 @@ public class ProxyPlayer implements GamePlayer {
             // object so that we have the connection for
             // future messages.
             game = ((BindGameInfo)state).getGame();
+            id = ((BindGameInfo)state).getPlayerNum();
         }
 
         // Null out the game from the GameInfo object (if present),

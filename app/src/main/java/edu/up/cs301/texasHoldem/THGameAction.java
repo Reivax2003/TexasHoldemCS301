@@ -15,20 +15,10 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
 public class THGameAction extends GameAction {
 
     // the player who generated the request
-    private GamePlayer player;
+    private int playerID;
 
-    public THGameAction(GamePlayer p) {
-        super(p);
-        this.player = p;
-    }
-
-    //return player's action.
-    public GamePlayer getPlayer() {
-        return player;
-    }
-
-    //set the player associated with this action
-    public void setPlayer(GamePlayer p) {
-        this.player = p;
+    public THGameAction(int playerID) {
+        super(playerID);
+        this.playerID = playerID;
     }
 }

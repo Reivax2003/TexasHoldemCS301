@@ -275,7 +275,7 @@ public class THComputerPlayerShy extends GameComputerPlayer {
      * abstracts the fold action to match the bet action
      */
     private void fold() {
-        Fold action = new Fold(this);
+        Fold action = new Fold(state.getPlayerID(self));
         game.sendAction(action);
     }
     /**
@@ -302,7 +302,7 @@ public class THComputerPlayerShy extends GameComputerPlayer {
         // if the min bet is greater than our balance we still bet, I don't know if this is allowed
         // for now it'll stay in since going all in seems to be a unique case
         amount = Math.min(amount, self.getBalance());
-        Bet action = new Bet(this, amount);
+        Bet action = new Bet(state.getPlayerID(self), amount);
         game.sendAction(action);
     }
 }

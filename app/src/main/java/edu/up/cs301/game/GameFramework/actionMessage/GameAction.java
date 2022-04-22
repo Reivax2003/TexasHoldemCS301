@@ -26,37 +26,23 @@ public abstract class GameAction implements Serializable {
     private static final String TAG = "GameAction";
     // to support the Serializable interface
     private static final long serialVersionUID = 30672013L;
-
-    // the player who generated the request
-    private GamePlayer player;
+    private int playerID; //id of player
 
     /**
      * constructor for GameAction
      *
-     * @param player
+     * @param playerID
      * 		the player who created the action
      */
-    public GameAction(GamePlayer player) {
-        this.player = player;
+    public GameAction(int playerID) {
+        this.playerID = playerID;
     }
 
-    /**
-     * tells the player who created the action
-     *
-     * @return the player who created the action
-     *
-     */
-    public GamePlayer getPlayer() {
-        return player;
+    public int getPlayerID() {
+        return playerID;
     }
 
-    /** Resets the source of the action. The intent is that it be used only
-     *  by ProxyGame and ProxyPlayer.
-     *
-     * @param p
-     * 		the new player to which the action is to be associated
-     */
-    public void setPlayer(GamePlayer p) {
-        this.player = p;
+    public void setPlayerID(int playerID) {
+        this.playerID = playerID;
     }
 }

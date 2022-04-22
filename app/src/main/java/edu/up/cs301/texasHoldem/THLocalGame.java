@@ -246,10 +246,10 @@ public class THLocalGame extends LocalGame {
     	boolean succeeded = false;
     	//send action
 		if (action instanceof Bet) {
-			Bet bet = (Bet) action;
-			succeeded = state.bet(getPlayerIdx(bet.getPlayer()), bet.getAmount());
+			Bet bet = (Bet) action; //have to cast to bet to get amount
+			succeeded = state.bet(bet.getPlayerID(), bet.getAmount());
 		} else if (action instanceof Fold) {
-			succeeded = state.fold(getPlayerIdx(action.getPlayer()));
+			succeeded = state.fold(action.getPlayerID());
 		}
 
 		return succeeded;

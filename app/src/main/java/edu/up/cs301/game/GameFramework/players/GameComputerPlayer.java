@@ -196,7 +196,7 @@ public abstract class GameComputerPlayer implements GamePlayer, Tickable {
                         playerNum = bgs.getPlayerNum(); // set our player ID
 
                         // send a message to the game with our player's name
-                        game.sendAction(new MyNameIsAction(GameComputerPlayer.this, name));
+                        game.sendAction(new MyNameIsAction(playerNum, name));
                     }
                 }
                 else if (allPlayerNames == null) {
@@ -209,7 +209,7 @@ public abstract class GameComputerPlayer implements GamePlayer, Tickable {
                         // perform game-specific initialization
                         initAfterReady();
                         // tell game that we're ready to play
-                        game.sendAction(new ReadyAction(GameComputerPlayer.this));
+                        game.sendAction(new ReadyAction(playerNum));
                     }
                 }
                 else if (myInfo instanceof GameOverInfo) {
@@ -224,7 +224,7 @@ public abstract class GameComputerPlayer implements GamePlayer, Tickable {
                     }
 
                     // acknowledge to the game that we have receive the message
-                    game.sendAction(new GameOverAckAction(GameComputerPlayer.this));
+                    game.sendAction(new GameOverAckAction(playerNum));
 
                     // mark game as being over
                     gameOver = true;

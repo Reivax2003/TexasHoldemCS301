@@ -186,7 +186,7 @@ public abstract class LocalGame implements Game, Tickable {
                 Logger.debugLog(TAG, "received 'myNameIs' ("+mnis.getName()+")");
 
                 // mark that player as having given us its name
-                int playerIdx = getPlayerIdx(mnis.getPlayer());
+                int playerIdx = mnis.getPlayerID();
                 if (playerIdx >= 0 && playerNames[playerIdx] == null) {
                     playerNames[playerIdx] = mnis.getName(); // store player name
                     synchronized (this){
@@ -216,7 +216,7 @@ public abstract class LocalGame implements Game, Tickable {
                 ReadyAction ra = (ReadyAction)action;
 
                 // mark the given player as being ready
-                int playerIdx = getPlayerIdx(ra.getPlayer());
+                int playerIdx = ra.getPlayerID();
                 Logger.debugLog(TAG, "got 'ready' ("+playerNames[playerIdx]+")");
                 if (playerIdx >= 0 && !playersReady[playerIdx]) {
                     playersReady[playerIdx] = true;
@@ -264,7 +264,7 @@ public abstract class LocalGame implements Game, Tickable {
 
                 // CASE 6: the game is over, and we are waiting for each player to
                 // acknowledge this
-                int playerIdx = getPlayerIdx(action.getPlayer());
+                int playerIdx = action.getPlayerID();
                 if (playerIdx >= 0 && !playersFinished[playerIdx]) {
                     playersFinished[playerIdx] = true;
                     synchronized (this) {
@@ -285,8 +285,8 @@ public abstract class LocalGame implements Game, Tickable {
     private final void checkAndHandleAction(GameAction action) {
 
         // get the player and player ID
-        GamePlayer player = action.getPlayer();
-        int playerId = getPlayerIdx(player);
+        int playerId = action.getPlayerID();
+        GamePlayer player = getPlayers()[playerId];
 
         // if the player is NOT a player who is presently allowed to
         // move, send the player a message

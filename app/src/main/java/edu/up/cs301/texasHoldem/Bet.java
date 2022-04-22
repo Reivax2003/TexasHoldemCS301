@@ -13,8 +13,8 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
 public class Bet extends THGameAction {
     private int amount;
 
-    public Bet(GamePlayer x, int amount) {
-        super(x);
+    public Bet(int PlayerID, int amount) {
+        super(PlayerID);
         this.amount = amount;
     }
 

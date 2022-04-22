@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -41,7 +42,8 @@ import edu.up.cs301.game.R;
  * @author Kevin Nguyen
  * @version 3.30.22
  */
-public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListener,
+        SeekBar.OnSeekBarChangeListener {
 
     /**
      * A basic implementation of PokerHumanPlayer derived from GameFrameWork Diagram. Many things
@@ -308,13 +310,13 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 //recalculate this here. feels flimsy to just use whatever text is on the screen
                 int betAmount = (int) ((gameState.getCurrentBet() - me.getBet())
                         + (me.getBalance() * ((float) valueSB.getProgress() / valueSB.getMax())));
-                Bet betAction = new Bet(this, betAmount);
+                Bet betAction = new Bet(gameState.getPlayerID(me), betAmount);
                 game.sendAction((GameAction) (THGameAction) betAction);
                 cancelTimer();
 
             }
             if (view.getId() == fold.getId()) {
-                Fold foldAction = new Fold(this);
+                Fold foldAction = new Fold(gameState.getPlayerID(me));
                 game.sendAction(foldAction);
                 cancelTimer();
             }
@@ -354,7 +356,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
      * Solution: create void methods
      * */
     private void startTimer() {
-        Fold foldactionTime = new Fold(this);
+        Fold foldactionTime = new Fold(gameState.getPlayerID(me));
         timer = new CountDownTimer(time, 1000) {
             public void onTick(long millisUntilFinished) {
                 timerTV.setText("Time: " + millisUntilFinished / 1000);

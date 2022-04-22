@@ -259,7 +259,7 @@ public abstract class GameHumanPlayer implements GamePlayer, Tickable {
                     playerNum = bgs.getPlayerNum(); // set our player id
 
                     // respond to the game, telling it our name
-                    game.sendAction(new MyNameIsAction(GameHumanPlayer.this, name));
+                    game.sendAction(new MyNameIsAction(playerNum, name));
                 }
             }
             else if (allPlayerNames == null) {
@@ -275,7 +275,7 @@ public abstract class GameHumanPlayer implements GamePlayer, Tickable {
                     initAfterReady();
 
                     // tell the game we're ready to play the game
-                    game.sendAction(new ReadyAction(GameHumanPlayer.this));
+                    game.sendAction(new ReadyAction(playerNum));
                 }
             }
             else if (myInfo instanceof GameOverInfo) {
@@ -286,7 +286,7 @@ public abstract class GameHumanPlayer implements GamePlayer, Tickable {
                 if (myActivity != null) myActivity.setGameOver(true);
 
                 // acknowledge to the game that the game is over
-                game.sendAction(new GameOverAckAction(GameHumanPlayer.this));
+                game.sendAction(new GameOverAckAction(playerNum));
 
                 // set our instance variable, to indicate the game as over
                 gameOver = true;

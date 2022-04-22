@@ -20,7 +20,7 @@ public class ReadyAction extends GameAction {
      * @param p
      * 		the player who sent the action
      */
-    public ReadyAction(GamePlayer p) {
+    public ReadyAction(int p) {
         super(p);
     }
 }

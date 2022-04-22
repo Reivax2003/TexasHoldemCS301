@@ -280,7 +280,7 @@ public class THComputerPlayerHard extends GameComputerPlayer {
      * abstracts the fold action to match the bet action
      */
     private void fold() {
-        Fold action = new Fold(this);
+        Fold action = new Fold(state.getPlayerID(self));
         game.sendAction(action);
     }
 
@@ -312,7 +312,7 @@ public class THComputerPlayerHard extends GameComputerPlayer {
         if (amount < 0) {
             amount *= -1;
         }
-        Bet action = new Bet(this, amount);
+        Bet action = new Bet(state.getPlayerID(self), amount);
         game.sendAction(action);
     }
 }

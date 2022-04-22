@@ -25,8 +25,8 @@ public class MyNameIsAction extends GameAction {
      * @param name
      * 		the player's name
      */
-    public MyNameIsAction(GamePlayer p, String name) {
-        super(p); // invoke superclass constructor
+    public MyNameIsAction(int playerID, String name) {
+        super(playerID); // invoke superclass constructor
         this.name = name; // set the name
     }
 

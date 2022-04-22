@@ -7,6 +7,7 @@ import edu.up.cs301.game.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.game.GameFramework.infoMessage.GameInfo;
 import edu.up.cs301.game.GameFramework.infoMessage.GameState;
 import edu.up.cs301.game.GameFramework.players.GamePlayer;
+import edu.up.cs301.game.GameFramework.players.ProxyPlayer;
 import edu.up.cs301.game.GameFramework.utilities.IPCoder;
 import edu.up.cs301.game.GameFramework.utilities.NetworkObjectPasser;
 import edu.up.cs301.game.GameFramework.utilities.Logger;
@@ -131,7 +132,7 @@ public class ProxyGame implements Game {
         // Send the action across the socket, nulling out the player in
         // the action so that the entire player is not serialized.
         if (action != null) {
-            action.setPlayer(null);
+            action.setPlayerID(-1);
             networkPasser.sendObject(action);
         }
     }
