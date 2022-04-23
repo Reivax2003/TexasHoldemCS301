@@ -109,6 +109,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
             }
             //To separate which one is the player and which one is the opponent
             if(i == playerNum){
+                //set the animators for cards
                 if (handAnimator == null || dealerAnimator == null) {
                     handAnimator = new CardAnimator(player.getHand(), backgroundColor, handAS, myActivity);
                     hands.add(playerNum,handAnimator);
@@ -120,8 +121,13 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 handAnimator.setCards(me.getHand()); //make sure we're rendering the current game state
                 dealerAnimator.setCards(gameState.getDealerHandAsArray());
 
+                //set the player's own profile info
                 usernameTV.setText(me.getName());
-                profileIV.setImageResource(R.drawable.cheems_avatar);
+                if (me.isCheems()) {
+                    profileIV.setImageResource(R.drawable.cheems_avatar);
+                } else {
+                    profileIV.setImageResource(R.drawable.blank_profile);
+                }
 
                 //set text color and bold if it is the player's turn
                 if (me.isFolded()) {
@@ -157,7 +163,11 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                     View id = layout.getChildAt(j);
 
                     if(id instanceof ImageView){
-                        ((ImageView) id).setImageResource(R.drawable.cheems_avatar);
+                        if (player.isCheems()) {
+                            ((ImageView) id).setImageResource(R.drawable.cheems_avatar);
+                        } else {
+                            ((ImageView) id).setImageResource(R.drawable.blank_profile);
+                        }
                     }
                     else if(id instanceof LinearLayout){
                         //Since one of the child is also a linear layout, I have to do the same damned for loop

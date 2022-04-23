@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * Player class containing all variables we need
@@ -22,12 +23,17 @@ public class Player implements Serializable {
     private boolean allIn = false;
     private String action = "";
     private int handValue; //long story short, this is so that gamestate is serializable
+    private boolean isCheems = false; //very important attribute
 
     // simple constructor
-    public Player(String initName, int balance) {//, Bitmap picture) {
+    public Player(String initName, int balance) {
         this.name = initName;
         this.balance = balance;
-        //profile = new UiPlayerProfile(initName);
+
+        Random r = new Random();
+        if (r.nextFloat() < 0.01) { // 1/100 chance for profile picture to be cheems
+            isCheems = true;
+        }
     }
 
     // deep copy constructor
@@ -38,20 +44,26 @@ public class Player implements Serializable {
         folded = orig.folded;
         allIn = orig.allIn;
         action = orig.action;
-        //profile = orig.profile;
+        isCheems = orig.isCheems;
 
         //the array is the only thing we really need to do a deep copy of
         hand = orig.hand.clone();
     }
 
+    /**
+     * removes the player's cards and hand value so that the gameState doesn't have any secret
+     * info when sent to opponents
+     */
     public void redactCards() {
         hand[0] = null;
         hand[1] = null;
         handValue = -1;
     }
-    public String getName(){ return name;}
 
-    public int getBet(){ return bet;}
+    /**
+     * increases player's bet. does NOT remove money
+     * @param newBet amount to add to the bet
+     */
     public void addBet(int newBet){
         bet += newBet;
         if(newBet == 0){
@@ -59,7 +71,6 @@ public class Player implements Serializable {
         }else {
             action = "Bet: $" + newBet;
         }
-        //profile.setActionText("Bet $" + newBet);
     }
 
     /**
@@ -78,12 +89,20 @@ public class Player implements Serializable {
         this.balance -= betAmount;
     }
     public void setHandValue(int value) { handValue = value; }
-    public int getHandValue() {return handValue; }
+    public int getHandValue() { return handValue; }
     public void setName(String name) { this.name = name; }
-    public Card[] getHand() {return hand.clone();}
+    public Card[] getHand() { return hand.clone(); }
     public void setHand(Card[] hand) { this.hand = hand; }
-    public boolean isFolded() {return folded; }
+    public boolean isFolded() { return folded; }
+    public String getName(){ return name; }
+    public int getBet(){ return bet; }
+    public boolean isCheems() {
+        return isCheems;
+    }
 
+    /**
+     * sets the player's allIn attribute to true. will only work if player has 0 balance
+     */
     public void goAllIn() {
         if (balance > 0) {
             return;
