@@ -123,6 +123,7 @@ public class THHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 usernameTV.setText(me.getName());
                 profileIV.setImageResource(R.drawable.cheems_avatar);
 
+                //set text color and bold if it is the player's turn
                 if (me.isFolded()) {
                     usernameTV.setTextColor(oppNameColorFolded);
                 } else {

@@ -113,9 +113,11 @@ public class Card implements Serializable {
      * gets the short name of next card in the same suit, useful for calculating a best hand
      * @return card of same suit with 1 greater rank. returns 2 if ace
      */
-    public String nextCard() {
+    public Card nextCard() {
         //value%14 will return value for everything but ace, where it returns 1
-        String card = new Card((value%14)+1, suit).getShortName();
+        int newValue = value+1;
+        if (newValue == 15) newValue = 2;
+        Card card = new Card(newValue, suit);
         return card;
     }
 
@@ -163,19 +165,6 @@ public class Card implements Serializable {
         }
     }
 
-
-    /**
-     * Compares two cards to see if they are the same
-     * @param other: the card to compare
-     * @return boolean, whether or not they are equivalent
-     */
-    public boolean equals(Card other) {
-        if (other.getValue() == value && other.getSuit() == suit) {
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Gets the representation of a card in binary form
      * Originally from:
@@ -207,11 +196,8 @@ public class Card implements Serializable {
      * @return integer form of binary described above
      */
     public int getCardBinary() {
-        String STR_RANKS = "23456789TJQKA";
-        int[] INT_RANKS = {0,1,2,3,4,5,6,7,8,9,10,11,12};
         int[] PRIMES = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41};
 
-        String[] CHAR_RANK_TO_INT_RANK = {"2","3","4","5","6","7","8","9","T","J","Q","K","A"};
         /**
          * how to initialize an arraylist with variables
          * https://stackoverflow.com/questions/16194921/initializing-arraylist-with-some-predefined-values
@@ -219,8 +205,6 @@ public class Card implements Serializable {
          */
         ArrayList<String> CHAR_SUIT_TO_INT_SUIT = new ArrayList<>(
                 Arrays.asList(null, "S", "H", null, "D", null, null, null, "C"));
-
-        String INT_SUIT_TO_CHAR_SUIT = "xshxdxxxc";
 
         int rank_int = value-2;
         int suit_int = CHAR_SUIT_TO_INT_SUIT.indexOf(String.valueOf(suit));
@@ -232,7 +216,6 @@ public class Card implements Serializable {
 
         int result = bitrank | bitsuit | rank | rank_prime;
 
-        //Log.i("card", ""+result);
         return result;
     }
 }

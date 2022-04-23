@@ -13,12 +13,9 @@ import edu.up.cs301.game.GameFramework.players.GamePlayer;
  * @version 3.30.22
  */
 public class THGameAction extends GameAction {
-
-    // the player who generated the request
-    private int playerID;
-
+    // parent class for bet and fold,
+    // Not really needed but at this point it would take a while to change
     public THGameAction(int playerID) {
         super(playerID);
-        this.playerID = playerID;
     }
 }

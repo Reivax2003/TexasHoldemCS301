@@ -5,10 +5,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import edu.up.cs301.texasHoldem.Card;
-import edu.up.cs301.texasHoldem.EvaluateHand;
 import edu.up.cs301.texasHoldem.Player;
 import edu.up.cs301.texasHoldem.THState;
 
@@ -82,7 +80,7 @@ public class GameStateTest {
         p2.setHand(new Card[]{new Card("KC"), new Card("TS")});
         p3.setHand(new Card[]{new Card("6S"), new Card("8D")});
 
-        p2.setFold(true);
+        p2.setFolded();
 
         p1.addBet(100);
         p3.addBet(200);
@@ -151,153 +149,6 @@ public class GameStateTest {
 
         //should return 1900 given that the first user made a bet of 100.
         assertEquals(1600, p2.getBalance());
-
-    }
-
-    @Test
-    public void evaluationTest() {
-        Card[] cards = new Card[7];
-        /*
-        cards[0] = (new Card("2H"));
-        cards[1] = (new Card("3H"));
-        cards[2] = (new Card("4H"));
-        cards[3] = (new Card("5H"));
-        cards[4] = (new Card("6H"));
-
-         */
-
-        /*
-        cards[0] = (new Card(10, 'h'));
-        cards[1] = (new Card(4, 'c'));
-        cards[2] = (new Card(4, 'h'));
-        cards[3] = (new Card(3, 'c'));
-        cards[4] = (new Card(2, 'd'));
-        cards[5] = (new Card(3, 'd'));
-        cards[6] = (new Card("TS"));
-
-
-         */
-
-
-
-
-        cards[0] = (new Card("AH"));
-        cards[1] = (new Card("TH"));
-        cards[2] = (new Card("JH"));
-        cards[3] = (new Card("QH"));
-        cards[4] = (new Card("KH"));
-        cards[5] = (new Card(3, 'h'));
-        cards[6] = (new Card(4, 's'));
-
-
-
-        //EvaluateHand test = new EvaluateHand(cards);
-
-
-        //assertEquals(true, test.checkFlush());
-
-/*
-        for (int i = 0; i < cards.length; i++) {
-            System.out.println(cards[i].toString());
-        }
-
- */
-
-        //boolean flush = true;
-        /*
-        for (int i = 0; i < 4; i++) {
-            //ISSUE: getter is getting suit, but for some reason it is returning longName
-            if (cards[i].getSuit() != cards[i+1].getSuit());
-            {
-                flush = false;
-            }
-        }
-        */
-
-        /*
-        System.out.println(cards[0].getSuit());
-
-        for (int i = 0; i < 4; i++) {
-            if (cards[i].getSuit() != cards[i+1].getSuit())
-            {
-                flush = false;
-            }
-        }
-        //tests whether the card array is true/false
-        System.out.println(flush);
-         */
-        /*
-        boolean straight = false;
-        for (int i = 0; i < 1; i++) {
-
-            if (cards[i].getValue() == cards[i].getValue() && cards[i+1].getValue() == cards[i].getValue()+1 &&
-                    cards[i+2].getValue() == cards[i].getValue()+2 && cards[i+3].getValue() == cards[i].getValue()+3 && cards[i+4].getValue() ==
-                    cards[i].getValue()+4) {
-                straight = true;
-            }
-        }
-        System.out.println(straight);
-
-
-         */
-        /**
-         * Straight works, flush works, sorting values work. Sorting suit works.
-         * */
-
-        /*
-        for (int x = 0; x < 5; x++) {
-            for (int i = 0; i < cards.length-1; i++) {
-                Card[] temp = new Card[cards.length];
-                if (cards[i].getValue() > cards[i+1].getValue()) {
-                    temp[i] = cards[i];
-                    cards[i] = cards[i + 1];
-                    cards[i + 1] = temp[i];
-                }
-            }
-        }
-
-        */
-        /*
-        for (int x = 0; x < 5; x++) {
-            for (int i = 0; i < cards.length-1; i++) {
-                Card[] temp = new Card[cards.length];
-                if (cards[i].getSuitAsInt() > cards[i+1].getSuitAsInt()) {
-                    temp[i] = cards[i];
-                    cards[i] = cards[i+1];
-                    cards[i+1] = temp[i];
-
-                }
-            }
-        }
-
-
-         */
-
-        EvaluateHand test = new EvaluateHand(cards);
-
-        //System.out.println(cards[cards.length-1].getValue());
-       // System.out.println(test.checkPair());
-       // System.out.println(test.checkXKinds());
-       // System.out.println(test.checkFullHouse());
-       // System.out.println(test.highHand());
-       // System.out.println(test.checkFullHouse());
-
-        System.out.println(test.checkStraight());
-        System.out.println(test.highHand().getValue());
-
-
-        THState timer = new THState();
-
-        System.out.println(timer.getTimer());
-
-
-
-
-        /*
-        for (int i = 0; i < cards.length; i++) {
-            System.out.println(cards[i].toString());
-        }
-        */
 
     }
 

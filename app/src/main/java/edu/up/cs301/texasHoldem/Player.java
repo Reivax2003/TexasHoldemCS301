@@ -62,29 +62,27 @@ public class Player implements Serializable {
         //profile.setActionText("Bet $" + newBet);
     }
 
-    public void setFold(boolean foldStatus){
-        folded = foldStatus;
+    /**
+     * Makes the player fold, sets the folded and action attributes
+     */
+    public void setFolded(){
+        folded = true;
         action = "fold";
-        //profile.setActionText("Fold");
     }
-    public boolean isFolded() {return folded; }
 
-    public Card[] getHand() {return hand.clone();}
-    public void setHand(Card[] hand) {
-        this.hand = hand;
-        //profile.setCardImg(hand);
-    }
-    public void giveCard(Card card, int index) { hand[index] = card;}
-
+    /**
+     * getter and setter methods, not much to say here
+     */
     public int getBalance() { return this.balance; }
-    //changed name to "removebalance" for clarity
     public void removeBalance(int betAmount) {
         this.balance -= betAmount;
     }
-    public void setBalance(int amount) {balance = amount;}
     public void setHandValue(int value) { handValue = value; }
     public int getHandValue() {return handValue; }
     public void setName(String name) { this.name = name; }
+    public Card[] getHand() {return hand.clone();}
+    public void setHand(Card[] hand) { this.hand = hand; }
+    public boolean isFolded() {return folded; }
 
     public void goAllIn() {
         if (balance > 0) {
@@ -92,18 +90,21 @@ public class Player implements Serializable {
         }
         allIn = true;
         action = "All In";
-        //profile.setActionText("All In");
     }
+
+    /**
+     * @return whether or not the player has bet all their money
+     */
     public boolean isAllIn() {
         return allIn;
     }
 
+    /**
+     * returns the last action the player took
+     * @return string containing the last action the player took
+     */
     public String getAction(){return action;}
-/*
-    public UiPlayerProfile getProfile(){
-        return profile;
-    }
-*/
+
     @Override
     public String toString() {
         return "Name: "+name+", balance: "+balance+", bet: "+bet+", folded: "+folded+", hand: "+hand[0]+", "+hand[1];

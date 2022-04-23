@@ -102,43 +102,39 @@ public class RankHand implements Serializable {
      * @return rank of card as an int between 1 (royal flush) and 7462 (unsuited 7-5-4-3-2)
      */
     public int getHandRank(Card[] hand) {
-        if (hand.length < 5) {
+        if (hand.length < 5) { //won't work if we don't have enough cards
             return -1;
-        } else if (hand.length == 5) {
+        } else if (hand.length == 5) { //no need to get all combos if only 5 cards
             int[] cards = new int[hand.length];
-            for (int i = 0; i < hand.length; i++) {
+            for (int i = 0; i < hand.length; i++) { //get integer representations of cards
                 cards[i] = hand[i].getCardBinary();
             }
-            return rank5(cards);
+            return rank5(cards); //pass on to other method
         } else {
-            int bestRank = 9999;
-            ArrayList<int[]> combos = getCombinationsOfSize(hand.length);
-            for (int[] each : combos) {
+            int bestRank = 9999; //this is higher than any rank
+            //get all the combos
+            ArrayList<int[]> combos = getCombinationsOfSize(hand.length, 5);
+            for (int[] each : combos) { //for each combo check the hand value
                 int[] subhand = new int[5];
                 int index = 0;
-                for (int i = 0; i < hand.length; i++) {
+                for (int i = 0; i < hand.length; i++) { //get the hand based on the combo
                     if (each[i] == 1) {
                         subhand[index] = hand[i].getCardBinary();
                         index++;
                     }
                 }
-                int rank = rank5(subhand);
-                if (rank < bestRank) bestRank = rank;
+                int rank = rank5(subhand); //check hand rank
+                if (rank < bestRank) bestRank = rank; //keep track of best hand rank
             }
             return bestRank;
         }
     }
 
     /**
-     * Return the % of cards this hand is better than
-     *
-     * @param hand the cards to be evaluated (must be at least 5)
-     * @return rank of card as an int between 1 (royal flush) and 0 (unsuited 7-5-4-3-2)
+     * gets the rank of a hand of 5 cards, see the description of getRankHand() for details
+     * @param cards the cards to get the hand value of (must be of length 5)
+     * @return integer value between 1 and 7462
      */
-    public float getHandRankFloat(Card[] hand) {
-        return 1-(getHandRank(hand)-1)/7461f;
-    }
-
     private int rank5(int[] cards) {
         /**
          * Original python code for 5 cards
@@ -220,11 +216,12 @@ public class RankHand implements Serializable {
     }
 
     /**
-     * Gets all combinations of size 5 out of a list of objects
+     * Gets all combinations of a given size out of a list of objects
      * @param size size of list
+     * @param amount the size of the combination
      * @return list of lists of 1s and 0s, 1s meaning include, 0s meaning exclude
      */
-    private ArrayList<int[]> getCombinationsOfSize(int size) {
+    private ArrayList<int[]> getCombinationsOfSize(int size, int amount) {
         ArrayList<int[]> combinations = new ArrayList<>();
         for (int i = 0; i < Math.pow(2, size)-1; i++) {
             /**
@@ -234,8 +231,8 @@ public class RankHand implements Serializable {
              */
             String bString = Integer.toBinaryString(i);
             String bString0s = bString.replace("0","");
-            //if there are exactly 5 1s
-            if (bString0s.length() == 5) {
+            //if there are exactly amount 1s
+            if (bString0s.length() == amount) {
                 char[] chars = bString.toCharArray();
                 int[] ints = new int[size];
                 for (int j = 0; j < size; j++) {
@@ -283,7 +280,7 @@ public class RankHand implements Serializable {
         if (rank <= 10) {
             return "Straight Flush";
         }
-        if (rank <= 10+156) {
+        if (rank <= 10+156) { //adding it up this way was easier to visualize
             return "Four of a Kind";
         }
         if (rank <= 10+156+156) {

@@ -32,7 +32,7 @@ public class THState extends GameState implements Serializable {
 
     //just an empty constructor, this'll never be used but it's useful for now
     public THState() {
-        players = new ArrayList<Player>();
+        players = new ArrayList<>();
         startOfRoundCheck = new boolean[0];
         blindBet = 20; //arbitrary value
         MAX_TIMER = 15; //arbitrary value
@@ -86,12 +86,12 @@ public class THState extends GameState implements Serializable {
         this.currentBet = orig.currentBet;
 
         //the arraylists need deep copies so they don't contain references
-        this.players = new ArrayList<Player>();
+        this.players = new ArrayList<>();
         for (Player each : orig.players) {
             players.add(new Player(each));
         }
 
-        this.dealerHand = new ArrayList<Card>();
+        this.dealerHand = new ArrayList<>();
         for (Card each : orig.dealerHand) {
             this.dealerHand.add(new Card(each));
         }
@@ -201,7 +201,7 @@ public class THState extends GameState implements Serializable {
         Log.i("GameState", "player "+playerID+" folds");
 
         startOfRoundCheck[playerID] = true;
-        currentPlayer.setFold(true);
+        currentPlayer.setFolded();
         nextTurn(); //taking any action ends your turn
         return true;
     }
@@ -283,42 +283,6 @@ public class THState extends GameState implements Serializable {
 
         Log.i("round",""+round);
         Log.i("player turn", ""+playerTurn);
-    }
-
-    /**
-     * calculate highest value set of 5 cards given a hand of arbitrary size (not implemented)
-     * @param hand: the hand do be evaluated
-     * @return highest card
-     */
-    public String bestHand(ArrayList<Card> hand) {
-
-        String str = " ";
-
-        EvaluateHand eh = new EvaluateHand(hand);
-
-        if (eh.checkFlush() == true && eh.checkStraight() == true && eh.highHand().getValue() == 14) {
-            str = "royal flush";
-        } else if (eh.checkFlush() == true && eh.checkStraight() == true) {
-            str = "straight flush";
-        } else if (eh.checkXKinds() == 4) {
-            str = "four of a kind";
-        } else if (eh.checkFullHouse() == true) {
-            str = "full house";
-        } else if (eh.checkFlush() == true) {
-            str = "flush";
-        } else if (eh.checkStraight() == true) {
-            str = "straight";
-        } else if (eh.checkXKinds() == 3) {
-            str = "three of a kind";
-        } else if (eh.checkPair() == 2) {
-            str = "two pairs";
-        } else if (eh.checkPair() == 1) {
-            str = "one pair";
-        } else {
-            str = "high hand";
-        }
-        return str;
-
     }
 
     /**
