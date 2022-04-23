@@ -180,8 +180,6 @@ public class THState extends GameState implements Serializable {
         startOfRoundCheck[playerID] = true;
         nextTurn(); //taking any action ends your turn
 
-        Log.i("GameState", "player "+playerID+" bets "+amount);
-
         return true;
     }
 
@@ -197,8 +195,6 @@ public class THState extends GameState implements Serializable {
         if (playerTurn != playerID) {
             return false;
         }
-
-        Log.i("GameState", "player "+playerID+" folds");
 
         startOfRoundCheck[playerID] = true;
         currentPlayer.setFolded();

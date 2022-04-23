@@ -26,10 +26,11 @@ public class THComputerPlayerHard extends GameComputerPlayer {
 
     /**
      * some lists so we know what to do preflop
-     * though the link technically isn't telling us to use this strategy, implementing the strategy
-     * shown would be much longer. Although we are misusing their chart, it is still telling us
+     *
+     * Though this AI technically misuses the information from the link, implementing the strategy
+     * shown would take much longer. Despite this, the chart provided is still a good indicator of
      * which hands are good and which are bad. I originally used this with a more conservative
-     * chart and the AI did practically nothing so this feels better (old is not the shy AI)
+     * chart and the AI did practically nothing so I used this one (old is now the shy AI)
      *
      * https://matchpoker.com/learn/strategy-guides/pre-flop-ranges-6-max
      */

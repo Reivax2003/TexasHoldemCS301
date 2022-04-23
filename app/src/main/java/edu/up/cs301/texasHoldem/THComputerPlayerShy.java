@@ -24,12 +24,13 @@ public class THComputerPlayerShy extends GameComputerPlayer {
 
     /**
      * some lists so we know what to do preflop
-     * though the link technically isn't telling us to use this strategy, implementing the strategy
-     * shown would be much longer. Although we are misusing their chart, it is still telling us
-     * which hands are good and which are bad. I originally used this with a more conservative
-     * chart and the AI did practically nothing so this feels better (old is not the shy AI)
      *
-     * https://matchpoker.com/learn/strategy-guides/pre-flop-ranges-6-max
+     * This is the original version of the Hard AI, while I don't know if this version is
+     * technically "better" at poker, it's certainly less fun to play against since it folds
+     * 90% of the time. It's entirely possible that the best strategy in poker is to only play the
+     * best of hands, but it's very boring.
+     *
+     * https://www.quora.com/What-are-the-best-preflop-hand-chart-to-learn-for-Texas-Hold%E2%80%99Em
      */
     private String[][] preFlop = {
             // pairs of cards are searched both ways so we don't need both "AK" and "KA"
